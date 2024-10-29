@@ -1,0 +1,24 @@
+{
+  "name": "BaseBot",
+  "version": "1.0.0",
+  "description": "Bot de Discord",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.7.1",
+     "youtube-yts": "^2.0.0",
+   "yt-search": "^2.10.3",
+    "@discordjs/voice": "^0.11.0",
+    "@discordjs/opus": "^0.5.3",
+    "util": "^0.12.4",
+       "fs": "0.0.1-security",
+       "axios": "^0.24.0",
+   "api-dylux": "^1.6.2",
+      "child_process": "^1.0.2",
+      "sqlite3": "^5.0.0",
+      "chalk": "^4.1.2",
+    "node-fetch": "^2.6.7" 
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
