@@ -1,10 +1,19 @@
-const fs = require('fs') 
-const path = require('path')
-const chalk = require('chalk') 
+import fs from 'fs';
+import path from 'path';
+import chalk from 'chalk';
 
 global.owner = [["1008834879858946170", "750524319876120657", "1132831529190559744"]]
 
+global.botToken = "MTI5NDM3NDU0ODQwOTQyMTg4NQ.GWaH0-.4M2cQfg0bvkaDQ1bCUEoo334k4g3WSEHOuFPEI"
 global.wm = "SkyBot"
+global.commands = [];
+
+//---------[ IMAGEN ]---------
+global.img = "https://qu.ax/Zgqq.jpg"
+global.img1 = 'https://qu.ax/hNJk.jpg'
+global.img2 = 'https://qu.ax/jzhN.jpg'
+
+global.imagen1 = fs.readFileSync('./media/menu.jpg')
 
 global.reglas = `*⚠️ Reglas de nuestro hosting:*\n\n_*🔰 Servidores gratuitos:*_\n\n• No pueden vender ni comercializar ningún servidor gratuito nuestro.
 • Se brinda mantenimiento a nuestros sistemas, pero no siempre será perfecto. Los problemas con el servicio gratuito serán atendidos cuando sea posible. No se aceptan exigencias ni quejas.
