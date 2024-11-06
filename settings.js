@@ -12,7 +12,8 @@ global.owner = [
 global.botToken = "" //Sacar tu token aqui: https://discord.com/developers/docs/intro
 
 //---------[ NOMBRE/INFO ]---------
-global.wm = "NovaBot-DS"
+global.wm = "InfinityBot-DS"
+global.botname = "ɪɴғɪɴɪᴛʏʙᴏᴛ-ᴅs"
 global.vs = "1.0.0 beta"
 
 //---------[ FECHA/IDIOMAS ]---------
