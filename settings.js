@@ -6,7 +6,7 @@ const chalk = require('chalk');
 global.owner = [
 ["1008834879858946170"],
 ["750524319876120657"],
-["1132831529190559744"]]
+["1132831529190559744"]]//Pueden agregarte como owner, sacando tu íd de discord y ponlo aquí. 
 
 //---------[ Token ]---------
 global.botToken = "" //Sacar tu token aqui: https://discord.com/developers/docs/intro
