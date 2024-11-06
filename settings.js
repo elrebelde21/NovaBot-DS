@@ -115,7 +115,7 @@ registra: `*[ 🔴 HEY ALTO NO ESTAS REGISTRADO 🔴 ]*\n\nNO APARECES EN MI BAS
 }
 
 //---------------[ NIVELES, ADVERTENCIA ]----------------
-global.multiplier = 90 // Cuanto más alto, más difícil subir de nivel 
+global.multiplier = 65 // Cuanto más alto, más difícil subir de nivel 
 global.maxwarn = '5' // máxima advertencias 
 
 //----------------------------------------------------
