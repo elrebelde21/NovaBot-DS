@@ -8,7 +8,7 @@ if (chat.antiLink) {
 const links = message.content.match(linkRegex);
 
 if (links) {
-if (!isBotAdmin) return await message.reply(`**⚠️ El bot necesita ser admin para eliminar al intruso...**`);
+if (!isBotAdmin) return await message.reply(`**⚠️ *El bot necesita ser admin para eliminar al intruso...**`);
 if (isAdmin) return await message.reply(`**Te salvaste, gil, eres admin.**`);
                 
 await message.delete();
