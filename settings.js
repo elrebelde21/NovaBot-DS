@@ -6,14 +6,13 @@ const chalk = require('chalk');
 global.owner = [
 ["1008834879858946170"],
 ["750524319876120657"],
-["1132831529190559744"]]//Pueden agregarte como owner, sacando tu íd de discord y ponlo aquí. 
+["1132831529190559744"]]
 
 //---------[ Token ]---------
-global.botToken = "" //Sacar tu token aqui: https://discord.com/developers/docs/intro
+global.botToken = "" //Sacar tu token aqui:
 
 //---------[ NOMBRE/INFO ]---------
-global.wm = "InfinityBot-DS"
-global.botname = "ɪɴғɪɴɪᴛʏʙᴏᴛ-ᴅs"
+global.wm = "NovaBot-DS"
 global.vs = "1.0.0 beta"
 
 //---------[ FECHA/IDIOMAS ]---------
@@ -116,7 +115,7 @@ registra: `*[ 🔴 HEY ALTO NO ESTAS REGISTRADO 🔴 ]*\n\nNO APARECES EN MI BAS
 }
 
 //---------------[ NIVELES, ADVERTENCIA ]----------------
-global.multiplier = 65 // Cuanto más alto, más difícil subir de nivel 
+global.multiplier = 90 // Cuanto más alto, más difícil subir de nivel 
 global.maxwarn = '5' // máxima advertencias 
 
 //----------------------------------------------------
