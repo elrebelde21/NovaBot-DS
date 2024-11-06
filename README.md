@@ -1,2 +1,2 @@
-# SkyBot
-Bot de discord el desarrollo
+# InfinityBot-DS
+Bot de discord el desarrollo fase beta. 
