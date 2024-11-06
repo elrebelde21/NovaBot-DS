@@ -9,7 +9,7 @@ global.owner = [
 ["1132831529190559744"]]
 
 //---------[ Token ]---------
-global.botToken = "" //Sacar tu token aqui:
+global.botToken = "" //Sacar tu token aqui: https://discord.com/developers/docs/intro
 
 //---------[ NOMBRE/INFO ]---------
 global.wm = "NovaBot-DS"
