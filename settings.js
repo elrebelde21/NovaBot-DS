@@ -1,6 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const chalk = require('chalk');
+import { watchFile, unwatchFile } from 'fs'
+import path from 'path';
+import chalk from 'chalk';
+import fs from 'fs'
+import { fileURLToPath } from 'url' 
 
 //---------[ PROPIETARIO/OWNER ]---------
 global.owner = [
@@ -72,6 +74,8 @@ global.img1 = 'https://qu.ax/hNJk.jpg'
 global.img2 = 'https://qu.ax/jzhN.jpg'
 
 global.imagen1 = fs.readFileSync('./media/menu.jpg')
+global.imagen2 = fs.readFileSync('./media/menu2.jpg')
+global.imagen3 = fs.readFileSync('./media/menu3.jpg')
 
 //---------[ ENLACES ]---------
 global.md = 'https://github.com/elrebelde21'
@@ -83,6 +87,8 @@ global.paypal = 'https://paypal.me/OficialGD'
 
 global.nna = "https://whatsapp.com/channel/0029Va4QjH7DeON0ePwzjS1A" //Canal de WhatsApp "Infinity-wa"
 global.nn = "https://discord.gg/zvKgtc2RBc" //Servidor de discord "SkyUltraPlus" 
+global.redes = [md, yt, tiktok, fb, paypal, nn]
+global.img = [imagen1, imagen2, imagen3]
 
 //---------[ INFO ]--------- 
 global.info = {
@@ -110,11 +116,9 @@ global.maxwarn = '5' // máxima advertencias
 
 //----------------------------------------------------
 
-let file = require.resolve(__filename) // Obtener la ruta completa del archivo 
-fs.watchFile(file, () => { // Observar cambios en el archivo
-fs.unwatchFile(file)
-const fileName = path.basename(file) // Nombre del archivo 
-console.log(chalk.greenBright.bold(`Update '${fileName}'.`)) // Imprimir mensaje en consola
-delete require.cache[file] // Eliminar la caché para permitir la actualización de cambios
-require(file) // Volvemos a cargar el archivo con los nuevos cambios
+let file = fileURLToPath(import.meta.url)
+watchFile(file, () => {
+  unwatchFile(file)
+  console.log(chalk.redBright("Update 'config.js'"))
+  import(`${file}?update=${Date.now()}`)
 })
