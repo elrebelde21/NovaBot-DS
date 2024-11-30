@@ -1,5 +1,5 @@
 import './settings.js';
-import { Client, GatewayIntentBits, PermissionsBitField, ActionRowBuilder, Partials } from 'discord.js';
+import { Client, GatewayIntentBits, PermissionsBitField, ActionRowBuilder, EmbedBuilder, Partials } from 'discord.js';
 import { isUrl, runtime, sendButton } from './libs/fuctions.js';
 import { createRequire } from 'module'
 import yargs from 'yargs'
@@ -194,12 +194,13 @@ async function watchPluginsFolder() {
 //----
 client.once('ready', () => {
   console.log(' Iniciando...');
-  say('NovaBot-DS', { 
+  say('InfinityBot-DS', { 
     font: 'chrome', 
     align: 'center', 
     gradient: ['red', 'magenta']
   });
-  say(`Bot Conectado: ${client.user.tag} con exitos`, { 
+
+say(`Bot Conectado: ${client.user.tag} con exitos`, { 
     font: 'console', 
     align: 'center', 
     gradient: ['cyan', 'magenta']
@@ -247,65 +248,64 @@ client.on('guildMemberAdd', (member) => {
 
     if (welcomeChannel) {
       const avatarUrl = member.user.displayAvatarURL({ dynamic: true, size: 1024 });
-      const imgWel1 = 'https://qu.ax/yqlE.jpg';
+      const imgWel1 = 'https://qu.ax/yqlE.jpg'; // Imagen predeterminada.
       const totalMembers = member.guild.memberCount;
 
-      const welcomeMessage = `
-        *╭┈⊰* ${member.guild.name} *⊰┈ 
-        ┃ BIENVENIDO(A)!!
-        ┃ <@${member.user.id}>
-        ┃ Total de usuarios: ${totalMembers}
-        ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈ 
-      `;
+//const welcomeMessage = `*╭┈⊰* ${member.guild.name} *⊰┈\n┃ BIENVENIDO(A)!!\n┃ <@${member.user.id}>\n┃ Total de usuarios: ${totalMembers}\n╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈ `;
+      const welcomeMessage = `╭─┈ ─┈⊰ 🌸 *${member.guild.name}* 🌸 ⊱─ ─┈─┈
+┃ **BIENVENIDO(A)** 🎉
+┃ <@${member.user.id}>
+┃ **Total de usuarios:** ${totalMembers}
+╰─┈ ─┈──┈──┈──┈──┈──┈`;
 
-      welcomeChannel.send({
-        content: welcomeMessage,
-        embeds: [
-          {
-            image: {
-              url: avatarUrl || imgWel1,
-            },
-          },
-        ],
-      });
+      // Embed para incluir la imagen y personalización
+      const embed = new EmbedBuilder()
+    .setColor('#FF69B4') // Color rosa
+    .setTitle('🎉 ¡Gracias por unirte! 🎉')
+    .setDescription(`Hola <@${member.user.id}>, estamos felices de tenerte aquí. ¡Disfruta de tu estadía!`)
+    .setImage(imgWel1) // Imagen de bienvenida fija
+    .setThumbnail(avatarUrl) // Miniatura con el avatar del usuario
+    .setFooter({ text: `¡Somos el plus ultra que necesitas!`, iconURL: avatarUrl });
+
+      // Enviamos el mensaje y el embed al canal de bienvenida
+      welcomeChannel.send({ content: welcomeMessage, embeds: [embed] });
     } else {
-      console.log(' El canal de bienvenida no existe.');
+      console.log('El canal de bienvenida no existe.');
     }
   } else {
-    console.log(' No se ha configurado ningún canal de bienvenida');
+    console.log('No se ha configurado ningún canal de bienvenida.');
   }
 });
 
-//-----
 client.on('guildMemberRemove', (member) => {
-    const guildId = member.guild.id;
+  const guildId = member.guild.id;
   const chatSettings = db.data.settings[guildId] || {};
 
   if (chatSettings.welcome && chatSettings.farewellChannelId) {
     const farewellChannel = member.guild.channels.cache.get(chatSettings.farewellChannelId);
 
     if (farewellChannel) {
-      const totalMembers = member.guild.memberCount;
       const avatarUrl = member.user.displayAvatarURL({ dynamic: true, size: 1024 });
       const imgBye = 'https://qu.ax/yqlE.jpg';
-      const farewellMessage = `
-        ╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈⊰*
-        ┃ <@${member.user.id}>
-        ┃ *NO LE SABE AL GRUPO, CHAO!!* 
-        *╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈⊰*
-      `;
+      const totalMembers = member.guild.memberCount;
 
-      farewellChannel.send({
-        content: farewellMessage,
-        files: [avatarUrl || imgBye],
-      })
-      .then(() => console.log(`Mensaje de despedida enviado a ${farewellChannel.name}`))
-      .catch((error) => console.error('Error al enviar el mensaje de despedida:', error));
+      const farewellMessage = `╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈⊰*\n┃ <@${member.user.id}>\n┃ *NO LE SABE AL GRUPO, CHAO!!*\n*╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈⊰*`;
+
+      // Embed de despedida
+      const embed = new EmbedBuilder()
+    .setColor('#FF4500') // Rojo anaranjado para despedida
+    .setTitle('👋 Usuario ha salido')
+    .setDescription(`Esperamos que regreses pronto, <@${member.user.id}>. ¡Te extrañaremos!`)
+    .setImage(imgBye) // Imagen de despedida
+    .setThumbnail(avatarUrl) // Miniatura con el avatar del usuario
+    .setFooter({ text: 'Gracias por haber formado parte de nuestra comunidad.', iconURL: avatarUrl });
+
+      farewellChannel.send({ content: farewellMessage, embeds: [embed] });
     } else {
-      console.log(' El canal de despedida no existe o no se pudo encontrar.');
+      console.log('El canal de despedida no existe.');
     }
   } else {
-    console.log(' No se ha configurado ningún canal de despedida.');
+    console.log('No se ha configurado ningún canal de despedida.');
   }
 });
 
