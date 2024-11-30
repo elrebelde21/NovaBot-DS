@@ -1,12 +1,12 @@
 import yts from "youtube-yts";
 import fetch from 'node-fetch';
+import ytdl from 'ytdl-core'
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 
 let handler = async (message, { args, prefix }) => {
-    const text = args.join(' '); 
-    const yt_play = await search(args.join(' '));
-    
-    if (!text) return message.reply('🚩 Ejemplo de uso: !play maluma');
+const text = args.join(' '); 
+const yt_play = await search(args.join(' '));
+if (!text) return message.reply('🚩 Ejemplo de uso: !play maluma');
 
     let videoSearch;
     try {
@@ -21,6 +21,7 @@ let handler = async (message, { args, prefix }) => {
 
     const vid = videoSearch.all[0];
     const videoUrl = vid.url;
+let { title, description, thumbnail, videoId, timestamp, views, ago, url } = vid
 
     const rowPlay = new ActionRowBuilder()
         .addComponents(
@@ -34,21 +35,23 @@ let handler = async (message, { args, prefix }) => {
                 .setStyle(ButtonStyle.Secondary)
         );
 
-    let msgPlay;
-    
-    // Enviar el mensaje con la imagen
-    msgPlay = await message.channel.send({
-        content: `**◉ Título:** ${vid.title}\n\n**◉ Descripción:** ${vid.description}\n**◉ Vistas:** ${vid.views}\n**◉ Publicado:** ${vid.ago}`,
-        files: [
-            {
-                attachment: vid.thumbnail,
-                name: 'thumbnail.png' // Puedes darle un nombre a la imagen
-            }
-        ],
-        components: [rowPlay]
-    });
+  let msgPlay;
+if (vid.thumbnail) {
+  msgPlay = await message.channel.send({
+    content: `**◉ Titulo:** ${vid.title}\n\n**◉ Descripción:** ${vid.description}\n**◉ Vistas:** ${vid.views}\n**◉ Publicado:** ${vid.ago}`,
+    image: {
+      url: vid.thumbnail,
+    },
+    components: [rowPlay]
+  });
+} else {
+  msgPlay = await message.channel.send({
+    content: `**◉ Titulo:** ${vid.title}\n\n**◉ Descripción:** ${vid.description}\n**◉ Vistas:** ${vid.views}\n**◉ Publicado:** ${vid.ago}`,
+    components: [rowPlay]
+  });
+}
 
-    const filterPlay = i => i.user.id === message.author.id;
+const filterPlay = i => i.user.id === message.author.id;
     const collectorPlay = msgPlay.createMessageComponentCollector({ filter: filterPlay, time: 15000 });
 
     collectorPlay.on('collect', async interaction => {
