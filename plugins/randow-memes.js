@@ -5,8 +5,8 @@ let handler = async (message) => {
         const memeUrl = await hispamemes.meme(); 
         await message.channel.send({ content: "🤣 Memes 🤣", files: [memeUrl] }); 
     } catch (error) {
-        console.error('Error al obtener el meme:', error);
         await message.reply('❌ Error:\n\n' + error);
+        console.log(error) 
     }
 };
 

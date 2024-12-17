@@ -13,15 +13,23 @@ let tags = {
 };
 
 const defaultMenu = {
-    before: `Hola 👋🏻 *%name*\n
-*• Fecha:* ${fecha}
-*• Prefijo:* %prefix
-*• Uptime:* %muptime
-*• Usuarios registrados:* %rtotalreg de %totalreg`,
+    before: `╔══════ ≪ •❈• ≫ ══════╗
+║◤━━━━━ ☆. ∆ .☆ ━━━━━◥
+║ Hola 👋🏻 *%name 
+║◤━━━━━ ☆. ∆ .☆ ━━━━━◥
+║☃️ Fecha: ${fecha}
+║☃️ Prefijo: %prefix
+║☃️ Uptime: %muptime
+║
+║☃️ Usuarios registrados: %rtotalreg de %totalreg
+║◤━━━━━ ☆. ∆ .☆ ━━━━━◥
+╚══════ ≪ •❈• ≫ ══════╝
 
-    header: '┌─⊷ *%category*',
-    body: '❥ %prefix%cmd %islimit %isPremium',
-    footer: '\n└───────────',
+**☃️ Bot en fase beta, con pocos comandó ☃️**`,
+
+    header: '**╭─╮─᤻─᳒─᤻᳒᯽⃟ᰳᰬᰶ┈** **%category**️⃟ᬽ፝֟━*',
+    body: '├❥ᰰຼ❏ %prefix%cmd %islimit %isPremium',
+    footer: '\n╰┄̸࣭࣭࣭࣭࣭ٜ۫┄࣭࣭࣭۫┄̸࣭۫┄̸࣭࣭࣭࣭࣭ٜ۫┄࣭࣭࣭۫┄̸࣭۫┄̸࣭࣭࣭࣭࣭ٜ۫┄̸࣭࣭࣭࣭࣭ٜ۫┄۫',
     after: `
 `,
 };

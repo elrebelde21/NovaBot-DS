@@ -3,9 +3,7 @@ import fetch from 'node-fetch';
 let handler = async (message) => {
 
     const nsfwChannelIdBoobs = global.db.data.settings[message.guild.id]?.nsfwChannelId;
-    if (!nsfwChannelIdBoobs || message.channel.id !== nsfwChannelIdBoobs) {
-        return message.reply(`⚠️ Este comando solo se puede usar en el canal NSFW configurado: <#${nsfwChannelIdBoobs}>.`);
-    }
+    if (!nsfwChannelIdBoobs || message.channel.id !== nsfwChannelIdBoobs) return message.reply(`⚠️ Este comando solo se puede usar en el canal NSFW configurado: <#${nsfwChannelIdBoobs}>.`);
 
     const boobsImageUrl = "https://deliriussapi-oficial.vercel.app/nsfw/boobs";
     try {

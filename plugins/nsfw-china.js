@@ -2,9 +2,7 @@ import fetch from 'node-fetch';
 
 let handler = async (message) => {
 const nsfwChannelIdChina = global.db.data.settings[message.guild.id]?.nsfwChannelId;
-    if (!nsfwChannelIdChina || message.channel.id !== nsfwChannelIdChina) {
-        return message.reply(`⚠️ Este comando solo se puede usar en el canal NSFW configurado: <#${nsfwChannelIdChina}>.`);
-    }
+    if (!nsfwChannelIdChina || message.channel.id !== nsfwChannelIdChina) return message.reply(`⚠️ Este comando solo se puede usar en el canal NSFW configurado: <#${nsfwChannelIdChina}>.`);
 
     const chinaImageUrl = "https://deliriussapi-oficial.vercel.app/nsfw/corean";
     try {

@@ -7,19 +7,18 @@ let handler = async (message, { args, prefix, command }) => {
     const time = moment.tz('America/Bogota').format('HH:mm:ss');
     let Reg = /\|?(.*)([.|] *?)([0-9]*)$/i;
     let user = db.data.users[message.author.id];
+let name2 = member.user.username
 
-  if (user && user.registered === true) return message.reply('*¡YA ESTÁS REGISTRADO(A)!*');
-   if (!Reg.test(args.join(' '))) {
-        return message.reply(`*INGRESE SU NOMBRE Y EDAD PARA ESTAR REGISTRADO*\n*EJEMPLO*\n\n${prefix + command} GataBot.18`);
-    }
+  if (user && user.registered === true) return message.reply(`*✳️ Ya estás registrado*\n\n¿Quiere volver a registrarse?\n\n 📌 Use este comando para eliminar su registro \n*${prefix}unreg* <Número de serie>`);
+ if (!Reg.test(args.join(' '))) return message.reply(`⚠️ Formato incorrecto\n\n ✳️ Uso del comamdo: *${prefix + command} nombre.edad*\n📌Ejemplo : *${prefix + command}* ${name2}.15`);
 
    let [_, name, splitter, age] = args.join(' ').match(Reg);
-    if (!name) return message.reply('INGRESE SU NOMBRE');
-    if (!age) return message.reply('INGRESE SU EDAD');
+    if (!name) return message.reply('✳️ El nombre no puede estar vacío');
+    if (!age) return message.reply('✳️ La edad no puede estar vacía');
     age = parseInt(age);
-    if (age > 100) return message.reply('USTED ES MUY MAYOR');
-    if (age < 5) return message.reply('USTED ES MUY MENOR');
-    if (name.length >= 30) return message.reply('ESCRIBA UN NOMBRE MÁS CORTO');
+    if (age > 100) return message.reply('👴🏻 Wow el abuelo quiere jugar al bot');
+    if (age < 5) return message.reply('🚼  hay un abuelo bebé jsjsj');
+    if (name.length >= 30) return message.reply('✳️ El nombre es demasiado largo');
     
     let sn = createHash('md5').update(message.author.id).digest('hex');
     

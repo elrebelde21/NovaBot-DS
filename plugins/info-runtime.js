@@ -14,7 +14,6 @@ handler.admin = false
 handler.botAdmin = false
 export default handler;
 
-// Función para formatear el tiempo
 function clockString(ms) {
     let d = isNaN(ms) ? '--' : Math.floor(ms / 86400000);
     let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000) % 24;
