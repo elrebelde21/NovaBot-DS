@@ -1,13 +1,31 @@
-{
-  "name": "NovaBot-DS",
-  "version": "1.0.0",
-  "description": "Bot de Discord",
-  "type": "module",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "author": "elrebelde21",
-  "license": "ISC",
+{ 
+"name": "NovaBot-DS",
+"version": "1.0.0 (beta)", 
+"description": "Bot de Discord",
+"main": "index.js",
+"type": "module",
+    
+"directories": {
+"lib": "lib",
+"src": "src",
+"plugins": "plugins" },
+    
+"scripts": {
+"start": "node index.js",
+"test": "node test.js",
+"test2": "nodemon index.js" },
+    
+"homepage": "https://github.com/elrebelde21/NovaBot-DS",
+"author": {
+"name": "elrebelde21" }, 
+    
+"repository": {
+"type": "git",
+ "url": "git+https://github.com/elrebelde21/NovaBot-DS.git" },
+ 
+"bugs": {
+"url": "https://github.com/elrebelde21/NovaBot-DS/issues" },
+"license": "GPL-3.0-or-later",
   "dependencies": {
     "discord.js": "^14.7.1",
     "youtube-yts": "^2.0.0",
@@ -22,15 +40,16 @@
     "sqlite3": "^5.0.0",
     "systeminformation": "^5.17.3",
     "lowdb": "^3.0.0",
+    "mongoose": "^6.6.5",
     "lodash": "^4.17.21",
     "performance-now": "^2.1.0",
-    "mongoose": "^6.3.3",
     "google-it": "^1.6.3",
     "moment-timezone": "^0.5.37",
     "cfonts": "^2.10.0",
     "chalk": "^4.1.2",
     "yargs": "^17.3.1",
     "vm2": "^3.9.11",
+    "express": "^4.18.1",
     "node-fetch": "^2.6.7"
   },
   "engines": {
