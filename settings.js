@@ -15,7 +15,7 @@ global.botToken = "" //Sacar tu token aqui: https://discord.com/developers/appli
 
 //---------[ NOMBRE/INFO ]---------
 global.wm = "NovaBot-DS"
-global.vs = "1.0.0 beta"
+global.vs = "1.0.0 (Beta)"
 
 //---------[ FECHA/IDIOMAS ]---------
 global.place = 'America/Bogota' // Aquí puedes encontrar tu ubicación https://momentjs.com/timezone/
@@ -78,7 +78,7 @@ global.imagen2 = fs.readFileSync('./media/menu2.jpg')
 global.imagen3 = fs.readFileSync('./media/menu3.jpg')
 
 //---------[ ENLACES ]---------
-global.md = 'https://github.com/elrebelde21'
+global.md = 'https://github.com/elrebelde21/NovaBot-DS'
 global.yt = 'https://www.youtube.com/@elrebelde.21'
 global.tiktok = 'tiktok.com/@elrebelde21'
 global.fb = 'https://www.facebook.com/elrebelde21'

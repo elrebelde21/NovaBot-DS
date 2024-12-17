@@ -11,7 +11,6 @@ import * as ws from 'ws'
 import {Low, JSONFile} from 'lowdb'
 import { mongoDB, mongoDBV2 } from './libs/mongoDB.js'
 import _ from 'lodash';
-//import cloudDBAdapter from './libs/database/cloudDBAdapter.js';
 import fs from 'fs';
 import chalk from 'chalk';
 import { format } from 'util'
@@ -23,7 +22,7 @@ import hispamemes from 'hispamemes';
 import moment from 'moment-timezone';
 import cfonts from 'cfonts';
 const { say } = cfonts
-//import antiLink from './plugins/_antilink';
+import antiLink from './plugins/_antilink.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const credsPath = join(__dirname, 'session', 'creds.json');
@@ -52,11 +51,11 @@ function loadTokenFromCreds() {
 
 async function promptForToken() {
     return new Promise((resolve) => {
-        const stdin = process.stdin;
-        const stdout = process.stdout;
+const stdin = process.stdin;
+const stdout = process.stdout;
 
-        stdout.write(chalk.white.bgBlue('🟢 Por favor, ingresa el token del bot: '));
-        stdin.once('data', (data) => {
+stdout.write(chalk.white.bgBlue('🟢 Por favor, ingresa el token del bot: '));
+stdin.once('data', (data) => {
             const token = data.toString().trim();
             fs.mkdirSync(path.dirname(credsPath), { recursive: true }); 
             fs.writeFileSync(credsPath, JSON.stringify({ token }), 'utf-8');
@@ -65,16 +64,15 @@ async function promptForToken() {
     });
 }
 
+//Manejo de errores
 process.on('uncaughtException', async (err) => {
     console.error('❌ Error no manejado:', err.message);
     for (let ownerID of global.owner) {
         try {
             let owner = await client.users.fetch(ownerID).catch(() => null);
             if (owner) {
-                await owner.send(`❌ Error no manejado en el bot:\n${err.message}`)
-                    .catch(e => console.error('Error al enviar mensaje a los propietarios sobre uncaughtException:', e));
-            }
-        } catch (e) {
+await owner.send(`❌ Error no manejado en el bot:\n${err.message}`).catch(e => console.error('Error al enviar mensaje a los propietarios sobre uncaughtException:', e));
+            }} catch (e) {
             console.error('Error al enviar mensaje a los propietarios sobre uncaughtException:', e);
         }
     }
@@ -86,10 +84,8 @@ process.on('unhandledRejection', async (reason, promise) => {
         try {
             let owner = await client.users.fetch(ownerID).catch(() => null);
             if (owner) {
-                await owner.send(`❌ Rechazo no manejado en el bot:\n${reason}`)
-                    .catch(e => console.error('Error al enviar mensaje a los propietarios sobre unhandledRejection:', e));
-            }
-        } catch (e) {
+await owner.send(`❌ Rechazo no manejado en el bot:\n${reason}`).catch(e => console.error('Error al enviar mensaje a los propietarios sobre unhandledRejection:', e));
+            }} catch (e) {
             console.error('Error al enviar mensaje a los propietarios sobre unhandledRejection:', e);
         }
     }
@@ -152,7 +148,7 @@ const client = new Client({
   partials: [Partials.Channel],
 });
 
-// Carga los plugins.js
+//Logica para carga los comando
 async function loadCommands() {
   const commandFiles = await fs.promises.readdir('./plugins');
   const commands = [];
@@ -194,7 +190,7 @@ async function watchPluginsFolder() {
 //----
 client.once('ready', () => {
   console.log(' Iniciando...');
-  say('InfinityBot-DS', { 
+  say('NovaBot-DS', { 
     font: 'chrome', 
     align: 'center', 
     gradient: ['red', 'magenta']
@@ -208,105 +204,117 @@ say(`Bot Conectado: ${client.user.tag} con exitos`, {
   loadCommands();
   watchPluginsFolder();
 
-  // Envía memes automáticamente cada hora
-  setInterval(async () => {
-    try {
-      const memeUrl = await hispamemes.meme();
-      const guilds = await client.guilds.fetch();
-
-      for (const guild of guilds) {
-        const memeChannelId = db.data.settings[guild.id]?.memeChannelId;
-
-        if (memeChannelId) {
-          const channel = client.channels.cache.get(memeChannelId);
-
-          if (channel) {
-            await channel.send({ 
-              content: "", 
-              files: [memeUrl] 
-            });
-          } else {
-            console.error(' El canal de memes no se encuentra.');
-          }
-        } else {
-          console.log(' No se ha configurado un canal de memes para el servidor:', guild.name);
+//Envía memes automáticamente cada hora
+setInterval(async () => {
+        try {
+            const memeUrl = await hispamemes.meme();
+            const guilds = await client.guilds.fetch();
+            guilds.forEach(async (guild) => {
+                const memeChannelId = db.data.settings[guild.id]?.memeChannelId;
+                if (memeChannelId) {
+                    const channel = client.channels.cache.get(memeChannelId);
+                    if (channel) {
+                        await channel.send({ content: "", files: [memeUrl] });
+       } else {
+        }} else {
+   //console.log('❌ No se ha configurado un canal de memes para el servidor:', guild.name);
+   }});
+       } catch (error) {
+            console.error('Error al obtener el meme:', error);
         }
-      }
-    } catch (error) {
-      console.error('Error al obtener el meme:', error);
-    }
-  }, 60 * 60 * 1000); // Cada hora
+    }, 60 * 60 * 1000);
 });
 
 //Welcome
 client.on('guildMemberAdd', (member) => {
-  const guildId = member.guild.id;
-  const chatSettings = db.data.settings[guildId] || {};
+    const guildId = member.guild.id;
+    const chatSettings = db.data.settings[guildId] || {};
 
-  if (chatSettings.welcome && chatSettings.welcomeChannelId) {
-    const welcomeChannel = member.guild.channels.cache.get(chatSettings.welcomeChannelId);
+    if (chatSettings.welcome && chatSettings.welcomeChannelId) {
+        const welcomeChannel = member.guild.channels.cache.get(chatSettings.welcomeChannelId);
 
-    if (welcomeChannel) {
-      const avatarUrl = member.user.displayAvatarURL({ dynamic: true, size: 1024 });
-      const imgWel1 = 'https://qu.ax/yqlE.jpg'; // Imagen predeterminada.
-      const totalMembers = member.guild.memberCount;
+        if (welcomeChannel) {
+            const avatarUrl = member.user.displayAvatarURL({ dynamic: true, size: 1024 });
+            const totalMembers = member.guild.memberCount;
 
-//const welcomeMessage = `*╭┈⊰* ${member.guild.name} *⊰┈\n┃ BIENVENIDO(A)!!\n┃ <@${member.user.id}>\n┃ Total de usuarios: ${totalMembers}\n╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈ `;
-      const welcomeMessage = `╭─┈ ─┈⊰ 🌸 *${member.guild.name}* 🌸 ⊱─ ─┈─┈
+const welcomeMessageTemplate = chatSettings.welcomeMessage || `╭┈⊰ #guild ⊰┈
 ┃ **BIENVENIDO(A)** 🎉
-┃ <@${member.user.id}>
-┃ **Total de usuarios:** ${totalMembers}
-╰─┈ ─┈──┈──┈──┈──┈──┈`;
+┃ #tag
+╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈`;
 
-      // Embed para incluir la imagen y personalización
-      const embed = new EmbedBuilder()
-    .setColor('#FF69B4') // Color rosa
-    .setTitle('🎉 ¡Gracias por unirte! 🎉')
-    .setDescription(`Hola <@${member.user.id}>, estamos felices de tenerte aquí. ¡Disfruta de tu estadía!`)
-    .setImage(imgWel1) // Imagen de bienvenida fija
-    .setThumbnail(avatarUrl) // Miniatura con el avatar del usuario
-    .setFooter({ text: `¡Somos el plus ultra que necesitas!`, iconURL: avatarUrl });
+            const welcomeMessage = welcomeMessageTemplate
+                .replace(/#user/g, member.user.username)
+                .replace(/#tag/g, `<@${member.user.id}>`) 
+                .replace(/#guild/g, member.guild.name) 
+                .replace(/#members/g, totalMembers.toString()); 
+                
+            const defaultEmbedOptions = {
+                title: '🎉 ¡Gracias por unirte! 🎉',
+                description: `Hola **#user**, estamos felices de tenerte aquí. ¡Disfruta tu estadía!`,
+                footerText: `Eres el miembro número #members 🚀`,
+                footerIcon: avatarUrl, 
+            };
 
-      // Enviamos el mensaje y el embed al canal de bienvenida
-      welcomeChannel.send({ content: welcomeMessage, embeds: [embed] });
-    } else {
-      console.log('El canal de bienvenida no existe.');
+            const embedOptions = chatSettings.welcomeEmbed || {};
+            const embed = new EmbedBuilder()
+                .setColor('#FF69B4') // Color fijo
+                .setTitle(embedOptions.title || defaultEmbedOptions.title.replace(/#user/g, member.user.username).replace(/#guild/g, member.guild.name)) 
+                .setDescription(embedOptions.description || defaultEmbedOptions.description.replace(/#user/g, member.user.username).replace(/#guild/g, member.guild.name)) 
+                .setThumbnail(avatarUrl) 
+                .setFooter({
+                    text: (embedOptions.footerText || defaultEmbedOptions.footerText).replace(/#members/g, totalMembers.toString()),
+                    iconURL: embedOptions.footerIcon || defaultEmbedOptions.footerIcon, 
+                });
+
+            welcomeChannel.send({ content: welcomeMessage, embeds: [embed] });
+        } else {     
+        }} else {
+      //console.log('⚠️ No se ha configurado ningún canal de bienvenida.');
     }
-  } else {
-    console.log('No se ha configurado ningún canal de bienvenida.');
-  }
 });
 
 client.on('guildMemberRemove', (member) => {
-  const guildId = member.guild.id;
-  const chatSettings = db.data.settings[guildId] || {};
+    const guildId = member.guild.id;
+    const chatSettings = db.data.settings[guildId] || {};
 
-  if (chatSettings.welcome && chatSettings.farewellChannelId) {
-    const farewellChannel = member.guild.channels.cache.get(chatSettings.farewellChannelId);
+    if (chatSettings.farewell && chatSettings.farewellChannelId) {
+        const farewellChannel = member.guild.channels.cache.get(chatSettings.farewellChannelId);
 
-    if (farewellChannel) {
-      const avatarUrl = member.user.displayAvatarURL({ dynamic: true, size: 1024 });
-      const imgBye = 'https://qu.ax/yqlE.jpg';
-      const totalMembers = member.guild.memberCount;
+        if (farewellChannel) {
+            const avatarUrl = member.user.displayAvatarURL({ dynamic: true, size: 128 });
+            const totalMembers = member.guild.memberCount;
 
-      const farewellMessage = `╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈⊰*\n┃ <@${member.user.id}>\n┃ *NO LE SABE AL GRUPO, CHAO!!*\n*╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈⊰*`;
+const farewellMessageTemplate = chatSettings.farewellMessage || `╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈⊰*\n┃ #tag\n┃ **NO LE SABES AL GRUPO, CHAO!!**\n*╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈⊰*`;
 
-      // Embed de despedida
-      const embed = new EmbedBuilder()
-    .setColor('#FF4500') // Rojo anaranjado para despedida
-    .setTitle('👋 Usuario ha salido')
-    .setDescription(`Esperamos que regreses pronto, <@${member.user.id}>. ¡Te extrañaremos!`)
-    .setImage(imgBye) // Imagen de despedida
-    .setThumbnail(avatarUrl) // Miniatura con el avatar del usuario
-    .setFooter({ text: 'Gracias por haber formado parte de nuestra comunidad.', iconURL: avatarUrl });
+            const farewellMessage = farewellMessageTemplate
+                .replace(/#user/g, member.user.username)
+                .replace(/#tag/g, `<@${member.user.id}>`)
+                .replace(/#guild/g, member.guild.name)
+                .replace(/#members/g, totalMembers.toString());
 
-      farewellChannel.send({ content: farewellMessage, embeds: [embed] });
+            const defaultEmbedOptions = {
+                title: '👋 Usuario ha salido',
+                description: `¡Nos vas a extrañar, #user! Esperamos verte pronto.`,
+                footerText: 'Gracias por haber sido parte de nuestra comunidad.',
+                footerIcon: avatarUrl, 
+            };
+
+            const embedOptions = chatSettings.farewellEmbed || {};
+            const embed = new EmbedBuilder()
+                .setColor('#FF4500')
+                .setTitle(embedOptions.title || defaultEmbedOptions.title.replace(/#user/g, member.user.username))
+                .setDescription(embedOptions.description || defaultEmbedOptions.description.replace(/#user/g, member.user.username))
+                .setThumbnail(avatarUrl) 
+                .setFooter({
+                    text: embedOptions.footerText || defaultEmbedOptions.footerText,
+                    iconURL: embedOptions.footerIcon || defaultEmbedOptions.footerIcon,
+                });
+
+            farewellChannel.send({ content: farewellMessage, embeds: [embed] });
+        }
     } else {
-      console.log('El canal de despedida no existe.');
+       // console.log('⚠️ No se ha configurado ningún canal de despedida.');
     }
-  } else {
-    console.log('No se ha configurado ningún canal de despedida.');
-  }
 });
 
 //-----
@@ -356,7 +364,6 @@ let user = db.data.users[message.author.id];
             level: 0,
         };
         await db.write();
-        console.log(`Nuevo usuario registrado: ${message.author.tag}`);
     } else {
         if (!('registered' in user)) user.registered = false;
         if (!('premium' in user)) user.premium = false;
@@ -389,7 +396,6 @@ if (!chat) {
         rules: '',
     };
     await db.write();
-    console.log(`Nuevo chat registrado: ${message.channel.name}`);
 } else {
     if (!('isBanned' in chat)) chat.isBanned = false;
     if (!('antiLink' in chat)) chat.antiLink = false;
@@ -401,22 +407,50 @@ let settings;
 if (message.guild) {
 settings = db.data.settings[message.guild.id];
 if (!settings) {
-    db.data.settings[message.guild.id] = {
-        welcomeChannelId: null,
-        farewellChannelId: null,
-        memeChannelId: null, 
-        welcome: true, 
-        status: 0,
+   db.data.settings[message.guild.id] = {
+     welcomeChannelId: null,
+     farewellChannelId: null,
+     memeChannelId: null, 
+     welcome: true, 
+     status: 0,
+     welcomeEmbed: {
+     title: null,
+     description: null,
+     image: null,
+    footerText: null,
+    footerIcon: null,
+    },
+    farewellEmbed: {
+    title: null,
+    description: null,
+    footerText: null,
+    footerIcon: null,
+    },
+   welcomeMessage: null,    
+   farewellMessage: null, 
     };
     await db.write();
-    console.log(`Nuevas configuraciones para el servidor: ${message.guild.name}`);
-} else {
-   if (!('welcomeChannelId' in settings)) settings.welcomeChannelId = null;
+    } else {
+    if (!('welcomeChannelId' in settings)) settings.welcomeChannelId = null;
     if (!('farewellChannelId' in settings)) settings.farewellChannelId = null;
     if (!('memeChannelId' in settings)) settings.memeChannelId = null;
-    if (!('welcome' in settings)) settings.welcome = true;
-}} else {
-  console.log("Mensaje directo, no se puede obtener la configuración del servidor");
+    if (!('welcomeMessage' in settings)) settings.welcomeMessage = null;   
+   if (!('farewellMessage' in settings)) settings.farewellMessage = null;
+     if (!('welcome' in settings)) settings.welcome = true;
+    if (!('welcomeEmbed' in settings)) {
+    settings.welcomeEmbed = { title: null,
+     description: null,
+     image: null,
+     footerText: null,
+     footerIcon: null,
+     }}
+    if (!('farewellEmbed' in settings)) {
+    settings.farewellEmbed = { title: null,
+     description: null,
+     footerText: null,
+     footerIcon: null,
+     }}
+   }} else {
 }
 
 //-----
@@ -433,20 +467,19 @@ const isROwner = message.guild ? message.guild.ownerId === message.author.id : f
 const isAdmin = message.guild && message.member 
     ? message.member.permissions.has(PermissionsBitField.Flags.Administrator) 
     : false;
-
 const isBotAdmin = message.guild 
     ? message.guild.members.cache.get(message.client.user.id)?.permissions.has(PermissionsBitField.Flags.Administrator) ?? false 
     : false;
 
-    const prefixRegex = /^[°•π÷×¶∆£¢*€¥®™+✓_=|~!?@#$%^&.©^]/gi;
-    const body = message.content;
-    const prefix = body.match(prefixRegex) ? body.match(prefixRegex)[0] : ''; 
-    const commandBody = body.slice(prefix.length).trim(); 
-    const args = commandBody.split(' ');    
-    const commandName = args.shift();
+const prefixRegex = /^[°•π÷×¶∆£¢*€¥®™+✓_=|~!?@#$%^&.©^]/gi;
+const body = message.content;
+const prefix = body.match(prefixRegex) ? body.match(prefixRegex)[0] : ''; 
+const commandBody = body.slice(prefix.length).trim(); 
+const args = commandBody.split(' ');    
+const commandName = args.shift();
     
-    const command = client.commands.find(cmd => {
-  const customPrefix = cmd.customPrefix ? new RegExp(cmd.customPrefix) : null;
+const command = client.commands.find(cmd => {
+const customPrefix = cmd.customPrefix ? new RegExp(cmd.customPrefix) : null;
 
 if (customPrefix && customPrefix.test(commandName)) {
     return true;
@@ -467,7 +500,7 @@ if (customPrefix && customPrefix.test(commandName)) {
 if (command) { 
 if (command.before) {
             try {
-                await command.before(message, { 
+await command.before(message, { 
                     args, 
                     prefix, 
                     command: commandName, 
@@ -525,6 +558,7 @@ return;
 
 user.exp += xp;
 try {
+await antiLink(message, { db, isAdmin, isBotAdmin });
 await command(message, { args, prefix, command: commandName, db, client, text: message.content.slice(prefix.length + commandName.length).trim() });
 } catch (error) {
 console.error('Error:', error);
