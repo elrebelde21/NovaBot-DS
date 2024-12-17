@@ -6,8 +6,8 @@ let handler = async (message, { args, prefix, command }) => {
     const date = moment.tz('America/Bogota').format('DD/MM/YYYY');
     const time = moment.tz('America/Bogota').format('HH:mm:ss');
     let Reg = /\|?(.*)([.|] *?)([0-9]*)$/i;
-    let user = db.data.users[message.author.id];
-let name2 = member.user.username
+   let user = db.data.users[message.author.id];
+   let name2 = message.author.username
 
   if (user && user.registered === true) return message.reply(`*✳️ Ya estás registrado*\n\n¿Quiere volver a registrarse?\n\n 📌 Use este comando para eliminar su registro \n*${prefix}unreg* <Número de serie>`);
  if (!Reg.test(args.join(' '))) return message.reply(`⚠️ Formato incorrecto\n\n ✳️ Uso del comamdo: *${prefix + command} nombre.edad*\n📌Ejemplo : *${prefix + command}* ${name2}.15`);
