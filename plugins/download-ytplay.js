@@ -36,13 +36,11 @@ let handler = async (message, { args, prefix }) => {
 
     let msgPlay;
     
-    // Enviar el mensaje con la imagen
     msgPlay = await message.channel.send({
         content: `**◉ Título:** ${vid.title}\n\n**◉ Descripción:** ${vid.description}\n**◉ Vistas:** ${vid.views}\n**◉ Publicado:** ${vid.ago}`,
         files: [
-            {
-                attachment: vid.thumbnail,
-                name: 'thumbnail.png' // Puedes darle un nombre a la imagen
+            { attachment: vid.thumbnail,
+                name: 'thumbnail.png' 
             }
         ],
         components: [rowPlay]
