@@ -1,4 +1,4 @@
-import fs from 'fs';
+/*import fs from 'fs';
 import path from 'path';
 
 const handler = async (message) => {
@@ -17,3 +17,4 @@ handler.rowner = false
 handler.admin = false
 handler.botAdmin = false
 export default handler;
+*/
