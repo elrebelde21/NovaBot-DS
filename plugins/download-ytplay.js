@@ -87,7 +87,6 @@ handler.help = ['play'];
 handler.tags = ['downloader'];
 handler.command = /^(play)$/i;
 handler.register = true;
-handler.limit = 1
 handler.rowner = false
 handler.admin = false
 handler.botAdmin = false
