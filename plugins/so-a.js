@@ -11,8 +11,8 @@ const handler = async (message) => {
 };
 handler.help = ['a'];
 handler.tags = ['audio'];
-handler.customPrefix = /ª|a|A/
-handler.command = /^(a|ª|A?$)/
+handler.customPrefix = /A/
+handler.command = /^(A)/
 handler.rowner = false
 handler.admin = false
 handler.botAdmin = false
