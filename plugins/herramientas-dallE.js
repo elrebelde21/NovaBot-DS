@@ -36,10 +36,13 @@ let handler = async (message, { prefix, command, text}) => {
     }
   }
 };
-
 handler.help = ["dalle"]
 handler.tags = ["tools"]
 handler.command = ['dall-e', 'dalle', 'ia2', 'cimg', 'openai3', 'a-img', 'aimg', 'imagine'];
+handler.register = true
+handler.rowner = false
+handler.admin = false
+handler.botAdmin = false
 export default handler;
 
 const flux = async (prompt) => {
