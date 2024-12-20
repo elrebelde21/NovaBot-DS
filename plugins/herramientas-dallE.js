@@ -3,8 +3,8 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { AttachmentBuilder } from 'discord.js';
 
-const handler = async (message, { text }) => {
-  if (!text) return message.reply('⚠️ Ingresa un texto para crear una imagen.\n\n**Ejemplo:** `!dalle gatitos llorando`');
+let handler = async (message, { prefix, command, text}) => {
+  if (!text) return message.reply(`⚠️ Ingresa un texto para crear una imagen.\n\n### **Ejemplo:** ${prefix + command} gatitos llorando`);
   
   try {
     const imageUrl = await flux(text);
