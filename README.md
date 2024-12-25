@@ -20,6 +20,11 @@
 [![Enlaces](https://img.shields.io/badge/Encontra_todos_los_enlace_en_un_único_lugar-000000%7D?style=for-the-badge&logo=biolink&logoColor=white)](https://atom.bio/lolibot)
 </div>
     
+### Información
+- #### Clona el bot [`Aquí`](https://github.com/elrebelde21/NovaBot-DS/fork)
+-  #### Agregar/editar Owners [`aqui`](https://github.com/elrebelde21/NovaBot-DS/blob/main/settings.js)
+- #### Version de discord en el [`package.json`](https://github.com/elrebelde21/NovaBot-DS/blob/main/package.json)    
+
 ### `👑 DUDAS, SUGERENCIAS, PREGUNTA SOBRE EL BOT?, CONTACTAME 👑`
 <p align="center">
 <a href="https://github.com/elrebelde21"><img src="http://readme-typing-svg.herokuapp.com?font=mono&size=14&duration=3000&color=ABF7BB&center=verdadero&vCenter=verdadero&lines=Solo+escr%C3%ADba+si+tiene+dudas." height="40px"
@@ -29,7 +34,11 @@
 <img src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" alt="Contactame">
 </a>
 
-//Servidor de discord "prueba el bot aqui": https://discord.gg/XvvmFuDcEE
+### Quieres probar la funciones del bot, antes de instalar, probar el bot aquí
+
+<a href="https://discord.gg/XvvmFuDcEE" target="_blank">
+  <img src="https://img.shields.io/badge/Discord-%237289DA?style=for-the-badge&logo=discord&logoColor=white" alt="Discord" />
+</a>
 
 -----
 
@@ -59,7 +68,7 @@ Este documento te guiará en la obtención del token necesario para tu bot de Di
 
 1. En la sección **"Bot"**, haz clic en el botón **"Copy"** debajo del campo **"Token"**. Este token es muy importante ya que es la clave para autenticar tu bot.
 2. Guarda el token en un lugar seguro, ya que lo necesitarás más adelante.
-3. Abre el archivo `settings.js` y reemplaza `global.botToken = "token"` con el token que acabas de copiar:
+3. [Abre el archivo settings.js](https://github.com/elrebelde21/NovaBot-DS/blob/main/settings.js#L15) y reemplaza `global.botToken = "token"` con el token que acabas de copiar:
    ```javascript
    global.botToken = "TU_TOKEN_AQUI"; // Reemplaza 'TU_TOKEN_AQUI' con el token de tu bot
    ```
@@ -116,6 +125,16 @@ npm start
 ](https://youtu.be/SMjCcfuyWQE)
 
 [![Run on Repl.it](https://repl.it/badge/github/elrebelde21/NovaBot-DS)](https://repl.it/github/elrebelde21/NovaBot-DS) 
+------------------
+#### Deploy to Heroku
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/elrebelde21/NovaBot-DS)
+
+#### Heroku Buildpack
+| BuildPack | LINK |
+|--------|--------|
+| **FFMPEG** |[click](https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest) |
+| **IMAGEMAGICK** | [click](https://github.com/DuckyTeam/heroku-buildpack-imagemagick) |
+
 ------------------
 
 ### 🟢 ACTIVAR EN CODES SPACES 
