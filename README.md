@@ -44,7 +44,7 @@
     
 </a>    
 <a href="https://discord.gg/XvvmFuDcEE" target="_blank">
-  <img src="https://img.shields.io/badge/Discord-%237289DA?style=for-the-badge&logo=discord&logoColor=white" alt="Discord" />
+  <img src="https://img.shields.io/badge/Servidor_De_Discord-%237289DA?style=for-the-badge&logo=discord&logoColor=white" alt="Discord" />
 </a>
 
 -----
