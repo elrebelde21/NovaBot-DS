@@ -41,6 +41,7 @@
 
 <a href="https://discordapp.com/users/1294374548409421885" target="_blank">
   <img src="https://img.shields.io/badge/bot_oficial-%237289DA?style=for-the-badge&logo=discord&logoColor=white" alt="Bot" />
+    
 </a>    
 <a href="https://discord.gg/XvvmFuDcEE" target="_blank">
   <img src="https://img.shields.io/badge/Discord-%237289DA?style=for-the-badge&logo=discord&logoColor=white" alt="Discord" />
