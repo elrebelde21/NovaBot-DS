@@ -1,3 +1,4 @@
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import moment from 'moment-timezone';
 const fecha = moment.tz('America/Bogota').format('DD/MM/YYYY');
 
