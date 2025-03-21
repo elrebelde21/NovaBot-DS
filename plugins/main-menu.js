@@ -82,25 +82,24 @@ let pp = "https://qu.ax/Zgqq.jpg"
             .setTitle('🌟 MENÚ PRINCIPAL 🌟')
             .setDescription(text.trim())
             .setThumbnail(pp) 
-            .setFooter({ text: wm });
+            .setFooter({ text: "Bot en fase beta" });
 
 const botones = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
         .setLabel('GitHub')
         .setStyle(ButtonStyle.Link) 
-        .setURL(md), 
+        .setURL("https://github.com"), // Reemplaza con un enlace real
     new ButtonBuilder()
         .setLabel('YouTube')
         .setStyle(ButtonStyle.Link) 
-        .setURL(yt),
+        .setURL("https://youtube.com"), // Reemplaza con un enlace real
     new ButtonBuilder()
         .setLabel('Canal de WhatsApp')
         .setStyle(ButtonStyle.Link) 
-        .setURL(nna) 
+        .setURL("https://whatsapp.com") // Reemplaza con un enlace real
 );
 
 await message.channel.send({ embeds: [embed], components: [botones] });
-//await message.channel.send({content: text.trim(), embeds: [{image: { url: pp }}] });
   
     } catch (error) {
         console.error('Error al generar el menú:', error);
@@ -112,9 +111,9 @@ handler.help = ['menu'];
 handler.tags = ['main'];
 handler.command = /^(menu|help|allmenu)$/i; 
 handler.register = true;
-handler.rowner = false
-handler.admin = false
-handler.botAdmin = false
+handler.rowner = false;
+handler.admin = false;
+handler.botAdmin = false;
 export default handler;
 
 const more = String.fromCharCode(8206);
