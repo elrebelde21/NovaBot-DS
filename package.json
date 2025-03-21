@@ -50,6 +50,7 @@
     "yargs": "^17.3.1",
     "vm2": "^3.9.11",
     "express": "^4.18.1",
+    "@hiudyy/ytdl": "^0.2.3",     
     "node-fetch": "^2.6.7"
   },
   "engines": {
