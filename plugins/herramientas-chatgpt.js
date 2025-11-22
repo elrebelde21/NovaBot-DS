@@ -17,7 +17,7 @@ let res = await gpt.json();
 };
 handler.help = ['chatgpt'];
 handler.desc = ['hablar con la IA (ChatGPT)'];
-handler.tags = ['tools'];
+handler.tags = ['buscadores'];
 handler.command = /^(ia|chatgpt)$/i;
 handler.register = true
 export default handler;

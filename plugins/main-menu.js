@@ -11,6 +11,7 @@ const categorias = {
     main: { nombre: "Información", emoji: "🌙✨" },
     downloader: { nombre: "Descargas", emoji: "📥💮" },
     tools: { nombre: "Herramientas", emoji: "🛠️🐰" },
+    buscadores: { nombre: "buscadores", emoji: "🌺🍁" },
     rg: { nombre: "Registro", emoji: "🟢🌸" },
     group: { nombre: "Grupo", emoji: "⚙️💟" },
     nsfw: { nombre: "NSFW", emoji: "🔥😈" },
@@ -59,14 +60,15 @@ let imagenPP = "https://cdn.skyultraplus.com/uploads/u4/ced9cd73f8f62a72.jpg";
 
 const embed = new EmbedBuilder()
 .setColor("#2B2D31")
-.setTitle("🌟 MENÚ PRINCIPAL – NovaBot")
+.setTitle("🌟 MENÚ PRINCIPAL 🌟")
 .setThumbnail(imagenPP)
 .setDescription(`**Hola ${user} 💜**
 
-Selecciona una categoría abajo para ver sus comandos.
-
+👑 **Creator:** [elrebelde21](https://discord.com/users/1008834879858946170)
 📅 **Fecha:** ${fecha}  
-🌙 **Prefijo:** \`${prefix}\``
+🌙 **Prefijo:** \`${prefix}\`
+
+> Selecciona una categoría abajo para ver sus comandos.\n`
             )
             .setFooter({
                 text: "NovaBot-DS • SkyUltraPlus",

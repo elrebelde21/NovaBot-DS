@@ -1,36 +1,110 @@
-import google from 'google-it';
+import fetch from "node-fetch";
+import moment from "moment-timezone";
+import {
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle
+} from "discord.js";
 
-let handler = async (message, { args, prefix, command, text }) => {
+let handler = async (message, { args, prefix, command }) => {
+  try {
+    const text = args.join(" ");
+    if (!text) return message.reply(`⚠️ **Ingresa un término de búsqueda.**\nEj: \`${prefix + command} cómo instalar nodejs\``);
 
-    if (!text) {
-        return message.reply(`❌ Uso incorrecto\n\n*Ejemplo:* ${prefix + command} gata`);
-    }
+    const res = await fetch(`https://api.delirius.store/search/googlesearch?query=${encodeURIComponent(text)}`);
+    const data = await res.json();
 
-    try {
-        const res = await google({ query: text });
-        let response = `🔍 **Resultados de Google para:** ${text}\n\n`;
+    if (!data.status || !data.data || data.data.length === 0)
+      return message.reply(`❌ No se encontraron resultados para **${text}**`);
 
-        for (let g of res) {
-            response += `**• Título:** ${g.title}\n`;
-            response += `**• Descripción:** ${g.snippet}\n`;
-            response += `**• Link:** ${g.link}\n\n━━━━━━━━━━━━━━━━━━━━\n\n`;
-        }
+    const results = data.data;
+    let index = 0;
 
-        message.reply(response);
-    } catch (err) {
-        console.error('Error al buscar en Google:', err);
-        message.reply('❌ Hubo un error al realizar la búsqueda.');
-    }
+    const screenshot = `https://image.thum.io/get/fullpage/https://google.com/search?q=${encodeURIComponent(text)}`;
+const fecha = moment().tz("America/Argentina/Buenos_Aires").format("DD/MM/YYYY");
+
+    const getEmbed = () => {
+      const r = results[index];
+
+      return new EmbedBuilder()
+        .setColor("#4285F4")
+        .setTitle(`🔍 Resultado ${index + 1}/${results.length}`)
+        .setDescription(
+          `**${r.title}**\n\n🌐 **[URL](${r.url})**\n\n📝 **Descripción:**\n${r.description}`
+        )
+        .setImage(screenshot)
+        .setFooter({
+          text: `Google • Solicitado por ${message.author.username} | ${fecha}`,
+          iconURL: message.author.displayAvatarURL({ size: 256 })
+        });
+    };
+
+    const row = new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
+        .setCustomId("g_prev")
+        .setStyle(ButtonStyle.Primary)
+        .setLabel("⏪"),
+
+    new ButtonBuilder()
+        .setCustomId("g_next")
+        .setStyle(ButtonStyle.Primary)
+        .setLabel("⏩"),
+
+    new ButtonBuilder()
+        .setStyle(ButtonStyle.Link)
+        .setLabel("🔗 Abrir enlace")
+        .setURL(results[index].url)
+);
+
+    const msg = await message.reply({
+      content: `**Resultados para:** \`${text}\``,
+      embeds: [getEmbed()],
+      components: [row]
+    });
+
+    const collector = msg.createMessageComponentCollector({ time: 90_000 });
+
+    collector.on("collect", async (i) => {
+      if (i.user.id !== message.author.id)
+        return i.reply({
+          content: "❌ Solo quien usó el comando puede navegar.",
+          ephemeral: true
+        });
+
+      if (i.customId === "g_next") {
+        index = (index + 1) % results.length;
+      } else if (i.customId === "g_prev") {
+        index = (index - 1 + results.length) % results.length;
+      } else if (i.customId === "g_close") {
+        collector.stop();
+        return i.update({
+          content: "🛑 Búsqueda cerrada.",
+          embeds: [],
+          components: []
+        });
+      }
+
+      i.update({
+        embeds: [getEmbed()],
+        components: [row]
+      });
+    });
+
+    collector.on("end", () => {
+      try {
+        msg.edit({ components: [] }).catch(() => {});
+      } catch {}
+    });
+  } catch (err) {
+    console.error("Error Google:", err);
+    message.reply("❌ Error al realizar la búsqueda.");
+  }
 };
 
-// 📌 PROPIEDADES PARA QUE SALGA BIEN EN EL MENÚ
-handler.help = ['google'];
-handler.tags = ['downloader']; 
+handler.help = ["google <texto>"];
+handler.desc = ["Busca información en Google."];
+handler.tags = ["buscadores"];
 handler.command = /^google$/i;
-
-handler.register = true;
-handler.rowner = false;
-handler.admin = false;
-handler.botAdmin = false;
 
 export default handler;
