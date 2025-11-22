@@ -42,12 +42,17 @@ let handler = async (message, { db, client, prefix }) => {
         let _uptime = process.uptime() * 1000;
         let muptime = clockString(_uptime);
 
-        let help = client.commands.map(command => ({
-            help: command.help ? (Array.isArray(command.help) ? command.help : [command.help]) : [],
-            tags: command.tags ? (Array.isArray(command.tags) ? command.tags : [command.tags]) : [],
-            limit: command.limit || false,
-            premium: command.premium || false
-        })).filter(cmd => cmd.help.length > 0);
+        // ------- CORRECCIÓN SÓLO EN ESTA PARTE (PROTEGER help) -------
+        let help = (client.commands || [])
+            .filter(cmd => cmd && typeof cmd === 'object') // evita comandos undefined/rotos
+            .map(command => ({
+                help: command.help ? (Array.isArray(command.help) ? command.help : [command.help]) : [],
+                tags: command.tags ? (Array.isArray(command.tags) ? command.tags : [command.tags]) : [],
+                limit: command.limit || false,
+                premium: command.premium || false
+            }))
+            .filter(cmd => cmd.help.length > 0);
+        // ------------------------------------------------------------
 
         let text = [
             defaultMenu.before
