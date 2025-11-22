@@ -193,6 +193,39 @@ console.log(chalk.bold.greenBright(`\n𓃠 ┈┈┈┈┈┈┈┈┈┈┈┈�
 loadCommands();
 watchPluginsFolder();
 
+setInterval(() => {
+const guilds = client.guilds.cache;
+const totalServidores = guilds.size;
+const totalMiembros = guilds.reduce((a, g) => a + (g.memberCount || 0), 0);
+const usuariosUnicos = client.users.cache.size;
+let ms = process.uptime() * 1000;
+let d = Math.floor(ms / 86400000);
+let h = Math.floor(ms / 3600000) % 24;
+let m = Math.floor(ms / 60000) % 60;
+
+const uptimeNice = `${d}d ${h}h ${m}m`;
+
+const actividades = [
+{ name: `.menu | En desarrollos`, type: 0 },
+{ name: `Usuarios: ${usuariosUnicos}`, type: 3 },
+//{ name: `Miembros: ${totalMiembros}`, type: 3 },
+//{ name: `Servidores: ${totalServidores}`, type: 3 },
+{ name: `Uptime: ${uptimeNice}`, type: 3 },
+//{ name: `Texto: ${guilds.reduce((a,g)=>a+g.channels.cache.filter(c=>c.type===0).size,0)}`, type: 3 },
+{ name: `tu pack filtrado 😈🍑`, type: 3 },
+{ name: `hentai en 4K 👀💦`, type: 3 },
+{ name: `OnlyFans de tu ex 🔥🔥`, type: 3 },
+{ name: `cómo te mueves mi rey 😏💦`, type: 3 },
+{ name: `tu corazón 💜`, type: 3 },
+{ name: `música contigo 🎧`, type: 2 },
+{ name: `Compitiendo por ser el mejor bot 👑`, type: 5 },
+];
+
+const actividad = actividades[Math.floor(Math.random() * actividades.length)];
+
+client.user.setPresence({status: 'online', activities: [actividad] });
+}, 10_000); // cada 10 s
+
 //Envía memes automáticamente cada hora
 setInterval(async () => {
         try {
