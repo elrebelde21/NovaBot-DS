@@ -22,6 +22,7 @@ const handler = async (message, { args, prefix, command }) => {
 };
 
 handler.help = ['comunicado'];
+handler.desc = ['manda comunicado a un canal'];
 handler.tags = ['owner'];
 handler.command = /^(comunicado)$/i; 
 handler.rowner = true; 

@@ -6,12 +6,10 @@ const handler = async (message) => {
 };
 
 handler.help = ['runtime'];
+handler.desc = ['información cuanto tiempo esta activo en bot'];
 handler.tags = ['main'];
 handler.command = /^(runtime|uptime)$/i; 
 handler.register = true;
-handler.rowner = false
-handler.admin = false
-handler.botAdmin = false
 export default handler;
 
 function clockString(ms) {

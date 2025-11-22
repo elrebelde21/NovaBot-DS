@@ -19,11 +19,9 @@ let handler = async (message) => {
     }
 };
 handler.help = ['tetas'];
+handler.desc = ['Enviar una rika tetas🥵'];
 handler.tags = ['nsfw'];
 handler.command = /^(tetas|teta|pechos)$/i;
 handler.register = true
-handler.rowner = false
-handler.admin = false
-handler.botAdmin = false
 handler.limit = 1
 export default handler;

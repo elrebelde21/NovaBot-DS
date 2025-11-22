@@ -5,7 +5,7 @@ let handler = async (message) => {
     const nsfwChannelIdBoobs = global.db.data.settings[message.guild.id]?.nsfwChannelId;
     if (!nsfwChannelIdBoobs || message.channel.id !== nsfwChannelIdBoobs) return message.reply(`⚠️ Este comando solo se puede usar en el canal NSFW configurado: <#${nsfwChannelIdBoobs}>.`);
 
-    const boobsImageUrl = "https://deliriussapi-oficial.vercel.app/nsfw/boobs";
+    const boobsImageUrl = "https://api.delirius.store/nsfw/boobs";
     try {
         const boobsImageResponse = await fetch(boobsImageUrl);
         if (boobsImageResponse.ok) {
@@ -19,11 +19,9 @@ let handler = async (message) => {
     }
 };
 handler.help = ['boobs'];
+handler.desc = ['envia imágenes tetas'];
 handler.tags = ['nsfw'];
 handler.command = /^(boobs)$/i;
 handler.register = true
-handler.rowner = false
-handler.admin = false
-handler.botAdmin = false
 handler.limit = 1
 export default handler;
