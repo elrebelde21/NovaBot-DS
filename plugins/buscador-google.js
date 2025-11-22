@@ -21,7 +21,8 @@ let handler = async (message, { args, prefix, command }) => {
     const results = data.data;
     let index = 0;
 
-    const screenshot = `https://image.thum.io/get/fullpage/https://google.com/search?q=${encodeURIComponent(text)}`;
+  //  const screenshot = `https://image.thum.io/get/fullpage/https://google.com/search?q=${encodeURIComponent(text)}`;
+  const screenshot = `https://api.dorratz.com/ssweb?url=https://google.com/search?q=${encodeURIComponent(text)}`;
 const fecha = moment().tz("America/Argentina/Buenos_Aires").format("DD/MM/YYYY");
 
     const getEmbed = () => {

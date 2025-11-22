@@ -63,10 +63,10 @@ const fecha = moment.tz("America/Argentina/Buenos_Aires").format("DD/MM/YYYY");
 
       return new EmbedBuilder()
         .setColor("#FF66CC")
-        .setTitle(`🔍 Resultado ${index + 1}/${results.length}`)
-        .setDescription(`**${r.title}**\n${r.desc}`)
+        .setTitle(`**${r.title}**`)
+        .setDescription(`${r.desc}`)
         .setImage(r.img)
-        .setFooter({ text: `Pinterest • Solicitado por ${message.author.username} | ${fecha}`, iconURL: message.author.displayAvatarURL({ size: 256 }) });
+        .setFooter({ text: `Pinterest ${index + 1}/${results.length} • Solicitado por ${message.author.username} | ${fecha}`, iconURL: message.author.displayAvatarURL({ size: 256 }) });
     };
 
     const row = new ActionRowBuilder().addComponents(
