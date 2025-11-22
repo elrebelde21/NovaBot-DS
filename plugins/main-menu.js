@@ -10,7 +10,7 @@ let tags = {
     'rg': '🟢 REGISTRO',
     'group': '⚙️ GRUPO',
     'nsfw': '🔥 NSFW',
-    'owner': '👑 OWNER', 
+    'owner': '👑 OWNER'
 };
 
 const defaultMenu = {
@@ -27,80 +27,79 @@ const defaultMenu = {
 ╚══════ ≪ •❈• ≫ ══════╝
 
 **☃️ Bot en fase beta, con pocos comandó ☃️**`,
-
     header: '**╭─╮─᤻─᳒─᤻᳒᯽⃟ᰳᰬᰶ┈** **%category**️⃟ᬽ፝֟━*',
     body: '├❥ᰰຼ❏ %prefix%cmd %islimit %isPremium',
     footer: '\n╰┄̸࣭࣭࣭࣭࣭ٜ۫┄࣭࣭࣭۫┄̸࣭۫┄̸࣭࣭࣭࣭࣭ٜ۫┄࣭࣭࣭۫┄̸࣭۫┄̸࣭࣭࣭࣭࣭ٜ۫┄̸࣭࣭࣭࣭࣭ٜ۫┄۫',
-    after: `
-`,
+    after: ``
 };
 
 let handler = async (message, { db, client, prefix }) => {
     try {
-        const userId = message.author.id;
-        const name = message.author.username || 'Usuario';                
-        const hora = moment.tz('America/Argentina/Buenos_Aires').format('LT');
+        const name = message.author.username || 'Usuario';
         let totalreg = Object.keys(db.data.users).length;
         let rtotalreg = Object.values(db.data.users).filter(user => user.registered == true).length;
 
-        let _uptime = process.uptime() * 1000; 
+        let _uptime = process.uptime() * 1000;
         let muptime = clockString(_uptime);
 
         let help = client.commands.map(command => ({
-            help: Array.isArray(command.help) ? command.help : [command.help],
-            tags: Array.isArray(command.tags) ? command.tags : [command.tags],
-            limit: command.limit,
-            premium: command.premium,
-        }));
+            help: command.help ? (Array.isArray(command.help) ? command.help : [command.help]) : [],
+            tags: command.tags ? (Array.isArray(command.tags) ? command.tags : [command.tags]) : [],
+            limit: command.limit || false,
+            premium: command.premium || false
+        })).filter(cmd => cmd.help.length > 0);
 
-        let text = [defaultMenu.before
-            .replace('%name', name)
-            .replace('%muptime', muptime)
-            .replace('%prefix', prefix)
-            .replace('%totalreg', totalreg) 
-            .replace('%rtotalreg', rtotalreg) 
-            .replace('%readmore', readMore)
+        let text = [
+            defaultMenu.before
+                .replace('%name', name)
+                .replace('%muptime', muptime)
+                .replace('%prefix', prefix)
+                .replace('%totalreg', totalreg)
+                .replace('%rtotalreg', rtotalreg)
+                .replace('%readmore', readMore)
         ]
-        .concat(Object.keys(tags).map(tag => {
-            return defaultMenu.header.replace(/%category/g, tags[tag]) + '\n' +
-                help.filter(menu => menu.tags.includes(tag)).map(menu => {
-                    return menu.help.map(help => {
-                        return defaultMenu.body.replace(/%cmd/g, help)
-                            .replace(/%prefix/g, prefix)
-                            .replace(/%islimit/g, menu.limit ? '(ⓓ)' : '')
-                            .replace(/%isPremium/g, menu.premium ? '(Ⓟ)' : '')
-                            .trim();
-                    }).join('\n');
-                }).join('\n') +
-                defaultMenu.footer;
-        }))
-        .join('\n');
-let pp = "https://qu.ax/Zgqq.jpg"
+            .concat(Object.keys(tags).map(tag => {
+                return defaultMenu.header.replace(/%category/g, tags[tag]) + '\n' +
+                    help.filter(menu => menu.tags.includes(tag)).map(menu => {
+                        return menu.help.map(help => {
+                            return defaultMenu.body
+                                .replace(/%cmd/g, help)
+                                .replace(/%prefix/g, prefix)
+                                .replace(/%islimit/g, menu.limit ? '(ⓓ)' : '')
+                                .replace(/%isPremium/g, menu.premium ? '(Ⓟ)' : '')
+                                .trim();
+                        }).join('\n');
+                    }).join('\n') +
+                    defaultMenu.footer;
+            }))
+            .join('\n');
 
- let embed = new EmbedBuilder()
-            .setColor(0x2B2D31) // Color del embed
+        let pp = "https://qu.ax/Zgqq.jpg";
+
+        let embed = new EmbedBuilder()
+            .setColor(0x2B2D31)
             .setTitle('🌟 MENÚ PRINCIPAL 🌟')
             .setDescription(text.trim())
-            .setThumbnail(pp) 
+            .setThumbnail(pp)
             .setFooter({ text: "Bot en fase beta" });
 
-const botones = new ActionRowBuilder().addComponents(
-    new ButtonBuilder()
-        .setLabel('GitHub')
-        .setStyle(ButtonStyle.Link) 
-        .setURL("https://github.com"), // Reemplaza con un enlace real
-    new ButtonBuilder()
-        .setLabel('YouTube')
-        .setStyle(ButtonStyle.Link) 
-        .setURL("https://youtube.com"), // Reemplaza con un enlace real
-    new ButtonBuilder()
-        .setLabel('Canal de WhatsApp')
-        .setStyle(ButtonStyle.Link) 
-        .setURL("https://whatsapp.com") // Reemplaza con un enlace real
-);
+        const botones = new ActionRowBuilder().addComponents(
+            new ButtonBuilder()
+                .setLabel('GitHub')
+                .setStyle(ButtonStyle.Link)
+                .setURL("https://github.com"),
+            new ButtonBuilder()
+                .setLabel('YouTube')
+                .setStyle(ButtonStyle.Link)
+                .setURL("https://youtube.com"),
+            new ButtonBuilder()
+                .setLabel('Canal de WhatsApp')
+                .setStyle(ButtonStyle.Link)
+                .setURL("https://whatsapp.com")
+        );
 
-await message.channel.send({ embeds: [embed], components: [botones] });
-  
+        await message.channel.send({ embeds: [embed], components: [botones] });
+
     } catch (error) {
         console.error('Error al generar el menú:', error);
         await message.channel.send('Hubo un error al generar el menú.\n\n' + error);
@@ -109,7 +108,7 @@ await message.channel.send({ embeds: [embed], components: [botones] });
 
 handler.help = ['menu'];
 handler.tags = ['main'];
-handler.command = /^(menu|help|allmenu)$/i; 
+handler.command = /^(menu|help|allmenu)$/i;
 handler.register = true;
 handler.rowner = false;
 handler.admin = false;
