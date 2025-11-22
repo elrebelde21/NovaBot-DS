@@ -62,10 +62,10 @@ const embed = new EmbedBuilder()
 .setColor("#2B2D31")
 .setTitle("🌟 MENÚ PRINCIPAL 🌟")
 .setThumbnail(imagenPP)
-.setDescription(`**Hola ${user} 💜**
+.setDescription(`**<:IMG20251122WA0068:1441935536737615954>Hola ${user} 👋**
 
 👑 **Creator:** [elrebelde21](https://discord.com/users/1008834879858946170)
-✨️ *Versión:** 1.0.0 (Beta)
+✨️ **Versión:** 1.0.0 (Beta)
 📅 **Fecha:** ${fecha}  
 🌙 **Prefijo:** \`${prefix}\`
 
