@@ -65,8 +65,11 @@ const embed = new EmbedBuilder()
 .setDescription(`**Hola ${user} 💜**
 
 👑 **Creator:** [elrebelde21](https://discord.com/users/1008834879858946170)
+✨️ *Versión:** 1.0.0 (Beta)
 📅 **Fecha:** ${fecha}  
 🌙 **Prefijo:** \`${prefix}\`
+
+El bot se encuentra en desarrollo, por lo que puede presentar errores o fallos de comandos. Puedes reportarlo con el comando '.report'. También puedes dar ideas o sugerencias sobre comandos o cosas que te gustaría que agregáramos al bot. Escríbele a mis dueños [aqui](https://discord.com/users/1008834879858946170).
 
 > Selecciona una categoría abajo para ver sus comandos.\n`
             )
