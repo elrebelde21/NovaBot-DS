@@ -27,7 +27,7 @@
 "url": "https://github.com/elrebelde21/NovaBot-DS/issues" },
 "license": "GPL-3.0-or-later",
   "dependencies": {
-    "discord.js": "^14.7.1",
+    "discord.js": "^14.25.1",
     "@discordjs/voice": "^0.11.0",
     "@discordjs/opus": "^0.5.3",
     "hispamemes": "^1.0.7",
