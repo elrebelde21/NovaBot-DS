@@ -1,0 +1,10 @@
+.npm/
+.git/
+package-lock.json
+yarn.lock 
+database.json
+node_modules/
+session/
+jadibot/
+src/ 
+tmp/
