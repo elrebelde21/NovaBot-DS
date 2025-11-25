@@ -31,6 +31,7 @@
     "discord.js": "^14.25.1",
     "@discordjs/voice": "^0.11.0",
     "@discordjs/opus": "^0.5.3",
+    "node-gtts": "^2.0.2",
     "hispamemes": "^1.0.7",
     "readline": "^1.3.0",
     "axios": "^0.24.0",
