@@ -15,8 +15,7 @@ let handler = async (message, { args, prefix, command }) => {
     if (!query) return message.reply(`🎧 *Ingresa el nombre o link de Spotify.*\n\nEj:\n${prefix + command} ozuna`);
 
     const voiceChannel = message.member?.voice?.channel;
-    if (!voiceChannel)
-      return message.reply("🔊 Debes estar **en un canal de voz** para usar este comando.");
+    if (!voiceChannel) return message.reply("🔊 Debes estar **en un canal de voz** para usar este comando.");
 
     const loading = await message.reply("⏳ *Buscando canción en Spotify...*");
 
