@@ -33,8 +33,9 @@ const getCpuUsage = async () => {
 };
 
 const handler = async (message) => {
-    const pingStart = Date.now();
-const latency = Date.now() - pingStart;
+    const start = Date.now();
+const sent = await message.reply("🚀 Cargando...");
+const latency = Date.now() - start;
     const cpuUsage = await getCpuUsage();
     const avgCPU = cpuUsage.reduce((a, b) => a + b) / cpuUsage.length;
 
@@ -152,7 +153,8 @@ ${cpuUsage
             iconURL: message.author.displayAvatarURL(),
         });
 
-    await message.reply({ embeds: [embed] });
+await sent.edit({ content: null, embeds: [embed] });
+    //await message.reply({ embeds: [embed] });
 };
 
 handler.help = ["server"];
