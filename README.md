@@ -44,7 +44,7 @@
 </a>
 
 ### Unite a nuestros servidor de discord 
-<a href="https://discord.gg/XvvmFuDcEE" target="_blank">
+<a href="https://discord.gg/7gbAf4Pq7e" target="_blank">
   <img src="https://img.shields.io/badge/discord-%237289DA?style=for-the-badge&logo=discord&logoColor=white" alt="Discord" />
 </a>
 
