@@ -8,6 +8,8 @@ import {
 import moment from "moment-timezone";
 
 let handler = async (message, { args, prefix, command }) => {
+const nsfwChannelIdBoobs = global.db.data.settings[message.guild.id]?.nsfwChannelId;
+if (!nsfwChannelIdBoobs || message.channel.id !== nsfwChannelIdBoobs) return message.reply(`⚠️ Este comando solo puede usarse en canales NSFW por política de Top.gg.\n\n> Canal NSFW configurado: <#${nsfwChannelIdBoobs}>.`);
   try {
     const text = args.join(" ");
     if (!text) return message.reply(`🤔 **¿Qué quieres buscar?**\nEj: \`${prefix + command} Loli\``);
