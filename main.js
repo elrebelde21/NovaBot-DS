@@ -22,7 +22,8 @@ import hispamemes from 'hispamemes';
 import moment from 'moment-timezone';
 import cfonts from 'cfonts';
 const { say } = cfonts
-import antiLink from './plugins/_antilink.js';
+import { loadPlugins } from './libs/plugins.js';
+//import antiLink from './plugins/_antilink.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const credsPath = join(__dirname, 'session', 'creds.json');
@@ -150,7 +151,7 @@ const client = new Client({
 });
 
 //Logica para carga los comando
-async function loadCommands() {
+/*async function loadCommands() {
   const commandFiles = await fs.promises.readdir('./plugins');
   const commands = [];
 
@@ -187,12 +188,13 @@ async function watchPluginsFolder() {
     }
   });
 }
+*/
 
 //----
 client.once('ready', () => {
 console.log(chalk.bold.greenBright(`\n𓃠 ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈✦ 🟢 𝘾𝙊𝙉𝙀𝙓𝙄𝙊𝙉 ✦┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈ 𓃠\n│\n│★ Bot Conectado: ${client.user.tag} con exitos\n│\n𓃠 ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈✦ ✅ ✦┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈ 𓃠`))
-loadCommands();
-watchPluginsFolder();
+//loadCommands();
+//watchPluginsFolder();
 
 setInterval(() => {
 const guilds = client.guilds.cache;
@@ -504,21 +506,41 @@ const body = message.content;
 const prefix = body.match(prefixRegex) ? body.match(prefixRegex)[0] : ''; 
 const commandBody = body.slice(prefix.length).trim(); 
 const args = commandBody.split(' ');    
-const commandName = args.shift();
-    
-const command = client.commands.find(cmd => {
-const customPrefix = cmd.customPrefix ? new RegExp(cmd.customPrefix) : null;
+const commandName = args.shift()?.toLowerCase();
 
-if (customPrefix && customPrefix.test(commandName)) {
-    return true;
+for (const filename in global.plugins) {
+  const cmd = global.plugins[filename];
+  if (cmd.before && typeof cmd.before === "function") {
+    try {
+      await cmd.before(message, {
+        db,
+        client,
+        user: message.author,
+        guild: message.guild,
+        text: message.content
+      });
+    } catch (error) {
+      console.error('Error en before global:', error);
+    }
   }
+}
+
+const command = Object.values(global.plugins).find(cmd => {
+  if (!cmd) return false;
+
+  const customPrefix = cmd.customPrefix ? new RegExp(cmd.customPrefix) : null;
+
+  if (customPrefix && customPrefix.test(commandName)) return true;
 
   if (cmd.command) {
     if (typeof cmd.command === 'string') {
-      return cmd.command.toLowerCase() === commandName.toLowerCase();
+      return cmd.command.toLowerCase() === commandName;
     }
     if (cmd.command instanceof RegExp) {
       return cmd.command.test(commandName);
+    }
+    if (Array.isArray(cmd.command)) {
+      return cmd.command.some(c => typeof c === 'string' ? c.toLowerCase() === commandName : c.test(commandName));
     }
   }
 
@@ -526,72 +548,68 @@ if (customPrefix && customPrefix.test(commandName)) {
 });
 
 if (command) { 
-if (command.before) {
-            try {
-await command.before(message, { 
-                    args, 
-                    prefix, 
-                    command: commandName, 
-                    db, 
-                    client, 
-                    text: message.content.slice(prefix.length + commandName.length).trim(),
-                    isOwner,
-                    isROwner,
-                    isAdmin,
-                    isBotAdmin,
-                    user: message.author,
-                    isPrems: message.member.roles.cache.some(role => role.name === 'Premium'),
-                });
-            } catch (error) {
-                console.error('Error en before:', error);
-                return message.reply('Hubo un error antes de ejecutar el comando. Por favor, intenta más tarde.');
-            }
-        }
-        
-if (command.rowner && !isOwner) return message.reply(info.owner);
+  if (command.before) {
+    try {
+      await command.before(message, { 
+        args, 
+        prefix, 
+        command: commandName, 
+        db, 
+        client, 
+        text: message.content.slice(prefix.length + commandName.length).trim(),
+        isOwner,
+        isROwner,
+        isAdmin,
+        isBotAdmin,
+        user: message.author,
+        isPrems: message.member?.roles.cache.some(role => role.name === 'Premium') || false,
+      });
+    } catch (error) {
+      console.error('Error en before:', error);
+      return message.reply('Hubo un error antes de ejecutar el comando. Por favor, intenta más tarde.');
+    }
+  }
+
+if (command.rowner && !isOwner.includes(message.author.id)) return message.reply(info.owner);
 if (command.admin && !isAdmin) return message.reply(info.admin);
 if (command.botAdmin && !isBotAdmin) return message.reply(info.botAdmin);
 if (command.group && isDM) return message.reply(info.group);
 if (command.private && !isDM) return message.reply(info.private);
 if (command.register && !registrarte(message)) return;
-if (command.premium && !checkPremium(user)) return message.reply('❌ Este comando solo está disponible para usuarios premium.');
+if (command.premium && !checkPremium(message.author.id)) return message.reply('❌ Este comando solo está disponible para usuarios premium.');
 
 if (command.limit) {
-const userId = message.author.id;
-let user = global.db.data.users[userId];
-if (!user) return;
-if (user.limit >= command.limit && !user.limitVerified) {
+const user = global.db.data.users[message.author.id];
+if (!user || user.limit < command.limit) return message.reply(info.limit);
 user.limit -= command.limit;
-user.limitVerified = true;
 await db.write();
 message.reply(`**ʜᴀᴢ ɢᴀsᴛᴀᴅᴏ ${command.limit} ᴅɪᴀᴍᴏɴᴅ 💎**`);
-} else if (user.limit < command.limit) {
-message.reply(info.limit);
-return;
-}}
-if (command.level && user.level < command.level) {
-return message.reply(`❌ Necesitas al menos nivel ${command.level} para usar este comando. Tu nivel actual es ${user.level}.`);
 }
 
-let xp = command.exp ? parseInt(command.exp) : 10; // Ganar XP por comando. 
-
-if (xp > 200) {
-return message.reply('chirrido -_-')};
-const userId = message.author.id;
-let user = global.db.data.users[userId];
-
-if (!user) {
-return;
+if (command.level && global.db.data.users[message.author.id]?.level < command.level) {
+return message.reply(`❌ Necesitas al menos nivel ${command.level} para usar este comando. Tu nivel actual es ${global.db.data.users[message.author.id]?.level || 0}.`);
 }
 
-user.exp += xp;
+// XP
+let xp = command.exp ? parseInt(command.exp) : 10;
+if (xp > 200) return message.reply('chirrido -_-');
+  global.db.data.users[message.author.id].exp += xp;
+
 try {
-await antiLink(message, { db, isAdmin, isBotAdmin });
-await command(message, { args, prefix, command: commandName, db, client, text: message.content.slice(prefix.length + commandName.length).trim() });
+//await antiLink(message, { db: global.db.data, isAdmin, isBotAdmin });
+await command(message, { 
+args, 
+prefix, 
+command: commandName, 
+db, 
+client, 
+text: message.content.slice(prefix.length + commandName.length).trim() 
+});
 } catch (error) {
 console.error('Error:', error);
 message.reply('Hubo un error al ejecutar ese comando, reportarlo a mi creador con el comando: #report\n\n' + error);
-}}
+}
+}
 });
 
 //iniciar el bot
