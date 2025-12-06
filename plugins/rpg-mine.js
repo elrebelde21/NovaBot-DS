@@ -4,38 +4,116 @@ const handler = async (message) => {
 
     if (!user) return message.reply('✳️ El usuario no se encuentra en mi base de datos.');
 
-    let hasil = Math.floor(Math.random() * 6000);
-    let time = user.lastmiming + 400000;
+    let cooldown = 400000;
+    let time = user.lastmiming + cooldown;
 
- if (new Date() - user.lastmiming < 400000) return message.reply(`⏳ 𝐄𝐬𝐩𝐞𝐫𝐚 *${msToTime(time - new Date())}* 𝐏𝐚𝐫𝐚 𝐯𝐨𝐥𝐯𝐞𝐫 𝐚 𝐦𝐢𝐧𝐚𝐫`);
+    if (new Date() - user.lastmiming < cooldown)
+        return message.reply(`⏳ 𝐄𝐬𝐩𝐞𝐫𝐚 *${msToTime(time - new Date())}* 𝐩𝐚𝐫𝐚 𝐯𝐨𝐥𝐯𝐞𝐫 𝐚 𝐦𝐢𝐧𝐚𝐫`);
 
-    let minar = `${pickRandom(['Que pro 😎 has minado', '🌟✨ Genial!! Obtienes', 'WOW!! eres un(a) gran Minero(a) ⛏️ Obtienes', 'Has Minado!!', '😲 Lograste Minar la cantidad de', 'Tus Ingresos subiran gracias a que minaste', '⛏️⛏️⛏️⛏️⛏️ Minando', '🤩 SII!!! AHORA TIENES', 'La minaria esta de tu lado, por ello obtienes', '😻 La suerte de Minar', '♻️ Tu Mision se ha cumplido, lograste minar', '⛏️ La Mineria te ha beneficiado con', '🛣️ Has encontrado un Lugar y por minar dicho lugar Obtienes', '👾 Gracias a que has minado tus ingresos suman', 'Felicidades!! Ahora tienes', '⛏️⛏️⛏️ Obtienes'])}`;
+    const minas = [
+        { nombre: "⛏️ Penumbra [#1]", recom: [300, 700] },
+        { nombre: "🪨 Caverna Mística [#2]", recom: [700, 1500] },
+        { nombre: "⚡ Abismo [#3]", recom: [900, 2000] },
+        { nombre: "❓ Zona Desconocida [#4]", recom: [1200, 2600] },
+        { nombre: "🎁 Fábrica de Juguetes [#10]", recom: [1500, 3500] },
+        { nombre: "🏜️ Arenas Doradas [#11]", recom: [2000, 4200] },
+        { nombre: "❄️ Pico Nevado [#12]", recom: [2500, 5200] },
+        { nombre: "🕳️ Cripta Olvidada [#13]", recom: [3000, 6000] },
+        { nombre: "💠 Mina Prisma [#14]", recom: [3500, 7000] },
+        { nombre: "🔥 Mina Infernal [#15]", recom: [4000, 7500] },
+        { nombre: "⚙️ Mina Mecánica [#16]", recom: [3800, 7600] },
+        { nombre: "🌌 Mina Estelar [#17]", recom: [4500, 8200] },
+        { nombre: "❇️ Mina BioLuminiscente [#18]", recom: [4200, 7900] },
+        { nombre: "⚡ Mina Volt [#19]", recom: [3300, 6800] },
+        { nombre: "🧊 Mina Glacial [#20]", recom: [5000, 9500] },
+        { nombre: "💎 Mina Real [L1]", recom: [9000, 14000] },
+        { nombre: "🌠 Mina Divina [L2]", recom: [12000, 18000] }
+    ];
 
-    user.exp += hasil;
-    message.reply(`${minar} *${hasil} XP*`);
-    user.lastmiming = new Date().getTime();
+    const zona = pickWeighted(minas);
+    let base = Math.floor(Math.random() * (zona.recom[1] - zona.recom[0])) + zona.recom[0];
+
+    const crit = Math.random() < 0.15;
+    if (crit) base *= 2;
+
+    let rangos = [
+        "Principiante",
+        "Aprendiz",
+        "Intermedio",
+        "Experto",
+        "Maestro",
+        "Élite",
+        "Legendario",
+        "Mítico"
+    ];
+
+    let frases = [
+        "✨ Impresionante extracción, ganas",
+        "🌌 Energía resonante te otorgó",
+        "⚡ Golpe perfecto, recibes",
+        "🌀 Exploración avanzada, obtienes",
+        "💎 Encontraste minerales raros:",
+        "🔥 Dominio absoluto, consigues",
+        "🎯 Impacto crítico, recuperas",
+        "💫 Resonancia mineral te entrega",
+        "🧭 Profundizaste y hallaste",
+        "🏆 Movimiento maestro, logras",
+        "⚙️ Tus herramientas generaron",
+        "🎆 Descubrimiento épico:",
+        "🌈 La mina brilló y te dio",
+        "📡 Sensor mineral detectó",
+        "👁️ Visión minera reveló",
+        "🧿 Suerte extrema te entregó",
+        "🔮 Vibración arcana produce",
+        "🌠 Hallazgo brillante:"
+    ];
+
+    user.exp += base;
+    user.lastmiming = Date.now();
+
+    const colores = [
+        "#FF6AD5", "#6AE5FF", "#FFD36A", "#8AFF6A", "#FF6A6A",
+        "#9C6AFF", "#6AFFF2", "#FF9E6A", "#6A9EFF", "#FF6ABB",
+        "#6AFF8B", "#FFE36A", "#B56AFF", "#6AFFF7"
+    ];
+
+    const embed = new EmbedBuilder()
+        .setTitle(`${zona.nombre}`)
+        .setColor(pickRandom(colores))
+        .setDescription(`
+${pickRandom(frases)} **${base} XP**  
+${crit ? "🔥 **CRÍTICO x2!**" : ""}
+
+> 🧭 Zona minada: **${zona.nombre}**  
+> 👤 Minero: <@${userId}>  
+> 🏅 Rango minero: **${pickRandom(rangos)}**
+        `)
+        .setThumbnail("https://cdn-icons-png.flaticon.com/512/763/763812.png")
+        .setFooter({ text: "⛏️ Sistema de Minería NovaBot-DS" })
+        .setTimestamp();
+
+    return message.reply({ embeds: [embed] });
 };
 
 handler.help = ['minar'];
 handler.tags = ['econ'];
 handler.command = /^(minar|miming|mine)$/i;
 handler.register = true;
-handler.rowner = false
-handler.admin = false
-handler.botAdmin = false
+handler.admin = false;
 export default handler;
 
-function pickRandom(list) {
-    return list[Math.floor(Math.random() * list.length)];
+function pickRandom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function msToTime(duration) {
-    const milliseconds = parseInt((duration % 1000) / 100);
-    let seconds = Math.floor((duration / 1000) % 60);
-    let minutes = Math.floor((duration / (1000 * 60)) % 60);
+function pickWeighted(minas) {
+    let normales = minas.slice(0, 14);
+    let legendarias = minas.slice(14);
+    return Math.random() < 0.85 ? pickRandom(normales) : pickRandom(legendarias);
+}
 
-    minutes = (minutes < 10) ? '0' + minutes : minutes;
-    seconds = (seconds < 10) ? '0' + seconds : seconds;
-
-    return `${minutes} minuto(s) ${seconds} segundo(s)`;
+function msToTime(ms) {
+    let s = Math.floor((ms / 1000) % 60);
+    let m = Math.floor((ms / 1000 / 60) % 60);
+    return `${m} minuto(s) ${s} segundo(s)`;
 }
