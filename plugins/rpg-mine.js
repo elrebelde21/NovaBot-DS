@@ -36,17 +36,6 @@ const handler = async (message) => {
     const crit = Math.random() < 0.15;
     if (crit) base *= 2;
 
-    let rangos = [
-        "Principiante",
-        "Aprendiz",
-        "Intermedio",
-        "Experto",
-        "Maestro",
-        "Élite",
-        "Legendario",
-        "Mítico"
-    ];
-
     let frases = [
         "✨ Impresionante extracción, ganas",
         "🌌 Energía resonante te otorgó",
@@ -58,11 +47,9 @@ const handler = async (message) => {
         "💫 Resonancia mineral te entrega",
         "🧭 Profundizaste y hallaste",
         "🏆 Movimiento maestro, logras",
-        "⚙️ Tus herramientas generaron",
         "🎆 Descubrimiento épico:",
         "🌈 La mina brilló y te dio",
         "📡 Sensor mineral detectó",
-        "👁️ Visión minera reveló",
         "🧿 Suerte extrema te entregó",
         "🔮 Vibración arcana produce",
         "🌠 Hallazgo brillante:"
@@ -77,19 +64,25 @@ const handler = async (message) => {
         "#6AFF8B", "#FFE36A", "#B56AFF", "#6AFFF7"
     ];
 
+    const listado = minas
+        .map(m => `> ${m.nombre}`)
+        .join("\n");
+
     const embed = new EmbedBuilder()
-        .setTitle(`${zona.nombre}`)
+        .setTitle("⛏️ Panel de Minas • NovaBot-DS")
         .setColor(pickRandom(colores))
         .setDescription(`
-${pickRandom(frases)} **${base} XP**  
+${listado}
+
+———————————————
+
+${pickRandom(frases)} **${base} XP**
 ${crit ? "🔥 **CRÍTICO x2!**" : ""}
 
-> 🧭 Zona minada: **${zona.nombre}**  
-> 👤 Minero: <@${userId}>  
-> 🏅 Rango minero: **${pickRandom(rangos)}**
+> 🧭 Zona obtenida: **${zona.nombre}**  
+> 👤 Minero: <@${userId}>
         `)
-        .setThumbnail("https://cdn-icons-png.flaticon.com/512/763/763812.png")
-        .setFooter({ text: "⛏️ Sistema de Minería NovaBot-DS" })
+        .setFooter({ text: "Sistema de Minería NovaBot-DS" })
         .setTimestamp();
 
     return message.reply({ embeds: [embed] });
@@ -99,7 +92,6 @@ handler.help = ['minar'];
 handler.tags = ['econ'];
 handler.command = /^(minar|miming|mine)$/i;
 handler.register = true;
-handler.admin = false;
 export default handler;
 
 function pickRandom(arr) {
