@@ -339,6 +339,78 @@ const farewellMessageTemplate = chatSettings.farewellMessage || `╭┈┈┈┈
     }
 });
 
+//Boost 
+client.on("guildMemberUpdate", async (oldMember, newMember) => {
+    const guildId = newMember.guild.id;
+    const settings = db.data.settings[guildId] || {};
+
+    if (!settings.boostChannelId && !settings.boostMessage && !settings.boostEmbed && !settings.boostRoleId) return;
+
+    const antes = oldMember.premiumSince;
+    const ahora = newMember.premiumSince;
+
+    if (!antes && ahora) {
+
+        const canal = newMember.guild.channels.cache.get(settings.boostChannelId);
+        if (!canal) return;
+
+        if (settings.boostRoleId) {
+            try {
+                await newMember.roles.add(settings.boostRoleId);
+            } catch (e) {
+                console.log("Error asignando rol booster:", e);
+            }
+        }
+
+        const boosts = newMember.guild.premiumSubscriptionCount || 0;
+        const boostLevel = newMember.guild.premiumTier || 0;
+
+        function replaceVars(text) {
+            if (!text) return text;
+            const now = new Date();
+
+            return text
+                .replace(/#user/g, newMember.user.username)
+                .replace(/#tag/g, `<@${newMember.id}>`)
+                .replace(/#guild/g, newMember.guild.name)
+                .replace(/#date/g, now.toLocaleDateString("es-AR"))
+                .replace(/#time/g, now.toLocaleTimeString("es-AR"))
+                .replace(/#id/g, newMember.user.id)
+                .replace(/#serverid/g, newMember.guild.id)
+                .replace(/#boosts/g, boosts.toString())
+                .replace(/#boostlevel/g, boostLevel.toString());
+        }
+
+        const msg = replaceVars(settings.boostMessage || "💜 **#tag ha mejorado el servidor!** 🎉");
+
+        const emb = settings.boostEmbed || {};
+        const defaultTitle = `💜 Gracias por tu mejora, #user!`;
+        const defaultDesc = `✨ Ahora tenemos **#boosts** mejoras.\n✨ Nivel del servidor: **#boostlevel**`;
+
+        const tituloFinal = replaceVars(emb.title || defaultTitle);
+        const descFinal   = replaceVars(emb.description || defaultDesc);
+        const footerFinal = replaceVars(emb.footerText || "Sistema Booster NovaBot");
+
+        const avatar = newMember.user.displayAvatarURL({ dynamic: true, size: 1024 });
+
+        const embedBoost = new EmbedBuilder()
+            .setColor("#FF73FA")
+            .setTitle(tituloFinal)
+            .setDescription(descFinal)
+            .setThumbnail(avatar)
+            .setFooter({
+                text: footerFinal,
+                iconURL: avatar
+            })
+            .setTimestamp();
+
+        canal.send({
+            content: msg,
+            embeds: [embedBoost]
+        });
+    }
+});
+
 //-----
 const isNumber = (value) => !isNaN(value) && typeof value === 'number';
 
