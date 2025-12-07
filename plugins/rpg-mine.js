@@ -1,3 +1,5 @@
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
+
 const handler = async (message) => {
     const userId = message.author.id;
     const user = global.db.data.users[userId];
