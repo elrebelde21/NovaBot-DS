@@ -140,55 +140,23 @@ if (global.db)
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildPresences,
+    GatewayIntentBits.GuildMessageReactions, 
     GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.GuildPresences,
+    GatewayIntentBits.GuildModeration,
     GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.GuildMessageTyping,
   ],
-  partials: [Partials.Channel],
+  partials: [
+    Partials.Channel,   
+    Partials.Message,  
+    Partials.Reaction, 
+    Partials.User,
+  ],
 });
-
-//Logica para carga los comando
-/*async function loadCommands() {
-  const commandFiles = await fs.promises.readdir('./plugins');
-  const commands = [];
-
-  for (const file of commandFiles) {
-    if (file.endsWith('.js')) {
-      try {
-        const command = await import(`./plugins/${file}`);
-        commands.push(command.default);
-      } catch (error) {
-        console.error(`Error al cargar el comando ${file}:`, error.message);
-      }
-    }
-  }
-
-  client.commands = commands;
-}
-
-async function watchPluginsFolder() {
-  const pluginsPath = path.resolve('./plugins');
-
-  fs.watch(pluginsPath, (eventType, filename) => {
-    if (filename && filename.endsWith('.js')) {
-      if (eventType === 'rename') {
-        console.log(chalk.redBright(`Update '${filename}'.`));
-      } else if (eventType === 'remove') {
-        console.log(chalk.redBright(`Plugin eliminado: ${filename}`));
-      }
-
-      try {
-        loadCommands();
-      } catch (error) {
-        console.error(`Error al recargar comandos:`, error.message);
-      }
-    }
-  });
-}
-*/
 
 //----
 client.once('ready', () => {
@@ -219,11 +187,9 @@ const actividades = [
 {name: 'Cargando nuevas funciones…', type: 3},
 {name: 'Charlando contigo ♡', type: 3},
 { name: `Uptime: ${uptimeNice}`, type: 3 },
-//{ name: `Texto: ${guilds.reduce((a,g)=>a+g.channels.cache.filter(c=>c.type===0).size,0)}`, type: 3 },
 //{ name: `tu pack filtrado 😈🍑`, type: 3 },
 //{ name: `hentai en 4K 👀💦`, type: 3 },
 //{ name: `OnlyFans de tu ex 🔥🔥`, type: 3 },
-//{ name: `cómo te mueves mi rey 😏💦`, type: 3 },
 { name: `tu corazón 💜`, type: 3 },
 { name: `música contigo 🎧`, type: 2 },
 { name: `Compitiendo por ser el mejor bot 👑`, type: 5 },
@@ -236,73 +202,99 @@ client.user.setPresence({status: 'online', activities: [actividad] });
 
 //Envía memes automáticamente cada hora
 setInterval(async () => {
-        try {
-            const memeUrl = await hispamemes.meme();
-            const guilds = await client.guilds.fetch();
-            guilds.forEach(async (guild) => {
-                const memeChannelId = db.data.settings[guild.id]?.memeChannelId;
-                if (memeChannelId) {
-                    const channel = client.channels.cache.get(memeChannelId);
-                    if (channel) {
-                        await channel.send({ content: "", files: [memeUrl] });
-       } else {
-        }} else {
-   //console.log('❌ No se ha configurado un canal de memes para el servidor:', guild.name);
-   }});
-       } catch (error) {
-            console.error('Error al obtener el meme:', error);
-        }
-    }, 60 * 60 * 1000);
+try {
+const memeUrl = await hispamemes.meme();
+const guilds = await client.guilds.fetch();
+guilds.forEach(async (guild) => {
+const memeChannelId = db.data.settings[guild.id]?.memeChannelId;
+if (memeChannelId) {
+const channel = client.channels.cache.get(memeChannelId);
+if (channel) {
+await channel.send({ content: "", files: [memeUrl] });
+} else {
+}} else {
+//console.log('❌ No se ha configurado un canal de memes para el servidor:', guild.name);
+}});
+} catch (error) {
+console.error('Error al obtener el meme:', error);
+}
+}, 60 * 60 * 1000);
 });
 
 //Welcome
-client.on('guildMemberAdd', (member) => {
-    const guildId = member.guild.id;
-    const chatSettings = db.data.settings[guildId] || {};
+client.on('guildMemberAdd', async (member) => {
+const guildId = member.guild.id;
+const chatSettings = db.data.settings[guildId] || {};
 
-    if (chatSettings.welcome && chatSettings.welcomeChannelId) {
-        const welcomeChannel = member.guild.channels.cache.get(chatSettings.welcomeChannelId);
+if (chatSettings.welcome && chatSettings.welcomeChannelId) {
+const welcomeChannel = member.guild.channels.cache.get(chatSettings.welcomeChannelId);
 
-        if (welcomeChannel) {
-            const avatarUrl = member.user.displayAvatarURL({ dynamic: true, size: 1024 });
-            const totalMembers = member.guild.memberCount;
+if (welcomeChannel) {
+const avatarUrl = member.user.displayAvatarURL({ dynamic: true, size: 1024 });
+const totalMembers = member.guild.memberCount;
+
+function replaceVars(text) {
+if (!text) return text;
+
+const now = new Date();
+const date = now.toLocaleDateString('es-AR');
+const time = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+const joined = new Date(member.user.createdAt).toLocaleDateString('es-AR');
+const position = totalMembers;
+
+return text
+.replace(/#user/g, member.user.username)
+.replace(/#tag/g, `<@${member.user.id}>`)
+.replace(/#guild/g, member.guild.name)
+.replace(/#members/g, totalMembers.toString())
+.replace(/#date/g, date)
+.replace(/#time/g, time)
+.replace(/#joined/g, joined)
+.replace(/#id/g, member.user.id)
+.replace(/#serverid/g, member.guild.id)
+.replace(/#position/g, position.toString());
+}
+
+if (chatSettings.welcomeRoleId) {
+const role = member.guild.roles.cache.get(chatSettings.welcomeRoleId);
+
+if (role) {
+member.roles.add(role).catch(err => {
+console.log("⚠️ No se pudo asignar el rol:", err.message);
+});
+}}
 
 const welcomeMessageTemplate = chatSettings.welcomeMessage || `╭┈⊰ #guild ⊰┈
 ┃ **BIENVENIDO(A)** 🎉
 ┃ #tag
 ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈`;
 
-            const welcomeMessage = welcomeMessageTemplate
-                .replace(/#user/g, member.user.username)
-                .replace(/#tag/g, `<@${member.user.id}>`) 
-                .replace(/#guild/g, member.guild.name) 
-                .replace(/#members/g, totalMembers.toString()); 
-                
-            const defaultEmbedOptions = {
-                title: '🎉 ¡Gracias por unirte! 🎉',
-                description: `Hola **#user**, estamos felices de tenerte aquí. ¡Disfruta tu estadía!`,
-                footerText: `Eres el miembro número #members 🚀`,
-                footerIcon: avatarUrl, 
-            };
+const welcomeMessage = replaceVars(welcomeMessageTemplate);
 
-            const embedOptions = chatSettings.welcomeEmbed || {};
-            const embed = new EmbedBuilder()
-                .setColor('#FF69B4') // Color fijo
-                .setTitle(embedOptions.title || defaultEmbedOptions.title.replace(/#user/g, member.user.username).replace(/#guild/g, member.guild.name)) 
-                .setDescription(embedOptions.description || defaultEmbedOptions.description.replace(/#user/g, member.user.username).replace(/#guild/g, member.guild.name)) 
-                .setThumbnail(avatarUrl) 
-                .setFooter({
-                    text: (embedOptions.footerText || defaultEmbedOptions.footerText).replace(/#members/g, totalMembers.toString()),
-                    iconURL: embedOptions.footerIcon || defaultEmbedOptions.footerIcon, 
-                });
+const defaultEmbedOptions = {
+title: '🎉 ¡Gracias por unirte! 🎉',
+description: `Hola **#user**, estamos felices de tenerte aquí.`,
+footerText: `Eres el miembro número #members 🚀`,
+footerIcon: avatarUrl,
+};
 
-            welcomeChannel.send({ content: welcomeMessage, embeds: [embed] });
-        } else {     
-        }} else {
-      //console.log('⚠️ No se ha configurado ningún canal de bienvenida.');
-    }
+const embedOptions = chatSettings.welcomeEmbed || {};
+
+const embed = new EmbedBuilder()
+.setColor('#FF69B4')
+.setTitle(embedOptions.title ? replaceVars(embedOptions.title) : replaceVars(defaultEmbedOptions.title))
+.setDescription(embedOptions.description ? replaceVars(embedOptions.description) : replaceVars(defaultEmbedOptions.description))
+.setThumbnail(avatarUrl)
+.setFooter({text: embedOptions.footerText ? replaceVars(embedOptions.footerText) : replaceVars(defaultEmbedOptions.footerText),
+iconURL: embedOptions.footerIcon || defaultEmbedOptions.footerIcon
 });
 
+welcomeChannel.send({ content: welcomeMessage, embeds: [embed] });
+}
+}
+});
+
+//remover
 client.on('guildMemberRemove', (member) => {
     const guildId = member.guild.id;
     const chatSettings = db.data.settings[guildId] || {};
@@ -501,10 +493,36 @@ const isBotAdmin = message.guild
     ? message.guild.members.cache.get(message.client.user.id)?.permissions.has(PermissionsBitField.Flags.Administrator) ?? false 
     : false;
 
-const prefixRegex = /^[°•π÷×¶∆£¢*€¥®™+✓_=|~!?@#$%^&.©^]/gi;
-const body = message.content;
-const prefix = body.match(prefixRegex) ? body.match(prefixRegex)[0] : ''; 
-const commandBody = body.slice(prefix.length).trim(); 
+global.defaultPrefixes = ['.', '/', '#', '!', '×', '*', '-'];
+
+if (!global.db.data.settings) global.db.data.settings = {};
+let prefix = '';
+let usedPrefix = '';
+
+const serverPrefix = message.guild ? global.db.data.settings[message.guild.id]?.prefix : null;
+
+if (serverPrefix === null) {
+    prefix = '';
+    usedPrefix = '';
+} else if (Array.isArray(serverPrefix) && serverPrefix.length > 0) {
+    const matched = serverPrefix.find(p => message.content.startsWith(p));
+    if (matched) {
+        prefix = matched;
+        usedPrefix = matched;
+    }
+} else {
+    const matched = global.defaultPrefixes.find(p => message.content.startsWith(p));
+    if (matched) {
+        prefix = matched;
+        usedPrefix = matched;
+    }
+}
+
+if (!prefix && serverPrefix === null && message.content.trim() !== '') {
+    prefix = ''; 
+}
+
+const commandBody = prefix ? message.content.slice(prefix.length).trim() : message.content.trim();
 const args = commandBody.split(' ');    
 const commandName = args.shift()?.toLowerCase();
 
@@ -552,11 +570,13 @@ if (command) {
     try {
       await command.before(message, { 
         args, 
-        prefix, 
+        prefix: usedPrefix, 
         command: commandName, 
         db, 
         client, 
-        text: message.content.slice(prefix.length + commandName.length).trim(),
+        text: prefix 
+  ? message.content.slice(prefix.length + commandName.length).trim() 
+  : message.content.slice(commandName.length).trim(),
         isOwner,
         isROwner,
         isAdmin,
@@ -599,11 +619,11 @@ try {
 //await antiLink(message, { db: global.db.data, isAdmin, isBotAdmin });
 await command(message, { 
 args, 
-prefix, 
+prefix: usedPrefix, 
 command: commandName, 
 db, 
 client, 
-text: message.content.slice(prefix.length + commandName.length).trim() 
+text: prefix ? message.content.slice(prefix.length + commandName.length).trim() : message.content.slice(commandName.length).trim()
 });
 } catch (error) {
 console.error('Error:', error);
