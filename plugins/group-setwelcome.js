@@ -173,7 +173,6 @@ return i.reply({content: "👀 **Vista previa de la bienvenida:**\n" + previewMs
 handler.help = ['setwelcome'];
 handler.tags = ['group'];
 handler.command = /^setwelcome$/i;
-handler.rowner = false;
 handler.admin = true;
 handler.botAdmin = true;
 
