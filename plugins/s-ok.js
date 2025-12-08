@@ -1,4 +1,4 @@
-const handler = async (message) => {
+/*const handler = async (message) => {
  const s = [
 'https://media.makeameme.org/created/uh-ok-5ca824.jpg',
 'https://i.pinimg.com/originals/9a/da/00/9ada0026337e175c787b9b47a3cd3de5.jpg',
@@ -25,3 +25,4 @@ handler.rowner = false
 handler.admin = false
 handler.botAdmin = false
 export default handler;
+*/
