@@ -75,16 +75,10 @@ Este documento te guiará en la obtención del token necesario para tu bot de Di
 2. Haz clic en **New Application**.
 3. Escribe un nombre para tu bot y confirma.
 
-### Paso 2: Crear el bot
+### Paso 2: Acceder al bot y obtener el token
 
 1. En el menú izquierdo, entra a **Bot**.
-2. Haz clic en **Add Bot**.
-3. Confirma la acción.
-
-### Paso 3: Obtener el token
-
-1. Dentro de la sección **Bot**, busca el apartado **Token**.
-2. Haz clic en **Copy** o **Reset Token**.
+2. En el apartado **Token**, haz clic en **Reset Token** o **Copy**.
 3. Guarda el token en un lugar seguro.
 
 Ahora abre el archivo [`settings.js`](https://github.com/elrebelde21/NovaBot-DS/blob/main/settings.js#L15)  
