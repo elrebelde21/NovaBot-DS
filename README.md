@@ -55,39 +55,46 @@
 
 Este documento te guiará en la obtención del token necesario para tu bot de Discord y en la instalación del bot, ya sea usando Termux en un dispositivo móvil o a través de nuestro hosting para mantenerlo activo 24/7.
 
+---
+
 ## Requisitos
 
-- Una cuenta de Discord
-- Instalar la librerias de Node.js
-- Una cuenta en el [Portal de Desarrolladores de Discord](https://discord.com/developers/applications)
+- Tener una cuenta de **Discord**
+- Tener **Node.js** instalado
+- Acceso al **[Portal de Desarrolladores de Discord](https://discord.com/developers/applications)**
 
-## Paso 1: Crear una Aplicación en Discord
+---
 
-1. Ve al [Portal de Desarrolladores de Discord](https://discord.com/developers/applications) e inicia sesión con tu cuenta de Discord.
-2. Haz clic en el botón **"New Application"**.
-3. Asigna un nombre a tu aplicación y haz clic en **"Create"**.
+## Crear el Bot de Discord
+<video src="https://cdn.skyultraplus.com/uploads/u4/9b491002125d0c99.mp4" controls width="100%"></video>
 
-## Paso 2: Crear un Bot
+### Paso 1: Crear la aplicación
 
-1. Dentro de tu aplicación recién creada, ve a la pestaña **"Bot"** en el menú de la izquierda.
-2. Haz clic en el botón **"Add Bot"** y confirma la acción.
-3. Ahora deberías ver tu bot en la sección de **"Bot"**.
+1. Entra al **[Portal de Desarrolladores de Discord](https://discord.com/developers/applications)**.
+2. Haz clic en **New Application**.
+3. Escribe un nombre para tu bot y confirma.
 
-## Paso 3: Obtener el Token del Bot
+### Paso 2: Crear el bot
 
-1. En la sección **"Bot"**, haz clic en el botón **"Copy"** debajo del campo **"Token"**. Este token es muy importante ya que es la clave para autenticar tu bot.
-2. Guarda el token en un lugar seguro, ya que lo necesitarás más adelante.
-3. [Abre el archivo settings.js](https://github.com/elrebelde21/NovaBot-DS/blob/main/settings.js#L15) y reemplaza `global.botToken = "token"` con el token que acabas de copiar:
-   ```javascript
-   global.botToken = "TU_TOKEN_AQUI"; // Reemplaza 'TU_TOKEN_AQUI' con el token de tu bot
-   ```
+1. En el menú izquierdo, entra a **Bot**.
+2. Haz clic en **Add Bot**.
+3. Confirma la acción.
 
-## Paso 4: Invitar el Bot a un Servidor
+### Paso 3: Obtener el token
 
-1. Ve a la pestaña **"OAuth2"** en el menú de la izquierda.
-2. En la sección **"OAuth2 URL Generator"**, marca la casilla **"bot"** en **"SCOPES"**.
-3. En **"BOT PERMISSIONS"**, selecciona los permisos que desees otorgarle a tu bot.
-4. Copia la URL generada y ábrela en tu navegador. Selecciona el servidor al que deseas invitar el bot y haz clic en **"Authorize"**.
+1. Dentro de la sección **Bot**, busca el apartado **Token**.
+2. Haz clic en **Copy** o **Reset Token**.
+3. Guarda el token en un lugar seguro.
+
+Ahora abre el archivo  
+[`settings.js`](https://github.com/elrebelde21/NovaBot-DS/blob/main/settings.js#L15)  
+y reemplaza la línea correspondiente:
+
+```javascript
+global.botToken = "TU_TOKEN_AQUI"; // Reemplaza 'TU_TOKEN_AQUI' con el token de tu bot
+```
+> ⚠️ Nunca compartas tu token ni lo subas a GitHub.
+----
 
 ## 𝙰𝙲𝚃𝙸𝚅𝙰 𝙴𝙻 𝚃𝙴𝚁𝙼𝚄𝚇 
 > [!IMPORTANT]
@@ -138,7 +145,36 @@ El bot funciona normal mientras no use comandos de voz.”*
 - **Contacto(s):** [`Gata Dios`](https://wa.me/message/B3KTM5XN2JMRD1) / [`Russell`](https://api.whatsapp.com/send/?phone=15167096032&text&type=phone_number&app_absent=0) / [`elrebelde21`](https://facebook.com/elrebelde21)
 - **Discord:** [`SkyUltraPlus`](https://discord.gg/Ph4eWsZ8)
 
------------------- 
+----
+
+<details>
+<summary><b>💻 Instalación para usuarios de Windows</b></summary>
+
+* Descargar e instala Git [`Aquí`](https://git-scm.com/downloads)
+* Descargar e instala NodeJS [`Aquí`](https://nodejs.org/en/download)
+* Descargar e instala FFmpeg [`Aquí`](https://ffmpeg.org/download.html) (**No olvide agregar FFmpeg a la variable de entorno PATH**)
+* Descargar e instala ImageMagick [`Aquí`](https://imagemagick.org/script/download.php)
+* Descargar e instala Yarn [`Aquí`](https://classic.yarnpkg.com/en/docs/install#windows-stable)
+```bash
+git clone https://github.com/elrebelde21/NovaBot-DS && cd NovaBot-DS && npm install && npm update && npm start
+```
+## 💻 Instalación de FFmpeg para Windows 
+* Descarga cualquiera de las versiones de FFmpeg disponibles haciendo clic en [FFmpeg](https://www.gyan.dev/ffmpeg/builds/).
+* Extraer archivos a `C:\` path.
+* Cambie el nombre de la carpeta extraída a `ffmpeg`.
+* Ejecute el símbolo del sistema como administrador.
+* Ejecute el siguiente comando:
+```cmd
+> setx /m PATH "C:\ffmpeg\bin;%PATH%"
+```
+Si tiene éxito, le dará un mensaje como: `SUCCESS: specified value was saved`.
+* Ahora que tiene FFmpeg instalado, verifique que funcionó ejecutando este comando para ver la versión:
+```cmd
+> ffmpeg -version
+```
+</details>
+----
+
 ### `🟢 𝙰𝙲𝚃𝙸𝚅𝙰𝚁 𝙴𝙽 𝚁𝙴𝙿𝙻𝙸𝚃`
 
 [![blog](https://img.shields.io/badge/Replit-Tutorial-FF0000?style=for-the-badge&logo=youtube&logoColor=white)
