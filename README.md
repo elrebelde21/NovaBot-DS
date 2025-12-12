@@ -96,9 +96,6 @@ global.botToken = "TU_TOKEN_AQUI"; // Reemplaza 'TU_TOKEN_AQUI' con el token de 
 > ⚠️ ADVERTENCIA: No compartas tu token.
 ----
 
-<details>
-  <summary><b>Instalación por termux</b></summary>
-    
 ## 𝙰𝙲𝚃𝙸𝚅𝙰 𝙴𝙻 𝚃𝙴𝚁𝙼𝚄𝚇 
 > [!IMPORTANT]
 > **No garantizamos un funcionamiento perfecto en Termux, aunque trabajamos constantemente para asegurar una buena compatibilidad. Si experimentas lentitud o errores, por favor envía una solicitud con la evidencia correspondiente para que nuestro equipo pueda solucionarlo. Si el problema persiste, te recomendamos considerar los servicios de alojamiento de bots de nuestros patrocinadores.**
@@ -131,7 +128,6 @@ npm start
 > *En Termux algunos módulos nativos como @discordjs/opus no se instalan.
 No es un error, simplemente se ignoran porque Android no los soporta.
 El bot funciona normal mientras no use comandos de voz.”*
-<details>
 ----
 
 ## Instalación via host en SkyUltraPlus Hosting 24/7 online (RECOMENDADO) 
@@ -177,9 +173,9 @@ Si tiene éxito, le dará un mensaje como: `SUCCESS: specified value was saved`.
 > ffmpeg -version
 ```
 </details>
-<details>
-----
 
+<details>
+  <summary><b>Despliegue en otras plataformas</b></summary>
 ### `🟢 𝙰𝙲𝚃𝙸𝚅𝙰𝚁 𝙴𝙽 𝚁𝙴𝙿𝙻𝙸𝚃`
 
 [![blog](https://img.shields.io/badge/Replit-Tutorial-FF0000?style=for-the-badge&logo=youtube&logoColor=white)
@@ -201,7 +197,8 @@ Si tiene éxito, le dará un mensaje como: `SUCCESS: specified value was saved`.
 ### 🟢 ACTIVAR EN CODES SPACES 
 
 [`CREAR SERVIDOR`](https://github.com/codespaces/new?skip_quickstart=true&machine=basicLinux32gb&repo=elrebelde21/NovaBot-DS&ref=main&geo=UsEast)
-
+<details>
+    
 ------------------ 
 
 ## `👨‍💻 𝙴𝙳𝙸𝚃𝙾𝚁 𝚈 𝙿𝚁𝙾𝙿𝙸𝙴𝚃𝙰𝚁𝙸𝙾 𝙳𝙴𝙻 𝙱𝙾𝚃`
