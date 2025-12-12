@@ -51,7 +51,7 @@
 
 -----
 
-# Configuración y Instalación del Bot de Discord
+### Configuración y Instalación del Bot de Discord
 
 Este documento te guiará en la obtención del token necesario para tu bot de Discord y en la instalación del bot, ya sea usando Termux en un dispositivo móvil o a través de nuestro hosting para mantenerlo activo 24/7.
 
@@ -60,12 +60,13 @@ Este documento te guiará en la obtención del token necesario para tu bot de Di
 ## Requisitos
 
 - Tener una cuenta de **Discord**
-- Tener **Node.js** instalado
+- Tener **Node.js versión 16 o superior (recomendado 18+)**
 - Acceso al **[Portal de Desarrolladores de Discord](https://discord.com/developers/applications)**
 
 ---
 
 ## Crear el Bot de Discord
+
 <video src="https://cdn.skyultraplus.com/uploads/u4/9b491002125d0c99.mp4" controls width="100%"></video>
 
 ### Paso 1: Crear la aplicación
