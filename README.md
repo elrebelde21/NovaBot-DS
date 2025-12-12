@@ -51,7 +51,7 @@
 
 -----
 
-# `🌺 Configuración y Instalación`
+## `🌺 Configuración y Instalación`
     
 Este documento te guiará en la obtención del token necesario para tu bot de Discord y en la instalación del bot, ya sea usando Termux en un dispositivo móvil o a través de nuestro hosting para mantenerlo activo 24/7.
 
