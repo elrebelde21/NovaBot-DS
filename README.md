@@ -66,8 +66,7 @@ Este documento te guiará en la obtención del token necesario para tu bot de Di
 ---
 
 ## Crear el Bot de Discord
-
-<video src="https://cdn.skyultraplus.com/uploads/u4/9b491002125d0c99.mp4" controls width="100%"></video>
+<video src="https://raw.githubusercontent.com/LoliBottt/multimedia/main/video/InShot_20251212_162523533.mp4" controls width="100%"></video>
 
 ### Paso 1: Crear la aplicación
 
