@@ -30,7 +30,6 @@
     "@bochilteam/scraper": "^5.0.1",
     "discord.js": "^14.25.1",
     "@discordjs/voice": "^0.11.0",
-    "@discordjs/opus": "^0.5.3",
     "node-gtts": "^2.0.2",
     "hispamemes": "^1.0.7",
     "readline": "^1.3.0",
@@ -52,6 +51,9 @@
     "express": "^4.18.1",
     "axios-cookiejar-support": "^5.0.5",
     "node-fetch": "^2.6.7"
+  },
+  "optionalDependencies": {
+    "@discordjs/opus": "^0.5.3"
   },
   "engines": {
     "node": ">=16.0.0"
