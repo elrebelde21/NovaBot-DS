@@ -51,8 +51,9 @@
 
 -----
 
-### Configuración y Instalación del Bot de Discord
-
+<details>
+  <summary><b>Configuración y Instalación del Bot de Discord</b></summary>
+    
 Este documento te guiará en la obtención del token necesario para tu bot de Discord y en la instalación del bot, ya sea usando Termux en un dispositivo móvil o a través de nuestro hosting para mantenerlo activo 24/7.
 
 ---
@@ -96,6 +97,9 @@ global.botToken = "TU_TOKEN_AQUI"; // Reemplaza 'TU_TOKEN_AQUI' con el token de 
 > ⚠️ ADVERTENCIA: No compartas tu token.
 ----
 
+<details>
+  <summary><b>Activa en termux</b></summary>
+    
 ## 𝙰𝙲𝚃𝙸𝚅𝙰 𝙴𝙻 𝚃𝙴𝚁𝙼𝚄𝚇 
 > [!IMPORTANT]
 > **No garantizamos un funcionamiento perfecto en Termux, aunque trabajamos constantemente para asegurar una buena compatibilidad. Si experimentas lentitud o errores, por favor envía una solicitud con la evidencia correspondiente para que nuestro equipo pueda solucionarlo. Si el problema persiste, te recomendamos considerar los servicios de alojamiento de bots de nuestros patrocinadores.**
@@ -130,6 +134,9 @@ No es un error, simplemente se ignoran porque Android no los soporta.
 El bot funciona normal mientras no use comandos de voz.”*
 ----
 
+<details>
+  <summary><b>SkyUltraPlus Host</b></summary>
+    
 ## Instalación via host en SkyUltraPlus Hosting 24/7 online (RECOMENDADO) 
 
 [![YouTube](https://img.shields.io/badge/SkyUltraPlus-Host-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/pIzbVYKK3jQ?si=k79xs2ILTYQUWnng)
