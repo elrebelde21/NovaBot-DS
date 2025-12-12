@@ -1,3 +1,4 @@
+> <b>  🚀 Version 1.0.0 (beta) </b>
 ### `NovaBot-DS Bot de discord`
 
 <p align="center">
