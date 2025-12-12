@@ -96,6 +96,9 @@ global.botToken = "TU_TOKEN_AQUI"; // Reemplaza 'TU_TOKEN_AQUI' con el token de 
 > ⚠️ ADVERTENCIA: No compartas tu token.
 ----
 
+<details>
+  <summary><b>Instalación por termux</b></summary>
+    
 ## 𝙰𝙲𝚃𝙸𝚅𝙰 𝙴𝙻 𝚃𝙴𝚁𝙼𝚄𝚇 
 > [!IMPORTANT]
 > **No garantizamos un funcionamiento perfecto en Termux, aunque trabajamos constantemente para asegurar una buena compatibilidad. Si experimentas lentitud o errores, por favor envía una solicitud con la evidencia correspondiente para que nuestro equipo pueda solucionarlo. Si el problema persiste, te recomendamos considerar los servicios de alojamiento de bots de nuestros patrocinadores.**
@@ -128,6 +131,7 @@ npm start
 > *En Termux algunos módulos nativos como @discordjs/opus no se instalan.
 No es un error, simplemente se ignoran porque Android no los soporta.
 El bot funciona normal mientras no use comandos de voz.”*
+<details>
 ----
 
 ## Instalación via host en SkyUltraPlus Hosting 24/7 online (RECOMENDADO) 
@@ -173,6 +177,7 @@ Si tiene éxito, le dará un mensaje como: `SUCCESS: specified value was saved`.
 > ffmpeg -version
 ```
 </details>
+<details>
 ----
 
 ### `🟢 𝙰𝙲𝚃𝙸𝚅𝙰𝚁 𝙴𝙽 𝚁𝙴𝙿𝙻𝙸𝚃`
