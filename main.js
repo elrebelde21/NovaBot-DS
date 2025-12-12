@@ -17,7 +17,6 @@ import { format } from 'util'
 import { promisify } from 'util';
 import cp from 'child_process';
 const exec = promisify(cp.exec);
-import sqlite3 from 'sqlite3';
 import hispamemes from 'hispamemes';
 import moment from 'moment-timezone';
 import cfonts from 'cfonts';
