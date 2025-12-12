@@ -87,14 +87,13 @@ Este documento te guiará en la obtención del token necesario para tu bot de Di
 2. Haz clic en **Copy** o **Reset Token**.
 3. Guarda el token en un lugar seguro.
 
-Ahora abre el archivo  
-[`settings.js`](https://github.com/elrebelde21/NovaBot-DS/blob/main/settings.js#L15)  
+Ahora abre el archivo [`settings.js`](https://github.com/elrebelde21/NovaBot-DS/blob/main/settings.js#L15)  
 y reemplaza la línea correspondiente:
 
 ```javascript
 global.botToken = "TU_TOKEN_AQUI"; // Reemplaza 'TU_TOKEN_AQUI' con el token de tu bot
 ```
-> ⚠️ Nunca compartas tu token ni lo subas a GitHub.
+> ⚠️ ADVERTENCIA: No compartas tu token.
 ----
 
 ## 𝙰𝙲𝚃𝙸𝚅𝙰 𝙴𝙻 𝚃𝙴𝚁𝙼𝚄𝚇 
