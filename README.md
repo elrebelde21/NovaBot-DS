@@ -90,7 +90,10 @@ Este documento te guiará en la obtención del token necesario para tu bot de Di
 4. Copia la URL generada y ábrela en tu navegador. Selecciona el servidor al que deseas invitar el bot y haz clic en **"Authorize"**.
 
 ## 𝙰𝙲𝚃𝙸𝚅𝙰 𝙴𝙻 𝚃𝙴𝚁𝙼𝚄𝚇 
+> [!IMPORTANT]
+> **No garantizamos un funcionamiento perfecto en Termux, aunque trabajamos constantemente para asegurar una buena compatibilidad. Si experimentas lentitud o errores, por favor envía una solicitud con la evidencia correspondiente para que nuestro equipo pueda solucionarlo. Si el problema persiste, te recomendamos considerar los servicios de alojamiento de bots de nuestros patrocinadores.**
 [`💫 Instalar termux clic aqui`](https://f-droid.org/es/packages/com.termux/)
+Tutorial pronto...
 
 ```bash
 termux-setup-storage
@@ -114,6 +117,9 @@ ls
 ```bash
 npm start
 ```
+> *En Termux algunos módulos nativos como @discordjs/opus no se instalan.
+No es un error, simplemente se ignoran porque Android no los soporta.
+El bot funciona normal mientras no use comandos de voz.”*
 ----
 
 ## Instalación via host en SkyUltraPlus Hosting 24/7 online (RECOMENDADO) 
