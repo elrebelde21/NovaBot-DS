@@ -176,7 +176,8 @@ Si tiene éxito, le dará un mensaje como: `SUCCESS: specified value was saved`.
 
 <details>
   <summary><b>Despliegue en otras plataformas</b></summary>
-### `🟢 𝙰𝙲𝚃𝙸𝚅𝙰𝚁 𝙴𝙽 𝚁𝙴𝙿𝙻𝙸𝚃`
+    
+### 🟢 𝙰𝙲𝚃𝙸𝚅𝙰𝚁 𝙴𝙽 𝚁𝙴𝙿𝙻𝙸𝚃
 
 [![blog](https://img.shields.io/badge/Replit-Tutorial-FF0000?style=for-the-badge&logo=youtube&logoColor=white)
 ](https://youtu.be/SMjCcfuyWQE)
@@ -197,7 +198,6 @@ Si tiene éxito, le dará un mensaje como: `SUCCESS: specified value was saved`.
 ### 🟢 ACTIVAR EN CODES SPACES 
 
 [`CREAR SERVIDOR`](https://github.com/codespaces/new?skip_quickstart=true&machine=basicLinux32gb&repo=elrebelde21/NovaBot-DS&ref=main&geo=UsEast)
-<details>
     
 ------------------ 
 
