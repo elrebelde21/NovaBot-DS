@@ -118,9 +118,9 @@ npm start
 
 ## Instalación via host en SkyUltraPlus Hosting 24/7 online (RECOMENDADO) 
 
-[![YouTube](https://img.shields.io/badge/SkyUltraPlus-Host-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/fZbcCLpSH6Y?si=1sDen7Bzmb7jVpAI)
+[![YouTube](https://img.shields.io/badge/SkyUltraPlus-Host-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/pIzbVYKK3jQ?si=k79xs2ILTYQUWnng)
 
-<a href="https://dash.skyultraplus.com"><img src="https://qu.ax/zFzXF.png" height="125px"></a>
+<a href="https://dash.skyultraplus.com"><img src="https://cdn.skyultraplus.com/uploads/u4/cd6fd70f8cf8a92d.jpg" height="125px"></a>
 
 ### Información del Host
 - **Dashboard:** [`Aquí`](https://dash.skyultraplus.com)
