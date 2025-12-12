@@ -51,8 +51,7 @@
 
 -----
 
-<details>
-  <summary><b>Configuración y Instalación del Bot de Discord</b></summary>
+## Configuración y Instalación del Bot de Discord
     
 Este documento te guiará en la obtención del token necesario para tu bot de Discord y en la instalación del bot, ya sea usando Termux en un dispositivo móvil o a través de nuestro hosting para mantenerlo activo 24/7.
 
@@ -96,16 +95,13 @@ global.botToken = "TU_TOKEN_AQUI"; // Reemplaza 'TU_TOKEN_AQUI' con el token de 
 ```
 > ⚠️ ADVERTENCIA: No compartas tu token.
 ----
-
-<details>
-  <summary><b>Activa en termux</b></summary>
     
 ## 𝙰𝙲𝚃𝙸𝚅𝙰 𝙴𝙻 𝚃𝙴𝚁𝙼𝚄𝚇 
 > [!IMPORTANT]
 > **No garantizamos un funcionamiento perfecto en Termux, aunque trabajamos constantemente para asegurar una buena compatibilidad. Si experimentas lentitud o errores, por favor envía una solicitud con la evidencia correspondiente para que nuestro equipo pueda solucionarlo. Si el problema persiste, te recomendamos considerar los servicios de alojamiento de bots de nuestros patrocinadores.**
 
 [`💫 Instalar termux clic aqui`](https://f-droid.org/es/packages/com.termux/)
-Tutorial pronto...
+> Tutorial pronto...
 
 ```bash
 termux-setup-storage
@@ -133,9 +129,6 @@ npm start
 No es un error, simplemente se ignoran porque Android no los soporta.
 El bot funciona normal mientras no use comandos de voz.”*
 ----
-
-<details>
-  <summary><b>SkyUltraPlus Host</b></summary>
     
 ## Instalación via host en SkyUltraPlus Hosting 24/7 online (RECOMENDADO) 
 
@@ -154,8 +147,7 @@ El bot funciona normal mientras no use comandos de voz.”*
 
 ----
 
-<details>
-<summary><b>💻 Instalación para usuarios de Windows</b></summary>
+# 💻 Instalación para usuarios de Windows 
 
 * Descargar e instala Git [`Aquí`](https://git-scm.com/downloads)
 * Descargar e instala NodeJS [`Aquí`](https://nodejs.org/en/download)
@@ -179,11 +171,7 @@ Si tiene éxito, le dará un mensaje como: `SUCCESS: specified value was saved`.
 ```cmd
 > ffmpeg -version
 ```
-</details>
-
-<details>
-  <summary><b>Despliegue en otras plataformas</b></summary>
-    
+----
 ### 🟢 𝙰𝙲𝚃𝙸𝚅𝙰𝚁 𝙴𝙽 𝚁𝙴𝙿𝙻𝙸𝚃
 
 [![blog](https://img.shields.io/badge/Replit-Tutorial-FF0000?style=for-the-badge&logo=youtube&logoColor=white)
