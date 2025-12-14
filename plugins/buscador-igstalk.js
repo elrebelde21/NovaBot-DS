@@ -56,8 +56,8 @@ source = "dylux";
           url: `https://instagram.com/${res.username.replace("@", "")}`
         };
       } catch (err) {
-        loading.delete().catch(() => {});
-        return message.reply(`❌ No se pudo obtener información del usuario.`);
+      //  loading.delete().catch(() => {});
+        return loading.edit(`❌ No se pudo obtener información del usuario.`);
       }
     }
 
@@ -93,9 +93,9 @@ const fecha = moment().tz("America/Argentina/Buenos_Aires").format("DD/MM/YYYY")
         .setURL(profile.url)
     );
 
-    await loading.delete().catch(() => {});
+   // await loading.delete().catch(() => {});
 
-    return message.reply({
+    return loading.edit({
       embeds: [embed],
       components: [row]
     });
@@ -109,6 +109,18 @@ const fecha = moment().tz("America/Argentina/Buenos_Aires").format("DD/MM/YYYY")
 handler.help = ["igstalk"];
 handler.desc = ["Obtiene info del perfil de Instagram"];
 handler.tags = ["buscadores"];
+handler.slash = {
+  name: "igstalk",
+  description: "Obtiene info del perfil de Instagram",
+  options: [
+    {
+      name: "texto",
+      description: "Qué deseas buscar?",
+      type: 3,
+      required: false
+    }
+  ]
+};
 handler.command = /^igstalk|igsearch|instagramsearch$/i;
 
 export default handler;

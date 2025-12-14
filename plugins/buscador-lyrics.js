@@ -108,6 +108,18 @@ ${lyricsData.lyrics.substring(0, 3500)}
 handler.help = ["letra <canción>"];
 handler.desc = ["Busca la letra de una canción."];
 handler.tags = ["buscadores"];
+handler.slash = {
+  name: "letra",
+  description: "Busca la letra de una canción.",
+  options: [
+    {
+      name: "texto",
+      description: "Qué deseas buscar?",
+      type: 3,
+      required: false
+    }
+  ]
+};
 handler.command = /^(letra|letras|lyrics|lyric|lirik)$/i;
 
 export default handler;

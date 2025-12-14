@@ -106,6 +106,17 @@ const fecha = moment().tz("America/Argentina/Buenos_Aires").format("DD/MM/YYYY")
 handler.help = ["google <texto>"];
 handler.desc = ["Busca información en Google."];
 handler.tags = ["buscadores"];
+handler.slash = {
+  name: "google",
+  description: "Buscar información en Google",
+  options: [
+    {
+      name: "texto",
+      description: "Qué deseas buscar",
+      required: true
+    }
+  ]
+};
 handler.command = /^google$/i;
 
 export default handler;

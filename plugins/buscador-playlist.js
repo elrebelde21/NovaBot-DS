@@ -10,16 +10,20 @@ import {
 let handler = async (message, { args, prefix, command }) => {
   try {
     const text = args.join(" ");
-    if (!text) return message.reply(`⚠️ **¿Qué quieres buscar en YouTube?**\nEj: \`${prefix + command} bad bunny\``);
+    if (!text) {
+      return message.reply(
+        `⚠️ **¿Qué quieres buscar en YouTube?**\nEj: \`${prefix + command} bad bunny\``
+      );
+    }
 
-    const loading = await message.reply("🔎 Buscando en YouTube...");
+    // 🔑 MENSAJE ÚNICO (reply inicial)
+    const msg = await message.reply("🔎 Buscando en YouTube...");
 
     const result = await yts(text);
     const videos = result.videos;
 
     if (!videos || videos.length === 0) {
-      await loading.delete().catch(() => {});
-      return message.reply("❌ No se encontraron resultados.");
+      return msg.edit("❌ No se encontraron resultados.");
     }
 
     const items = videos.slice(0, 15);
@@ -51,47 +55,8 @@ let handler = async (message, { args, prefix, command }) => {
         });
     };
 
-    const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId("yt_prev")
-        .setStyle(ButtonStyle.Primary)
-        .setLabel("⏪"),
-
-      new ButtonBuilder()
-        .setCustomId("yt_next")
-        .setStyle(ButtonStyle.Primary)
-        .setLabel("⏩"),
-
-      new ButtonBuilder()
-        .setStyle(ButtonStyle.Link)
-        .setLabel("🔗 Abrir video")
-        .setURL(items[index].url)
-    );
-
-    await loading.delete().catch(() => {});
-
-    const msg = await message.reply({
-      content: `**Resultados para:** \`${text}\``,
-      embeds: [getEmbed()],
-      components: [row]
-    });
-
-    const collector = msg.createMessageComponentCollector({ time: 90_000 });
-
-    collector.on("collect", async (i) => {
-      if (i.user.id !== message.author.id)
-        return i.reply({
-          content: "❌ Solo quien usó el comando puede navegar.",
-          ephemeral: true
-        });
-
-      if (i.customId === "yt_next") {
-        index = (index + 1) % items.length;
-      } else if (i.customId === "yt_prev") {
-        index = (index - 1 + items.length) % items.length;
-      }
-
-      const updatedRow = new ActionRowBuilder().addComponents(
+    const getRow = () =>
+      new ActionRowBuilder().addComponents(
         new ButtonBuilder()
           .setCustomId("yt_prev")
           .setStyle(ButtonStyle.Primary)
@@ -108,19 +73,43 @@ let handler = async (message, { args, prefix, command }) => {
           .setURL(items[index].url)
       );
 
-      i.update({
+    // 🔥 EDITAMOS EL MISMO MENSAJE
+    await msg.edit({
+      content: `**Resultados para:** \`${text}\``,
+      embeds: [getEmbed()],
+      components: [getRow()]
+    });
+
+    // 🔑 Collector SOBRE EL MISMO MENSAJE
+    const collector = msg.createMessageComponentCollector({
+      time: 90_000
+    });
+
+    collector.on("collect", async (i) => {
+      if (i.user.id !== message.author.id) {
+        return i.reply({
+          content: "❌ Solo quien usó el comando puede navegar.",
+          ephemeral: true
+        });
+      }
+
+      if (i.customId === "yt_next") {
+        index = (index + 1) % items.length;
+      } else if (i.customId === "yt_prev") {
+        index = (index - 1 + items.length) % items.length;
+      }
+
+      await i.update({
         embeds: [getEmbed()],
-        components: [updatedRow]
+        components: [getRow()]
       });
     });
 
-    collector.on("end", () => {
-      try {
-        msg.edit({ components: [] }).catch(() => {});
-      } catch {}
+    collector.on("end", async () => {
+      await msg.edit({ components: [] }).catch(() => {});
     });
   } catch (err) {
-    console.log("Error YTS:", err);
+    console.error("Error YTS:", err);
     message.reply("❌ Error al buscar en YouTube.");
   }
 };
@@ -128,6 +117,18 @@ let handler = async (message, { args, prefix, command }) => {
 handler.help = ["yts <texto>"];
 handler.desc = ["Busca videos en YouTube."];
 handler.tags = ["buscadores"];
+handler.slash = {
+  name: "yts",
+  description: "Busca videos en YouTube",
+  options: [
+    {
+      name: "texto",
+      description: "Qué deseas buscar?",
+      type: 3,
+      required: false
+    }
+  ]
+};
 handler.command = /^(yts|playlist|playlista|playvid2|ytsearch)$/i;
 
 export default handler;

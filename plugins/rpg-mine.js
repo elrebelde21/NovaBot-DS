@@ -4,92 +4,89 @@ import {
   StringSelectMenuBuilder
 } from "discord.js";
 
+const KO_COOLDOWN = 15 * 60 * 1000; // 15 min
+const FAIL_CHANCE = 0.2;           // 20% fallo base
+const DROP_CHANCE = 0.15;          // 15% drop raro
+
+// 🎁 DROPS RAROS
+const DROPS = [
+  { id: "gema_brillante", name: "💠 Gema Brillante", chance: 40 },
+  { id: "reliquia_antigua", name: "🏺 Reliquia Antigua", chance: 25 },
+  { id: "nucleo_energetico", name: "⚡ Núcleo Energético", chance: 20 },
+  { id: "fragmento_divino", name: "🌠 Fragmento Divino", chance: 15 }
+];
+
 const handler = async (message) => {
   const userId = message.author.id;
   const user = global.db.data.users[userId];
 
   if (!user) return message.reply("✳️ Usuario no registrado.");
 
-  const cooldown = 400000;
-  const time = user.lastmiming + cooldown;
+  // ===== INIT =====
+  const rpg = global.rpg;
+  user.pickaxe ||= "wood";
+  user.inventory ||= [];
+  user.lastKnockout ||= 0;
 
+  const pickaxe = rpg[user.pickaxe] || rpg.wood;
+
+  // ===== KNOCKOUT CHECK =====
+  if (user.health <= 0) {
+    const t = user.lastKnockout + KO_COOLDOWN;
+    if (Date.now() < t) {
+      return message.reply(
+        `💀 Estás desmayado.\n⏳ Espera *${msToTime(t - Date.now())}* para recuperarte.`
+      );
+    } else {
+      user.health = 30;
+    }
+  }
+
+  // ===== COOLDOWN =====
+  const cooldown = 400000;
   if (Date.now() - user.lastmiming < cooldown) {
     return message.reply(
-      `⏳ Espera *${msToTime(time - Date.now())}* para volver a minar`
+      `⏳ Espera *${msToTime(user.lastmiming + cooldown - Date.now())}* para volver a minar`
     );
   }
 
+  // ===== MINAS =====
   const minas = [
-    {
-      id: "penumbra",
-      nombre: "⛏️ Penumbra",
-      recom: [300, 700],
-      req: { level: 0, money: 0, health: 0 },
-      cost: { money: 0, health: 5 }
-    },
-    {
-      id: "mistica",
-      nombre: "🪨 Caverna Mística",
-      recom: [700, 1500],
-      req: { level: 3, money: 200, health: 10 },
-      cost: { money: 50, health: 10 }
-    },
-    {
-      id: "abismo",
-      nombre: "⚡ Abismo",
-      recom: [900, 2000],
-      req: { level: 5, money: 500, health: 20 },
-      cost: { money: 150, health: 18 }
-    },
-    {
-      id: "zona",
-      nombre: "❓ Zona Desconocida",
-      recom: [1200, 2600],
-      req: { level: 8, money: 1000, health: 30 },
-      cost: { money: 300, health: 25 }
-    },
-    {
-      id: "infernal",
-      nombre: "🔥 Mina Infernal",
-      recom: [4000, 7500],
-      req: { level: 15, money: 5000, health: 60 },
-      cost: { money: 800, health: 40 }
-    },
-    {
-      id: "divina",
-      nombre: "🌠 Mina Divina",
-      recom: [12000, 18000],
-      req: { level: 25, money: 20000, health: 90 },
-      cost: { money: 2000, health: 60 }
-    }
+    { id: "penumbra", nombre: "⛏️ Penumbra", recom: [300,700],  req:{level:0,money:0,health:0},  cost:{money:0,health:5}},
+    { id: "mistica",  nombre: "🪨 Caverna Mística", recom:[700,1500], req:{level:3,money:0,health:10}, cost:{money:0,health:10}},
+    { id: "abismo",   nombre: "⚡ Abismo", recom:[900,2000], req:{level:5,money:10,health:20}, cost:{money:10,health:18}},
+    { id: "zona",     nombre: "❓ Zona Desconocida", recom:[1200,2600], req:{level:8,money:50,health:30}, cost:{money:50,health:25}},
+    { id: "infernal", nombre: "🔥 Mina Infernal", recom:[4000,7500], req:{level:15,money:1000,health:60}, cost:{money:100,health:40}},
+    { id: "divina",   nombre: "🌠 Mina Divina", recom:[12000,18000], req:{level:25,money:3000,health:90}, cost:{money:100,health:60}}
   ];
 
-  const opciones = minas.map(m => {
-    const cumple =
-      user.level >= m.req.level &&
-      user.money >= m.req.money &&
-      user.health >= m.req.health;
-
-    return {
-      label: m.nombre,
-      value: m.id,
-      description: cumple
-        ? `XP ${m.recom[0]}-${m.recom[1]} | 💸-${m.cost.money} ❤-${m.cost.health}`
-        : `🔒 Req: Lv ${m.req.level}, $${m.req.money}, ❤ ${m.req.health}`
-    };
-  });
-
+  // ===== MENU =====
   const select = new StringSelectMenuBuilder()
     .setCustomId("minar_select")
     .setPlaceholder("⛏️ Elige una mina…")
-    .addOptions(opciones);
+    .addOptions(minas.map(m => {
+      const ok =
+        user.level >= m.req.level &&
+        user.money >= m.req.money &&
+        user.health >= m.req.health;
 
-  const row = new ActionRowBuilder().addComponents(select);
+      const dmg = Math.max(1, m.cost.health - pickaxe.reduce);
 
-  const embed = new EmbedBuilder()
-    .setColor("#6A00FF")
-    .setTitle("⛏️ Sistema de Minería • NovaBot-DS")
-    .setDescription(`
+      return {
+        label: m.nombre,
+        value: m.id,
+        description: ok
+          ? `XP ${m.recom[0]}-${m.recom[1]} | 💸-${m.cost.money} ❤-${dmg}`
+          : `🔒 Req: Lv ${m.req.level}, $${m.req.money}, ❤ ${m.req.health}`
+      };
+    }));
+
+  const msg = await message.reply({
+    embeds: [
+      new EmbedBuilder()
+        .setColor("#6A00FF")
+        .setTitle("⛏️ Sistema de Minería • NovaBot-DS")
+        .setDescription(`
 👤 **Minero:** <@${userId}>
 
 📊 **Tus stats**
@@ -97,13 +94,14 @@ const handler = async (message) => {
 • Dinero: $${user.money}
 • Salud: ❤ ${user.health}
 
-🌌 Selecciona una mina para comenzar la excavación.
-⚠️ Cada zona tiene riesgos y recompensas distintas.`)
-    .setFooter({ text: "NovaBot-DS • RPG Mining System" });
+⛏️ **Pico equipado:** ${pickaxe.name}
+🛡️ **Reducción de daño:** ${pickaxe.reduce}
 
-  const msg = await message.reply({
-    embeds: [embed],
-    components: [row]
+🌌 Selecciona una mina para comenzar la excavación.
+⚠️ Cada zona tiene riesgos y recompensas distintas.
+        `)
+    ],
+    components: [new ActionRowBuilder().addComponents(select)]
   });
 
   const collector = msg.createMessageComponentCollector({
@@ -116,74 +114,84 @@ const handler = async (message) => {
     const mina = minas.find(m => m.id === i.values[0]);
     if (!mina) return;
 
-    // 🔒 Validar requisitos
+    // ===== VALIDAR =====
     if (
       user.level < mina.req.level ||
       user.money < mina.req.money ||
       user.health < mina.req.health
     ) {
       return i.reply({
-        content: `❌ No cumples los requisitos para **${mina.nombre}**`,
+        content: "❌ No cumples los requisitos.",
         ephemeral: true
       });
     }
 
-    let base =
-      Math.floor(Math.random() * (mina.recom[1] - mina.recom[0])) +
-      mina.recom[0];
-
-    const crit = Math.random() < 0.15;
-    if (crit) base *= 2;
-
-    // 💸 COSTOS REALES
-    user.money -= mina.cost.money;
-    user.health -= mina.cost.health;
-    if (user.health < 0) user.health = 0;
-
-    user.exp += base;
     user.lastmiming = Date.now();
 
-    const frases = [
-      "✨ Extracción legendaria:",
-      "🔥 Excavación perfecta:",
-      "💎 Minerales raros obtenidos:",
-      "⚡ Golpe crítico:",
-      "🌌 Resonancia minera:"
-    ];
+    // ===== FALLO =====
+    const failed = Math.random() < FAIL_CHANCE;
+    const damage = Math.max(1, mina.cost.health - pickaxe.reduce);
 
-    const result = new EmbedBuilder()
-      .setColor(crit ? "#FF3C00" : "#00E5FF")
-      .setTitle("⛏️ ¡MINERÍA COMPLETADA!")
+    user.money -= mina.cost.money;
+    user.health -= damage;
+    if (user.health <= 0) {
+      user.health = 0;
+      user.lastKnockout = Date.now();
+    }
+
+    let baseXP = 0;
+    let dropText = "—";
+
+    if (!failed) {
+      baseXP =
+        Math.floor(Math.random() * (mina.recom[1] - mina.recom[0])) +
+        mina.recom[0];
+
+      if (Math.random() < 0.15) baseXP *= 2;
+      user.exp += baseXP;
+
+      // 🎁 DROP RARO
+      if (Math.random() < DROP_CHANCE) {
+        const roll = Math.random() * 100;
+        let acc = 0;
+        const drop = DROPS.find(d => (acc += d.chance) >= roll);
+        if (drop) {
+          user.inventory.push(drop.id);
+          dropText = drop.name;
+        }
+      }
+    }
+
+    const embed = new EmbedBuilder()
+      .setColor(failed ? "#E74C3C" : "#00E5FF")
+      .setTitle(failed ? "💥 ¡FALLO DE MINERÍA!" : "⛏️ ¡MINERÍA COMPLETADA!")
       .setDescription(`
-${pickRandom(frases)} **${base} XP**
-${crit ? "🔥 **CRÍTICO x2 ACTIVADO**" : ""}
+${failed ? "❌ No lograste extraer nada." : `✨ Ganaste **${baseXP} XP**`}
 
 🧭 **Zona:** ${mina.nombre}
-💸 Dinero restante: $${user.money}
-❤ Salud restante: ${user.health}
+🩸 **Daño:** ${damage}
+🎁 **Drop:** ${dropText}
+
+💸 Dinero: $${user.money}
+❤ Salud: ${user.health}
       `)
-      .setFooter({ text: "Sistema de Minería NovaBot-DS" })
       .setTimestamp();
 
-    await i.update({
-      embeds: [result],
-      components: []
-    });
+    await i.update({ embeds: [embed], components: [] });
   });
 };
 
 handler.help = ["minar"];
 handler.tags = ["econ"];
+handler.command = /^(minar|mine|miming)$/i;
+handler.register = true;
+
 handler.slash = {
   name: "minar",
   description: "⛏️ Minar y obtener recompensas épicas"
 };
-handler.command = /^(minar|mine|miming)$/i;
-handler.register = true;
 
 export default handler;
-
-/* ================= HELPERS ================= */
 
 function pickRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
