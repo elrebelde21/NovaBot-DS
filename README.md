@@ -94,8 +94,10 @@ global.botToken = "TU_TOKEN_AQUI"; // Reemplaza 'TU_TOKEN_AQUI' con el token de 
 > [!IMPORTANT]
 > **No garantizamos un funcionamiento perfecto en Termux, aunque trabajamos constantemente para asegurar una buena compatibilidad. Si experimentas lentitud o errores, por favor envía una solicitud con la evidencia correspondiente para que nuestro equipo pueda solucionarlo. Si el problema persiste, te recomendamos considerar los servicios de alojamiento de bots de nuestros patrocinadores.**
 
+[![blog](https://img.shields.io/badge/Video-Tutorial-FF0000?style=for-the-badge&logo=youtube&logoColor=white)
+](https://youtu.be/GQgqxPtdlu0?si=21i9_Hn5gdAwqWD9)
+
 [`💫 Instalar termux clic aqui`](https://f-droid.org/es/packages/com.termux/)
-> Tutorial pronto...
 
 ```bash
 termux-setup-storage
