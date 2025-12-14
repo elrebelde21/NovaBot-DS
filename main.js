@@ -20,6 +20,7 @@ const exec = promisify(cp.exec);
 import hispamemes from 'hispamemes';
 import moment from 'moment-timezone';
 import cfonts from 'cfonts';
+import { REST, Routes, SlashCommandBuilder } from 'discord.js';
 const { say } = cfonts
 import { loadPlugins } from './libs/plugins.js';
 //import antiLink from './plugins/_antilink.js';
@@ -160,6 +161,83 @@ const client = new Client({
 //----
 client.once('ready', () => {
 console.log(chalk.bold.greenBright(`\n𓃠 ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈✦ 🟢 𝘾𝙊𝙉𝙀𝙓𝙄𝙊𝙉 ✦┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈ 𓃠\n│\n│★ Bot Conectado: ${client.user.tag} con exitos\n│\n𓃠 ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈✦ ✅ ✦┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈ 𓃠`))
+
+// ===============================
+// REGISTRO DE SLASH COMMANDS
+// ===============================
+const commands = [];
+
+for (const plugin of Object.values(global.plugins)) {
+  if (!plugin?.slash) continue;
+
+  const slash = new SlashCommandBuilder()
+    .setName(plugin.slash.name)
+    .setDescription(plugin.slash.description || 'Comando del bot');
+
+  if (Array.isArray(plugin.slash.options)) {
+    for (const opt of plugin.slash.options) {
+      slash.addStringOption(o =>
+        o.setName(opt.name)
+          .setDescription(opt.description || 'Opción')
+          .setRequired(!!opt.required)
+      );
+    }
+  }
+
+  commands.push(slash.toJSON());
+}
+
+(async () => {
+  try {
+    const rest = new REST({ version: '10' }).setToken(client.token);
+
+    await rest.put(
+      Routes.applicationCommands(client.user.id),
+      { body: commands }
+    );
+
+    console.log(`✅ Slash cargados: ${commands.length}`);
+  } catch (e) {
+    console.error('❌ Error cargando slash:', e);
+  }
+})();
+
+client.on('interactionCreate', async interaction => {
+  if (!interaction.isChatInputCommand()) return
+
+  const commandName = interaction.commandName
+  const args = interaction.options.data.map(o => o.value)
+
+  const command = Object.values(global.plugins).find(cmd =>
+    cmd?.slash?.name === commandName
+  )
+
+  if (!command) return
+
+  const fakeMessage = {
+    author: interaction.user,
+    member: interaction.member,
+    guild: interaction.guild,
+    channel: interaction.channel,
+    content: `/${commandName}`,
+    reply: (data) => interaction.reply(data),
+  }
+
+  try {
+    await command(fakeMessage, {
+      args,
+      prefix: '/',
+      command: commandName,
+      db,
+      client,
+      text: args.join(' ')
+    })
+  } catch (e) {
+    console.error(e)
+    interaction.reply({ content: '❌ Error ejecutando el comando', ephemeral: true })
+  }
+})
+
 //loadCommands();
 //watchPluginsFolder();
 
@@ -564,7 +642,7 @@ const isBotAdmin = message.guild
     ? message.guild.members.cache.get(message.client.user.id)?.permissions.has(PermissionsBitField.Flags.Administrator) ?? false 
     : false;
 
-global.defaultPrefixes = ['.', '/', '#', '!', '×', '*', '-'];
+global.defaultPrefixes = ['#', '!', '×', '*', '/', '-'];
 
 if (!global.db.data.settings) global.db.data.settings = {};
 let prefix = '';
