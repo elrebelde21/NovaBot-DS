@@ -50,11 +50,11 @@
     "vm2": "^3.9.11",
     "express": "^4.18.1",
     "axios-cookiejar-support": "^5.0.5",
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.6.7",
+    "dotenv": "^16.4.5"
   },
   "optionalDependencies": {
-    "@discordjs/opus": "^0.5.3",
-     "dotenv": "^16.4.5",
+    "@discordjs/opus": "^0.5.3"
   },
   "engines": {
     "node": ">=16.0.0"
