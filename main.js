@@ -1,4 +1,5 @@
 import './settings.js';
+import 'dotenv/config';
 import { Client, GatewayIntentBits, PermissionsBitField, ActionRowBuilder, EmbedBuilder, Partials } from 'discord.js';
 import { isUrl, runtime, sendButton } from './libs/fuctions.js';
 import { createRequire } from 'module'
