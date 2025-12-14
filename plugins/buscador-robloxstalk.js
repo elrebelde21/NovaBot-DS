@@ -106,6 +106,18 @@ ${gameTxt}
 handler.help = ["roblox"];
 handler.desc = ["Busca información de un usuario de Roblox"];
 handler.tags = ["buscadores"];
+handler.slash = {
+  name: "roblox",
+  description: "Busca información de un usuario de Roblox",
+  options: [
+    {
+      name: "texto",
+      description: "Qué deseas buscar?",
+      type: 3,
+      required: false
+    }
+  ]
+};
 handler.command = /^robloxstalk|rbstalk|roblox$/i;
 
 export default handler;

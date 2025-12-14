@@ -52,14 +52,12 @@ let handler = async (message, { args, prefix, command }) => {
           videoCount: res.videos
         };
       } catch (err) {
-        await loading.delete().catch(() => {});
-        return message.reply("❌ No se pudo obtener información del usuario.");
+        //await loading.delete().catch(() => {});
+        return loading.edit("❌ No se pudo obtener información del usuario.");
       }
     }
 
-    const fecha = moment()
-      .tz("America/Argentina/Buenos_Aires")
-      .format("DD/MM/YYYY");
+    const fecha = moment().tz("America/Argentina/Buenos_Aires").format("DD/MM/YYYY");
 
     const embed = new EmbedBuilder()
       .setColor("#FE2C55")
@@ -94,9 +92,9 @@ ${profile.signature || "Sin descripción"}
         .setURL(`https://tiktok.com/@${profile.username}`)
     );
 
-    await loading.delete().catch(() => {});
+   // await loading.delete().catch(() => {});
 
-    return message.reply({
+    return loading.edit({
       embeds: [embed],
       components: [row]
     });
@@ -110,6 +108,18 @@ ${profile.signature || "Sin descripción"}
 handler.help = ["tiktokstalk"];
 handler.desc = ["Obtiene información del perfil de TikTok"];
 handler.tags = ["buscadores"];
+handler.slash = {
+  name: "tiktokstalk",
+  description: "Obtiene información del perfil de TikTok",
+  options: [
+    {
+      name: "texto",
+      description: "Qué deseas buscar?",
+      type: 3,
+      required: false
+    }
+  ]
+};
 handler.command = /^tiktokstalk|ttstalk$/i;
 
 export default handler;

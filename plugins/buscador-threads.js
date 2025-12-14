@@ -14,24 +14,18 @@ let handler = async (message, { args, prefix, command }) => {
 
     const loading = await message.reply("⏳ Cargando información...");
 
-    const apiUrl = `https://api.delirius.store/tools/threadsststalk?username=${encodeURIComponent(
-      username
-    )}`;
-
+    const apiUrl = `https://api.delirius.store/tools/threadsststalk?username=${encodeURIComponent(username)}`;
     const res = await fetch(apiUrl);
     const data = await res.json();
 
     if (!data?.status || !data.data) {
-      await loading.delete().catch(() => {});
-      return message.reply("❌ No se encontró información para ese usuario.");
+      //await loading.delete().catch(() => {});
+      return loading.edit("❌ No se encontró información para ese usuario.");
     }
 
     const user = data.data;
 
-    const fecha = moment()
-      .tz("America/Argentina/Buenos_Aires")
-      .format("DD/MM/YYYY");
-
+    const fecha = moment().tz("America/Argentina/Buenos_Aires").format("DD/MM/YYYY");
     const profileURL = `https://www.threads.net/@${user.username}`;
 
     const embed = new EmbedBuilder()
@@ -65,9 +59,9 @@ ${user.links?.length ? user.links.join("\n") : "Sin enlaces"}
         .setURL(profileURL)
     );
 
-    await loading.delete().catch(() => {});
+  //  await loading.delete().catch(() => {});
 
-    return message.reply({
+    return loading.edit({
       embeds: [embed],
       components: [row]
     });
@@ -81,6 +75,18 @@ ${user.links?.length ? user.links.join("\n") : "Sin enlaces"}
 handler.help = ["threadsstalk"];
 handler.desc = ["Obtiene info de un usuario de Threads"];
 handler.tags = ["buscadores"];
+handler.slash = {
+  name: "threadsstalk",
+  description: "Obtiene info de un usuario de Threads",
+  options: [
+    {
+      name: "texto",
+      description: "Qué deseas buscar?",
+      type: 3,
+      required: false
+    }
+  ]
+};
 handler.command = /^threadsstalk|tstalk$/i;
 
 export default handler;

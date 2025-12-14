@@ -10,13 +10,8 @@ import {
 let handler = async (message, { args, prefix, command }) => {
   try {
     const text = args.join(" ");
-    if (!text) {
-      return message.reply(
-        `⚠️ **¿Qué quieres buscar en YouTube?**\nEj: \`${prefix + command} bad bunny\``
-      );
-    }
+    if (!text) return message.reply(`⚠️ **¿Qué quieres buscar en YouTube?**\nEj: \`${prefix + command} bad bunny\``);
 
-    // 🔑 MENSAJE ÚNICO (reply inicial)
     const msg = await message.reply("🔎 Buscando en YouTube...");
 
     const result = await yts(text);
@@ -39,15 +34,13 @@ let handler = async (message, { args, prefix, command }) => {
       return new EmbedBuilder()
         .setColor("#FF0000")
         .setTitle(`🎧 Resultado ${index + 1}/${items.length}`)
-        .setDescription(`
-**🎵 Título:** ${v.title}
+        .setDescription(`**🎵 Título:** ${v.title}
 **👥 Autor:** ${v.author.name}
 **⌛ Duración:** ${v.timestamp}
 **👀 Vistas:** ${v.views.toLocaleString()}
 **📆 Publicado:** ${v.ago}
 
-🔗 **[Abrir en YouTube](${v.url})**
-`)
+🔗 **[Abrir en YouTube](${v.url})**`)
         .setImage(v.thumbnail)
         .setFooter({
           text: `YouTube • Solicitado por ${message.author.username} | ${fecha}`,
@@ -73,14 +66,12 @@ let handler = async (message, { args, prefix, command }) => {
           .setURL(items[index].url)
       );
 
-    // 🔥 EDITAMOS EL MISMO MENSAJE
     await msg.edit({
       content: `**Resultados para:** \`${text}\``,
       embeds: [getEmbed()],
       components: [getRow()]
     });
 
-    // 🔑 Collector SOBRE EL MISMO MENSAJE
     const collector = msg.createMessageComponentCollector({
       time: 90_000
     });

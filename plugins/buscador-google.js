@@ -15,14 +15,11 @@ let handler = async (message, { args, prefix, command }) => {
     const res = await fetch(`https://api.delirius.store/search/googlesearch?query=${encodeURIComponent(text)}`);
     const data = await res.json();
 
-    if (!data.status || !data.data || data.data.length === 0)
-      return message.reply(`❌ No se encontraron resultados para **${text}**`);
-
-    const results = data.data;
-    let index = 0;
-
-  //  const screenshot = `https://image.thum.io/get/fullpage/https://google.com/search?q=${encodeURIComponent(text)}`;
-  const screenshot = `https://api.dorratz.com/ssweb?url=https://google.com/search?q=${encodeURIComponent(text)}`;
+if (!data.status || !data.data || data.data.length === 0) return message.reply(`❌ No se encontraron resultados para **${text}**`);
+const results = data.data;
+let index = 0;
+//const screenshot = `https://image.thum.io/get/fullpage/https://google.com/search?q=${encodeURIComponent(text)}`;
+const screenshot = `https://api.dorratz.com/ssweb?url=https://google.com/search?q=${encodeURIComponent(text)}`;
 const fecha = moment().tz("America/Argentina/Buenos_Aires").format("DD/MM/YYYY");
 
     const getEmbed = () => {

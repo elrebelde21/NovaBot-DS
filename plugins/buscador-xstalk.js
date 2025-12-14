@@ -20,8 +20,8 @@ let handler = async (message, { args, prefix, command }) => {
     const json = await res.json();
 
     if (!json?.status || !json.data) {
-      await loading.delete().catch(() => {});
-      return message.reply("❌ No se encontró información para ese usuario.");
+    //  await loading.delete().catch(() => {});
+      return loading.edit("❌ No se encontró información para ese usuario.");
     }
 
     const user = json.data;
@@ -66,9 +66,9 @@ ${user.description || "Sin descripción"}
         .setURL(user.url)
     );
 
-    await loading.delete().catch(() => {});
+  //  await loading.delete().catch(() => {});
 
-    return message.reply({
+    return loading.edit({
       embeds: [embed],
       components: [row]
     });
@@ -82,6 +82,18 @@ ${user.description || "Sin descripción"}
 handler.help = ["xstalk"];
 handler.desc = ["Obtiene info del perfil de X (Twitter)"];
 handler.tags = ["buscadores"];
+handler.slash = {
+  name: "xstalk",
+  description: "Obtiene info del perfil de X (Twitter)",
+  options: [
+    {
+      name: "texto",
+      description: "Qué deseas buscar?",
+      type: 3,
+      required: false
+    }
+  ]
+};
 handler.command = /^xstalk|twitterstalk|xuser$/i;
 
 export default handler;

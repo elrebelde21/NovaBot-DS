@@ -108,6 +108,18 @@ let handler = async (message, { args, prefix, command }) => {
 handler.help = ["spotify"];
 handler.tags = ["downloader"];
 handler.command = /^spotify|music$/i;
+handler.slash = {
+  name: "spotify",
+  description: "escucha musica con spotify.",
+  options: [
+    {
+      name: "texto",
+      description: "Qué deseas buscar?",
+      type: 3,
+      required: false
+    }
+  ]
+};
 handler.register = true;
 
 export default handler;

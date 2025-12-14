@@ -32,8 +32,8 @@ const forbidden = [
       : [];
 
     if (!imgs || imgs.length === 0) {
-      await loadingMsg.delete().catch(() => {});
-      return message.reply("❌ No se encontraron imágenes.");
+      //await loadingMsg.delete().catch(() => {});
+      return loading.edit("❌ No se encontraron imágenes.");
     }
 
     const images = imgs.slice(0, 15);
@@ -71,9 +71,9 @@ const forbidden = [
         .setURL(images[index])
     );
 
-    await loadingMsg.delete().catch(() => {});
+  //  await loadingMsg.delete().catch(() => {});
 
-    const msg = await message.reply({
+    const msg = await loading.edit({
       embeds: [getEmbed()],
       components: [row]
     });
@@ -128,6 +128,18 @@ const forbidden = [
 handler.help = ["image <texto>"];
 handler.desc = ["Busca imágenes en Google."];
 handler.tags = ["buscadores"];
+handler.slash = {
+  name: "image",
+  description: "Busca imágenes en Google.",
+  options: [
+    {
+      name: "texto",
+      description: "Qué deseas buscar?",
+      type: 3,
+      required: false
+    }
+  ]
+};
 handler.command = /^image|gimage|imagen$/i;
 
 export default handler;

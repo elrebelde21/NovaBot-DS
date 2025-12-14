@@ -19,7 +19,6 @@ let handler = async (message, { args, prefix, command }) => {
 
     try {
       const url = `https://api.fgmods.xyz/api/other/lyrics?text=${encodeURIComponent(text)}&apikey=elrebelde21`;
-
       const res = await fetch(url);
       const json = await res.json();
 
@@ -56,15 +55,13 @@ let handler = async (message, { args, prefix, command }) => {
           image: "https://i.imgur.com/ZZhWb9Y.png"
         };
       } catch (err) {
-        await loading.delete().catch(() => {});
-        return message.reply("❌ No se pudo obtener la letra.");
+        //await loading.delete().catch(() => {});
+        return loading.edit("❌ No se pudo obtener la letra.");
       }
     }
 
-    const fecha = moment()
-      .tz("America/Argentina/Buenos_Aires")
-      .format("DD/MM/YYYY");
-
+    const fecha = moment().tz("America/Argentina/Buenos_Aires").format("DD/MM/YYYY");
+    
     const embed = new EmbedBuilder()
       .setColor("#FF4FD8")
       .setTitle(`🎵 Letra — ${lyricsData.title}`)
@@ -93,9 +90,9 @@ ${lyricsData.lyrics.substring(0, 3500)}
           )
         : [];
 
-    await loading.delete().catch(() => {});
+  //await loading.delete().catch(() => {});
 
-    return message.reply({
+    return loading.edit({
       embeds: [embed],
       components: row.length ? row : []
     });

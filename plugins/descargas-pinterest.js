@@ -37,7 +37,6 @@ async (text) => {
 
 let handler = async (message, { args, prefix, command }) => {
   try {
-
     const text = args.join(" ");
     if (!text) return message.reply(`⚠️ **Ingresa un término de búsqueda.**\nEj: \`${prefix}${command} nayeon\``);
 
@@ -126,6 +125,18 @@ const fecha = moment.tz("America/Argentina/Buenos_Aires").format("DD/MM/YYYY");
 handler.help = ["pinterest"];
 handler.desc = ["Busca imágenes en Pinterest."];
 handler.tags = ["buscadores"];
+handler.slash = {
+  name: "pinterest",
+  description: "Busca imágenes en Pinterest.",
+  options: [
+    {
+      name: "texto",
+      description: "Qué deseas buscar?",
+      type: 3,
+      required: false
+    }
+  ]
+};
 handler.command = /^pinterest$/i;
 
 export default handler;
