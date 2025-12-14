@@ -9,10 +9,24 @@ import {
 } from "discord.js";
 
 let handler = async (message, { args, prefix, command }) => {
+  const isSlash = message?.isChatInputCommand?.();
+
+  // ⏳ Importante para evitar "Unknown interaction"
+  if (isSlash && !message.deferred && !message.replied) {
+    await message.deferReply();
+  }
+
+  // función universal de respuesta
+  const reply = (data) => {
+    return isSlash
+      ? message.editReply(data)
+      : message.reply(data);
+  };
+
   try {
     const username = args.join(" ");
     if (!username) {
-      return message.reply(
+      return reply(
         `⚠️ **Ingresa un usuario de Instagram.**\nEj: \`${prefix}${command} skyultrapluss\``
       );
     }
@@ -63,7 +77,7 @@ let handler = async (message, { args, prefix, command }) => {
           url: `https://instagram.com/${res.username.replace("@", "")}`
         };
       } catch {
-        return message.reply("❌ No se pudo obtener información del usuario.");
+        return reply("❌ No se pudo obtener información del usuario.");
       }
     }
 
@@ -90,8 +104,10 @@ let handler = async (message, { args, prefix, command }) => {
 🔗 **[URL del perfil](${profile.url})**
 `)
       .setFooter({
-        text: `igstalk • Solicitado por ${message.author.username} | ${fecha}`,
-        iconURL: message.author.displayAvatarURL({ size: 256 })
+        text: `igstalk • Solicitado por ${isSlash ? message.user.username : message.author.username} | ${fecha}`,
+        iconURL: (isSlash
+          ? message.user.displayAvatarURL({ size: 256 })
+          : message.author.displayAvatarURL({ size: 256 }))
       });
 
     const row = new ActionRowBuilder().addComponents(
@@ -101,14 +117,14 @@ let handler = async (message, { args, prefix, command }) => {
         .setURL(profile.url)
     );
 
-    return message.reply({
+    return reply({
       embeds: [embed],
       components: [row]
     });
 
   } catch (err) {
     console.error("Error IG:", err);
-    message.reply("❌ Error al procesar la solicitud.");
+    return reply("❌ Error al procesar la solicitud.");
   }
 };
 
@@ -121,7 +137,7 @@ handler.tags = ["buscadores"];
 handler.command = /^igstalk|igsearch|instagramsearch$/i;
 
 /* ===============================
-   METADATA SLASH (TU SISTEMA)
+   METADATA SLASH
 ================================ */
 handler.slash = {
   name: "igstalk",
