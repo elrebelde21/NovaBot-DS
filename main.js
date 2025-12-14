@@ -642,7 +642,7 @@ const isBotAdmin = message.guild
     ? message.guild.members.cache.get(message.client.user.id)?.permissions.has(PermissionsBitField.Flags.Administrator) ?? false 
     : false;
 
-global.defaultPrefixes = ['#', '!', '×', '*', '/', '-'];
+global.defaultPrefixes = ['.', '/', '#', '!', '×', '*', '-'];
 
 if (!global.db.data.settings) global.db.data.settings = {};
 let prefix = '';
