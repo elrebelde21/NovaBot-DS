@@ -96,7 +96,10 @@ let handler = async (message, { prefix }) => {
     .setDescription(`**Comandos disponibles (${comandos.length}):**\n\n${texto}`)
     .setFooter({ text: "NovaBot-DS • Menú de categorías" });
 
-  await message.channel.send({ embeds: [embedCat] });
+  await i.followUp({
+    embeds: [embedCat],
+    ephemeral: true // 
+  });
 });
 
   } catch (e) {
