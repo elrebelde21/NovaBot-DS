@@ -213,19 +213,15 @@ client.on('interactionCreate', async interaction => {
   );
 
   if (!command) return;
-
-  // 🔑 CLAVE: deferReply SIEMPRE
+  
   await interaction.deferReply();
-
   const fakeMessage = {
     author: interaction.user,
     member: interaction.member,
     guild: interaction.guild,
     channel: interaction.channel,
     content: `/${commandName}`,
-
     reply: async (data) => {
-      // ya está deferido → editReply seguro
       return interaction.editReply(data);
     }
   };
@@ -241,14 +237,11 @@ client.on('interactionCreate', async interaction => {
     });
   } catch (e) {
     console.error(e);
-
-    // ❌ NO usar reply aquí
     await interaction.editReply({
       content: '❌ Error ejecutando el comando'
     });
   }
 });
-
 
 //loadCommands();
 //watchPluginsFolder();
