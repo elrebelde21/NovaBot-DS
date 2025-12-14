@@ -203,16 +203,19 @@ for (const plugin of Object.values(global.plugins)) {
 })();
 
 client.on('interactionCreate', async interaction => {
-  if (!interaction.isChatInputCommand()) return
+  if (!interaction.isChatInputCommand()) return;
 
-  const commandName = interaction.commandName
-  const args = interaction.options.data.map(o => o.value)
+  const commandName = interaction.commandName;
+  const args = interaction.options.data.map(o => o.value);
 
-  const command = Object.values(global.plugins).find(cmd =>
-    cmd?.slash?.name === commandName
-  )
+  const command = Object.values(global.plugins).find(
+    cmd => cmd?.slash?.name === commandName
+  );
 
-  if (!command) return
+  if (!command) return;
+
+  // 🔑 CLAVE: deferReply SIEMPRE
+  await interaction.deferReply();
 
   const fakeMessage = {
     author: interaction.user,
@@ -220,8 +223,12 @@ client.on('interactionCreate', async interaction => {
     guild: interaction.guild,
     channel: interaction.channel,
     content: `/${commandName}`,
-    reply: (data) => interaction.reply(data),
-  }
+
+    reply: async (data) => {
+      // ya está deferido → editReply seguro
+      return interaction.editReply(data);
+    }
+  };
 
   try {
     await command(fakeMessage, {
@@ -231,12 +238,17 @@ client.on('interactionCreate', async interaction => {
       db,
       client,
       text: args.join(' ')
-    })
+    });
   } catch (e) {
-    console.error(e)
-    interaction.reply({ content: '❌ Error ejecutando el comando', ephemeral: true })
+    console.error(e);
+
+    // ❌ NO usar reply aquí
+    await interaction.editReply({
+      content: '❌ Error ejecutando el comando'
+    });
   }
-})
+});
+
 
 //loadCommands();
 //watchPluginsFolder();
@@ -556,6 +568,8 @@ let user = db.data.users[message.author.id];
         if (!isNumber(user.exp)) user.exp = 100;
         if (!('role' in user)) user.role = '🙊 NOVATO(A) :v';
         if (!('autolevelup' in user)) user.autolevelup = true;
+       if (!user.inventory) user.inventory = [];
+       if (!user.pickaxe) user.pickaxe = "wood";
         if (!isNumber(user.level)) user.level = 0;
     }
  let chat = db.data.chats[message.channel.id];

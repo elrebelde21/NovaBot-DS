@@ -115,6 +115,35 @@ registra: `*[ 🔴 HEY ALTO NO ESTAS REGISTRADO 🔴 ]*\n\nNO APARECES EN MI BAS
 global.multiplier = 90 // Cuanto más alto, más difícil subir de nivel 
 global.maxwarn = '5' // máxima advertencias 
 
+//---------------[ RPG ]----------------
+
+global.rpg = {
+  wood: {
+    id: "wood",
+    name: "🪵 Pico de Madera",
+    reduce: 0,
+    price: 0
+  },
+  stone: {
+    id: "stone",
+    name: "🪨 Pico de Piedra",
+    reduce: 5,
+    price: 5000
+  },
+  iron: {
+    id: "iron",
+    name: "⛓️ Pico de Hierro",
+    reduce: 10,
+    price: 15000
+  },
+  diamond: {
+    id: "diamond",
+    name: "💎 Pico de Diamante",
+    reduce: 20,
+    price: 50000
+  }
+};
+
 //----------------------------------------------------
 
 let file = fileURLToPath(import.meta.url)
