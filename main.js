@@ -169,7 +169,7 @@ const commands = [];
 for (const plugin of Object.values(global.plugins)) {
   if (!plugin?.slash) continue;
 
-if (slashNames.has(slashName)) {
+if (slashNames.has(plugin.slash.name)) {
     console.log('❌ SLASH DUPLICADO:',
       plugin.slash.name,
       '→ plugin:',
