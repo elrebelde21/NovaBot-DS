@@ -165,24 +165,10 @@ console.log(chalk.bold.greenBright(`\n𓃠 ┈┈┈┈┈┈┈┈┈┈┈┈�
 
 //Slash commands 
 const commands = [];
-const slashNames = new Set();
 
 for (const plugin of Object.values(global.plugins)) {
   if (!plugin?.slash) continue;
 
-const slashName = plugin.slash.name;
-
-  // 🔥 DETECTAR DUPLICADOS
-  if (slashNames.has(slashName)) {
-    console.log(
-      '❌ SLASH DUPLICADO:',
-      slashName,
-      '→ plugin:',
-      plugin.help?.[0] || plugin.command || 'desconocido'
-    );
-    continue; // ⛔ lo ignoramos para que no crashee
-  }
-  
   const slash = new SlashCommandBuilder()
     .setName(plugin.slash.name)
     .setDescription(plugin.slash.description || 'Comando del bot');
