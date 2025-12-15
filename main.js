@@ -169,6 +169,15 @@ const commands = [];
 for (const plugin of Object.values(global.plugins)) {
   if (!plugin?.slash) continue;
 
+if (slashNames.has(slashName)) {
+    console.log('❌ SLASH DUPLICADO:',
+      plugin.slash.name,
+      '→ plugin:',
+      plugin.help?.[0] || plugin.command || 'desconocido'
+    );
+    continue; // ⛔ lo ignoramos para que no crashee
+  }
+  
   const slash = new SlashCommandBuilder()
     .setName(plugin.slash.name)
     .setDescription(plugin.slash.description || 'Comando del bot');
