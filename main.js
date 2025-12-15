@@ -163,9 +163,7 @@ const client = new Client({
 client.once('ready', () => {
 console.log(chalk.bold.greenBright(`\n𓃠 ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈✦ 🟢 𝘾𝙊𝙉𝙀𝙓𝙄𝙊𝙉 ✦┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈ 𓃠\n│\n│★ Bot Conectado: ${client.user.tag} con exitos\n│\n𓃠 ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈✦ ✅ ✦┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈ 𓃠`))
 
-// ===============================
-// REGISTRO DE SLASH COMMANDS
-// ===============================
+//Slash commands 
 const commands = [];
 
 for (const plugin of Object.values(global.plugins)) {
@@ -177,11 +175,19 @@ for (const plugin of Object.values(global.plugins)) {
 
   if (Array.isArray(plugin.slash.options)) {
     for (const opt of plugin.slash.options) {
-      slash.addStringOption(o =>
-        o.setName(opt.name)
-          .setDescription(opt.description || 'Opción')
-          .setRequired(!!opt.required)
-      );
+      if (opt.type === 7) {
+  slash.addChannelOption(o =>
+    o.setName(opt.name)
+      .setDescription(opt.description || 'Canal')
+      .setRequired(!!opt.required)
+  );
+} else {
+  slash.addStringOption(o =>
+    o.setName(opt.name)
+      .setDescription(opt.description || 'Opción')
+      .setRequired(!!opt.required)
+  );
+}
     }
   }
 
@@ -281,7 +287,7 @@ const actividades = [
 const actividad = actividades[Math.floor(Math.random() * actividades.length)];
 
 client.user.setPresence({status: 'online', activities: [actividad] });
-}, 10_000); // cada 10 s
+}, 30_000); // cada 30seg
 
 //Envía memes automáticamente cada hora
 setInterval(async () => {
@@ -654,46 +660,10 @@ console.log(message.content)
 
 const isOwner = global.owner.map(ownerArray => ownerArray[0]);
 const isROwner = message.guild ? message.guild.ownerId === message.author.id : false;
-const isAdmin = message.guild && message.member 
-    ? message.member.permissions.has(PermissionsBitField.Flags.Administrator) 
-    : false;
-const isBotAdmin = message.guild 
-    ? message.guild.members.cache.get(message.client.user.id)?.permissions.has(PermissionsBitField.Flags.Administrator) ?? false 
-    : false;
+const isAdmin = message.guild && message.member ? message.member.permissions.has(PermissionsBitField.Flags.Administrator) : false;
+const isBotAdmin = message.guild ? message.guild.members.cache.get(message.client.user.id)?.permissions.has(PermissionsBitField.Flags.Administrator) ?? false : false;
 
-global.defaultPrefixes = ['.', '/', '#', '!', '×', '*', '-'];
-
-if (!global.db.data.settings) global.db.data.settings = {};
-let prefix = '';
-let usedPrefix = '';
-
-const serverPrefix = message.guild ? global.db.data.settings[message.guild.id]?.prefix : null;
-
-if (serverPrefix === null) {
-    prefix = '';
-    usedPrefix = '';
-} else if (Array.isArray(serverPrefix) && serverPrefix.length > 0) {
-    const matched = serverPrefix.find(p => message.content.startsWith(p));
-    if (matched) {
-        prefix = matched;
-        usedPrefix = matched;
-    }
-} else {
-    const matched = global.defaultPrefixes.find(p => message.content.startsWith(p));
-    if (matched) {
-        prefix = matched;
-        usedPrefix = matched;
-    }
-}
-
-if (!prefix && serverPrefix === null && message.content.trim() !== '') {
-    prefix = ''; 
-}
-
-const commandBody = prefix ? message.content.slice(prefix.length).trim() : message.content.trim();
-const args = commandBody.split(' ');    
-const commandName = args.shift()?.toLowerCase();
-
+//before
 for (const filename in global.plugins) {
   const cmd = global.plugins[filename];
   if (cmd.before && typeof cmd.before === "function") {
@@ -710,6 +680,36 @@ for (const filename in global.plugins) {
     }
   }
 }
+
+const defaultPrefixes = ['.', '/', '#', '!', '×', '*', '-'];
+const settingsGuild = message.guild ? global.db.data.settings[message.guild.id] || {} : {};
+const serverPrefix = settingsGuild.prefix;
+
+let usedPrefix = null;
+
+if (serverPrefix === null) {
+  usedPrefix = '';
+}
+
+else if (Array.isArray(serverPrefix) && serverPrefix.length) {
+  usedPrefix = serverPrefix.find(p =>
+    message.content.startsWith(p)
+  ) ?? null;
+}
+
+else {
+  usedPrefix = defaultPrefixes.find(p =>
+    message.content.startsWith(p)
+  ) ?? null;
+}
+
+if (usedPrefix === null) return;
+
+const commandBody = message.content.slice(usedPrefix.length).trim();
+if (!commandBody) return;
+
+const args = commandBody.split(/\s+/);
+const commandName = args.shift()?.toLowerCase();
 
 const command = Object.values(global.plugins).find(cmd => {
   if (!cmd) return false;
@@ -791,7 +791,9 @@ prefix: usedPrefix,
 command: commandName, 
 db, 
 client, 
-text: prefix ? message.content.slice(prefix.length + commandName.length).trim() : message.content.slice(commandName.length).trim()
+text: usedPrefix
+    ? message.content.slice(usedPrefix.length + commandName.length).trim()
+    : message.content.slice(commandName.length).trim()
 });
 } catch (error) {
 console.error('Error:', error);
