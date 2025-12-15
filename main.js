@@ -424,24 +424,34 @@ const farewellMessageTemplate = chatSettings.farewellMessage || `╭┈┈┈┈
 
 //Boost 
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
-    const guildId = newMember.guild.id;
-    const settings = db.data.settings[guildId] || {};
+    try {
+        const guildId = newMember.guild.id;
+        const settings = db.data.settings[guildId] || {};
+        
+        if (
+            !settings.boostChannelId &&
+            !settings.boostMessage &&
+            !settings.boostEmbed &&
+            !settings.boostRoleId
+        ) return;
 
-    if (!settings.boostChannelId && !settings.boostMessage && !settings.boostEmbed && !settings.boostRoleId) return;
-
-    const antes = oldMember.premiumSince;
-    const ahora = newMember.premiumSince;
-
-    if (!antes && ahora) {
-
+        const antes = oldMember.premiumSince;
+        const ahora = newMember.premiumSince;
+        if (antes || !ahora) return;
         const canal = newMember.guild.channels.cache.get(settings.boostChannelId);
         if (!canal) return;
 
         if (settings.boostRoleId) {
-            try {
-                await newMember.roles.add(settings.boostRoleId);
-            } catch (e) {
-                console.log("Error asignando rol booster:", e);
+            const role = newMember.guild.roles.cache.get(settings.boostRoleId);
+            const botMember = newMember.guild.members.me;
+
+            if (
+                role &&
+                botMember?.permissions.has("ManageRoles") &&
+                role.position < botMember.roles.highest.position &&
+                !newMember.roles.cache.has(role.id)
+            ) {
+                newMember.roles.add(role.id).catch(() => {});
             }
         }
 
@@ -464,33 +474,34 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
                 .replace(/#boostlevel/g, boostLevel.toString());
         }
 
-        const msg = replaceVars(settings.boostMessage || "💜 **#tag ha mejorado el servidor!** 🎉");
+        const msg = replaceVars(
+            settings.boostMessage || "**#tag ha mejorado el servidor!** 🎉"
+        );
 
         const emb = settings.boostEmbed || {};
-        const defaultTitle = `💜 Gracias por tu mejora, #user!`;
-        const defaultDesc = `✨ Ahora tenemos **#boosts** mejoras.\n✨ Nivel del servidor: **#boostlevel**`;
-
-        const tituloFinal = replaceVars(emb.title || defaultTitle);
-        const descFinal   = replaceVars(emb.description || defaultDesc);
-        const footerFinal = replaceVars(emb.footerText || "Sistema Booster NovaBot");
-
-        const avatar = newMember.user.displayAvatarURL({ dynamic: true, size: 1024 });
+        const defaultTitle = "💜 ¡Gracias por tu mejora, #user!";
+        const defaultDesc = "¡#tag ha boosteado el servidor! Ahora tenemos #boosts mejoras.";
 
         const embedBoost = new EmbedBuilder()
             .setColor("#FF73FA")
-            .setTitle(tituloFinal)
-            .setDescription(descFinal)
-            .setThumbnail(avatar)
+            .setTitle(replaceVars(emb.title || defaultTitle))
+            .setDescription(replaceVars(emb.description || defaultDesc))
+            .setThumbnail(
+                newMember.user.displayAvatarURL({ dynamic: true, size: 1024 })
+            )
             .setFooter({
-                text: footerFinal,
-                iconURL: avatar
+                text: replaceVars(emb.footerText || "Sistema Booster NovaBot"),
+                iconURL: newMember.user.displayAvatarURL({ dynamic: true })
             })
             .setTimestamp();
 
-        canal.send({
+        await canal.send({
             content: msg,
             embeds: [embedBoost]
         });
+
+    } catch (err) {
+        console.error("❌ Error en sistema boost:", err);
     }
 });
 
