@@ -1,21 +1,9 @@
-name: Notify Discord (NovaBot-DS)
+name: Test Actions
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: push
 
 jobs:
-  notify:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Discord notification
-        run: |
-          curl -X POST -H "Content-Type: application/json" \
-          -d "{
-            \"content\": \"🚀 **NovaBot-DS actualizado**\n👤 Autor: ${{ github.actor }}\n🌿 Branch: ${{ github.ref_name }}\n📝 Commit: ${{ github.event.head_commit.message }}\"
-          }" \
-          ${{ secrets.DISCORD_WEBHOOK }}
+      - run: echo "Actions OK"
