@@ -10,37 +10,20 @@ const handler = async (message, { db, args }) => {
     const guildId = message.guild.id;
     const userTarget = message.mentions?.users?.first?.() || (args?.[0]?.id ? args[0] : null) || message.author;
     const userId = userTarget.id;
-    if (!db.data.users) db.data.users = {};
-    if (!db.data.levels) db.data.levels = {};
-    if (!db.data.levels[guildId]) db.data.levels[guildId] = {};
+    const userGlobal = db.data.users?.[userId];
+    const levelData = db.data.levels?.[guildId]?.[userId];
 
-    if (!db.data.users[userId]) {
-      db.data.users[userId] = {
-        limit: 20,
-        money: 100,
-        voteStreak: 0,
-        exp: 0,
-      };
+    if (!userGlobal) {
+      return message.reply(`❌ **${userTarget.username}** no existe en mi base de datos.`);
     }
 
-    if (!db.data.levels[guildId][userId]) {
-      db.data.levels[guildId][userId] = {
-        level: 0,
-        exp: 0,
-      };
-    }
-
-    const userGlobal = db.data.users[userId];
-    const levelData = db.data.levels[guildId][userId];
-    const nivel = levelData.level;
+    const nivel = levelData.level || "0";
     const expServer = levelData.exp;
     const expTotal = userGlobal.exp;
     const expNecesaria = (nivel + 1) ** 3 * 100;
 
     const progreso = Math.min(expServer / expNecesaria, 1);
-    const barra = "█"
-      .repeat(Math.floor(progreso * 10))
-      .padEnd(10, "▬");
+    const barra = "█".repeat(Math.floor(progreso * 10)).padEnd(10, "▬");
 
     const embed = new EmbedBuilder()
       .setColor("#00FFFF")
@@ -131,7 +114,7 @@ const handler = async (message, { db, args }) => {
 };
 handler.help = ["balance", "bal"];
 handler.tags = ["rpg"];
-handler.desc = ["Ver tu balance o el de otro usuario"];
+handler.desc = ["Ver tu perfil o el de otro usuario"];
 handler.command = /^(balance?|bal)$/i;
 handler.slash = {
   name: "bal",
@@ -140,7 +123,7 @@ handler.slash = {
     {
       name: "user",
       description: "Usuario a consultar",
-      type: 6, // USER
+      type: 6,
       required: false,
     },
   ],
