@@ -21,11 +21,10 @@ const handler = async (message) => {
 
 handler.help = ['work', 'trabajar', 'chambear', 'w'];
 handler.tags = ['econ'];
+handler.desc = ['trabajar y ganas recompensa'];
 handler.command = /^(work|trabajar|chambear|w)$/i;
+handler.slash = { name: "work", description: "trabajar y ganas recompensa" };
 handler.register = true;
-handler.rowner = false
-handler.admin = false
-handler.botAdmin = false
 export default handler;
 
 function msToTime(duration) {

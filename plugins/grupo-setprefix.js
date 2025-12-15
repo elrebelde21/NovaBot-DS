@@ -25,6 +25,19 @@ message.reply(`Prefijos actualizados: **${newPrefixes.join(", ")}**`);
 };
 handler.help = ["setprefix"];
 handler.tags = ["group"];
+handler.desc = ["cambiar el prefijo del bot para ese servidor"];
 handler.command = /^setprefix$/i;
+handler.slash = {
+  name: "setprefix",
+  description: "cambiar el prefijo del bot para ese servidor",
+  options: [
+    {
+      name: "texto",
+      description: "Ingresa los prefijo ej: /,#,*",
+      type: 3,
+      required: false
+    }
+  ]
+};
 handler.admin = true;
 export default handler;

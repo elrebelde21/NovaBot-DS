@@ -22,6 +22,7 @@ handler.help = ['boobs'];
 handler.desc = ['envia imágenes tetas'];
 handler.tags = ['nsfw'];
 handler.command = /^(boobs)$/i;
+handler.slash = { name: "boobs", description: "para ver boobs 🥵" };
 handler.register = true
 handler.limit = 1
 export default handler;

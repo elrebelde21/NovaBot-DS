@@ -25,8 +25,6 @@ if (!user) {
 
 handler.help = ['limit [@user]'];
 handler.tags = ['econ'];
+handler.desc = ['para ver cuanto diamante (limites) que quedan'];
 handler.command = /^(limit)$/i;
-handler.rowner = false
-handler.admin = false
-handler.botAdmin = false
 export default handler;

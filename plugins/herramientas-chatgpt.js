@@ -19,5 +19,17 @@ handler.help = ['chatgpt'];
 handler.desc = ['hablar con la IA (ChatGPT)'];
 handler.tags = ['buscadores'];
 handler.command = /^(ia|chatgpt)$/i;
+handler.slash = {
+  name: "chatgpt",
+  description: "hablar con la IA (ChatGPT)",
+  options: [
+    {
+      name: "texto",
+      description: "Ingresa en textos...",
+      type: 3,
+      required: false
+    }
+  ]
+};
 handler.register = true
 export default handler;

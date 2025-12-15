@@ -6,8 +6,8 @@ const handler = async (message, { db }) => {
     const userMention = message.mentions.users.first() || message.author;
     const userId = userMention.id;
 
-    db.data.users ??= {};
-    db.data.users[userId] ??= { 
+    db.data.users = {};
+    db.data.users[userId] = { 
       limit: 20, 
       money: 100, 
       voteStreak: 0,
@@ -16,9 +16,9 @@ const handler = async (message, { db }) => {
 
     let userGlobal = db.data.users[userId];
 
-    db.data.levels ??= {};
-    db.data.levels[guildId] ??= {};
-    db.data.levels[guildId][userId] ??= { 
+    db.data.levels = {};
+    db.data.levels[guildId] = {};
+    db.data.levels[guildId][userId] = { 
       exp: 0,
       level: 0 
     };
@@ -74,8 +74,10 @@ const handler = async (message, { db }) => {
   }
 };
 
-handler.help = ["balance", "bal", "perfil"];
+handler.help = ["balance", "bal"];
 handler.tags = ["rpg"];
-handler.command = /^(balance?|bal|perfil|profile)$/i;
+handler.desc = ["para ver tu balance actual o en un usuario"];
+handler.command = /^(balance?|bal)$/i;
+handler.slash = { name: "bal", description: "para ver tu balance actual o en un usuario" };
 
 export default handler;

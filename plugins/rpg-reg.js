@@ -58,8 +58,7 @@ message.reply(sn)
 };
 handler.help = ['reg', 'verificar', 'datfar'];
 handler.tags = ['rg'];
+handler.desc = ['para verificarte'];
 handler.command = /^(reg|verificar|datfar)$/i; 
-handler.rowner = false
-handler.admin = false
-handler.botAdmin = false
+handler.slash = { name: "reg", description: "para verificarte" };
 export default handler;

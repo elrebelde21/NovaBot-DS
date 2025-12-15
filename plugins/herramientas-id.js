@@ -9,7 +9,4 @@ const userMention = message.mentions.users.first();
 handler.help = ['id'];
 handler.tags = ['tools'];
 handler.command = /^id$/i;
-handler.rowner = false
-handler.admin = false
-handler.botAdmin = false
 export default handler;

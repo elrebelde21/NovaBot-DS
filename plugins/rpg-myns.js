@@ -7,9 +7,8 @@ await message.reply(sn)
 };
 handler.help = ['myns'];
 handler.tags = ['rg'];
+handler.desc = ['para obtener tu numero de serie'];
 handler.command = /^myns$/i;
+handler.slash = { name: "myns", description: "para obtener tu numero de serie" };
 handler.register = true;
-handler.rowner = false
-handler.admin = false
-handler.botAdmin = false
 export default handler;

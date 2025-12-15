@@ -85,7 +85,20 @@ const handler = async (message, { args, prefix, command }) => {
 
 handler.help = ["ttsvoice", "tts"];
 handler.tags = ["tools"];
+handler.desc = ["general nota de voz con efectos"];
 handler.command = /^ttsvoice|vtalk|vtts|tts$/i;
+handler.slash = {
+  name: "tts",
+  description: "general nota de voz con efectos",
+  options: [
+    {
+      name: "texto",
+      description: "Ingresa en textos...",
+      type: 3,
+      required: false
+    }
+  ]
+};
 handler.register = true;
 
 export default handler;

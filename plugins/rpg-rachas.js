@@ -99,6 +99,8 @@ let handler = async (message, { db }) => {
 
 handler.help = ["rachas", "streak", "votostreak"];
 handler.tags = ["rpg"];
+handler.desc = ['para quien esta el top global de la rachas'];
 handler.command = /^(rachas?|streak|votostreak|leaderboardvotos?)$/i;
+handler.slash = { name: "rachas", description: "para quien esta el top global de la rachas" };
 
 export default handler;

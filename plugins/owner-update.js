@@ -15,8 +15,7 @@ const handler = async (message, args) => {
 };
 handler.help = ['update'];
 handler.tags = ['owner'];
+handler.desc = ['actualizar el bot'];
 handler.command = /^(update|actualizar|fix|fixed)$/i; 
 handler.rowner = true; 
-handler.admin = false
-handler.botAdmin = false
 export default handler;

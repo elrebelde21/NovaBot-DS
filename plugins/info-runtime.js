@@ -9,6 +9,7 @@ handler.help = ['runtime'];
 handler.desc = ['información cuanto tiempo esta activo en bot'];
 handler.tags = ['main'];
 handler.command = /^(runtime|uptime)$/i; 
+handler.slash = { name: "runtime", description: "información cuanto tiempo esta activo en bot" };
 handler.register = true;
 export default handler;
 

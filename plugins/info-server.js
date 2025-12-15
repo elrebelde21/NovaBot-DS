@@ -159,7 +159,9 @@ await sent.edit({ content: null, embeds: [embed] });
 
 handler.help = ["server"];
 handler.tags = ["main"];
+handler.desc = ["información del server"];
 handler.command = /^(server)$/i;
+handler.slash = { name: "server", description: "información del server" };
 handler.register = true;
 
 export default handler;

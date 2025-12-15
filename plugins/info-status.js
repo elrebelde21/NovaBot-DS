@@ -87,5 +87,6 @@ handler.help = ["status"];
 handler.desc = ["Muestra el estado global del bot"];
 handler.tags = ["main"];
 handler.command = /^status$/i;
+handler.slash = { name: "status", description: "Muestra el estado global del bot" };
 
 export default handler;

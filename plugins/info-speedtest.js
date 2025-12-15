@@ -49,8 +49,7 @@ let handler = async (message) => {
 
 handler.help = ['speed'];
 handler.tags = ['main'];
+handler.desc = ['prueba de velocidad'];
 handler.command = /^(speedtest|speed)$/i; 
-handler.rowner = false
-handler.admin = false
-handler.botAdmin = false
+handler.slash = { name: "speedtest", description: "prueba de velocidad" };
 export default handler;

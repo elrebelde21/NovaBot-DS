@@ -9,10 +9,10 @@ let handler = async (message) => {
         console.log(error) 
     }
 };
-
+handler.help = ['memes'];
+handler.desc = ['enviar un memes'];
+handler.tags = ['randow'];
 handler.command = /^memes$/i; 
+handler.slash = { name: "memes", description: "enviar un memes" };
 handler.register = true
-handler.rowner = false
-handler.admin = false
-handler.botAdmin = false
 export default handler;

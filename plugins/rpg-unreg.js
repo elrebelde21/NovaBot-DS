@@ -21,8 +21,7 @@ let handler = async (message, { args, prefix, command }) => {
 };
 handler.help = ['unreg'];
 handler.tags = ['rg'];
+handler.desc = ['para dejar de esta Verificados en el bot'];
 handler.command = /^unreg$/i;
-handler.rowner = false
-handler.admin = false
-handler.botAdmin = false
+handler.slash = { name: "unreg", description: "para dejar de esta Verificados en el bot" };
 export default handler;

@@ -21,6 +21,7 @@ handler.help = ['china'];
 handler.desc = ['envia imágenes randow +18'];
 handler.tags = ['nsfw'];
 handler.command = /^(china)$/i;
+handler.slash = { name: "china", description: "envia imágenes randow +18 🥵" };
 handler.register = true
 handler.limit = 1
 export default handler;

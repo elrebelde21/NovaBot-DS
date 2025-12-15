@@ -18,12 +18,11 @@ await owner.send(teks);
 };
 handler.help = ['reporte', 'request'].map(v => v + ' <teks>');
 handler.tags = ['main'];
+handler.desc = ['reporta algun comando con errores'];
 handler.command = /^(report|request|reporte|bugs|bug|report-owner|reportes|reportar)$/i;
+handler.slash = { name: "report", description: "reporta algun comando con errores" };
 handler.exp = 30;
 handler.register = true;
-handler.rowner = false
-handler.admin = false
-handler.botAdmin = false
 export default handler;
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

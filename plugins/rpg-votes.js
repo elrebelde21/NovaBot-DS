@@ -111,6 +111,7 @@ handler.help = ["vote"];
 handler.desc = "Vota por el bot y reclama tu recompensa.";
 handler.tags = ["econ"];
 handler.command = /^vote$/i;
+handler.slash = { name: "vote", description: "Vota por el bot y reclama tu recompensa" };
 
 export default handler;
 
