@@ -165,13 +165,18 @@ console.log(chalk.bold.greenBright(`\n𓃠 ┈┈┈┈┈┈┈┈┈┈┈┈�
 
 //Slash commands 
 const commands = [];
+const slashNames = new Set();
 
 for (const plugin of Object.values(global.plugins)) {
   if (!plugin?.slash) continue;
 
-if (plugin.slash.name.has(plugin.slash.name)) {
-    console.log('❌ SLASH DUPLICADO:',
-      plugin.slash.name,
+const slashName = plugin.slash.name;
+
+  // 🔥 DETECTAR DUPLICADOS
+  if (slashNames.has(slashName)) {
+    console.log(
+      '❌ SLASH DUPLICADO:',
+      slashName,
       '→ plugin:',
       plugin.help?.[0] || plugin.command || 'desconocido'
     );
