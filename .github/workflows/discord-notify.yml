@@ -1,9 +1,10 @@
-name: Test Actions
+name: Unlock Actions
 
-on: push
+on:
+  push
 
 jobs:
-  test:
+  unlock:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Actions OK"
+      - run: echo "unlock actions"
