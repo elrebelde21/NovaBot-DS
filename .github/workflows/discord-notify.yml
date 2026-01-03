@@ -1,10 +1,14 @@
-name: Unlock Actions
-
-on:
-  push
+name: Discord notify
+on: [push]
 
 jobs:
-  unlock:
+  notify:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "unlock actions"
+      - name: Send Discord webhook
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          curl -H "Content-Type: application/json" -X POST \
+          -d "{\"content\":\"✅ Push en ${GITHUB_REPOSITORY} por ${GITHUB_ACTOR}\nCommit: ${GITHUB_SHA}\"}" \
+          "$WEBHOOK"
