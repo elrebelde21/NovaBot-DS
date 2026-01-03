@@ -39,8 +39,7 @@ let handler = async (message, { args, db, prefix, command }) => {
 
   switch (type) {
     case "welcome":
-      if (!message.guild)
-        return message.reply("❌ Solo se puede usar en grupos.");
+      if (!message.guild) return message.reply("❌ Solo se puede usar en grupos.");
       settings.welcome = isEnable;
       db.data.settings[message.guild.id] = settings;
       break;
@@ -57,7 +56,9 @@ case "autolevelup": case "autonivel":
       break;
 
     case "antilink2":
-      if (message.guild) chat.antiLink2 = isEnable;
+      if (!message.guild) return message.reply("❌ Solo se puede usar en grupos.");
+      settings.antilink.enabled = isEnable;
+      db.data.settings[message.guild.id] = settings;
       break;
 
     default:
