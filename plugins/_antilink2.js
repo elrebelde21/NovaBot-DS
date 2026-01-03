@@ -117,14 +117,12 @@ export const before = async (message, { db, isAdmin, isBotAdmin }) => {
   const settings = db.data.settings?.[message.guild.id]?.antilink;
   if (!settings?.enabled) return;
 
-  // Roles exentos
   if (settings.exemptRoles?.length) {
     if (message.member.roles.cache.some(r => settings.exemptRoles.includes(r.id))) {
       return;
     }
   }
 
-  // Canales whitelist
   if (settings.whitelistChannels?.includes(message.channel.id)) {
     return;
   }
@@ -132,7 +130,6 @@ export const before = async (message, { db, isAdmin, isBotAdmin }) => {
   const links = message.content.match(URL_REGEX);
   if (!links) return;
 
-  // Detectar si algún link está bloqueado
   const blocked = links.find(link =>
     settings.domains.some(id => {
       const platform = DOMAINS.find(d => d.id === id);
@@ -146,15 +143,12 @@ export const before = async (message, { db, isAdmin, isBotAdmin }) => {
   if (isAdmin) return message.reply("🙄 **AntiLink activo**, pero te salvaste porque sos **admin**.");
   if (!isBotAdmin) return message.reply("⚠️ Te salvarte gilpollas en antilink esta activo pero no soy admin no te puedo eliminar")
 
-  // 🗑️ borrar mensaje
   await message.delete().catch(() => {});
 
   const uid = message.author.id;
   settings.violations[uid] = (settings.violations[uid] || 0) + 1;
 
   await message.channel.send(`⚠️ <@${uid}> enlace prohibido\nViolaciones: **${settings.violations[uid]}/${settings.limit}**`);
-
-  // ⚙️ acción
   if (settings.violations[uid] >= settings.limit) {
     switch (settings.action) {
       case "warn":
