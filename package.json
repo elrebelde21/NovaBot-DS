@@ -36,9 +36,7 @@
     "axios": "^0.24.0",
    "cheerio": "1.0.0-rc.12",
     "api-dylux": "^1.8.5",
-    "systeminformation": "^5.17.3",
-    "lowdb": "^3.0.0",
-    "mongoose": "^6.6.5",
+    "systeminformation": "^5.17.3",    
     "lodash": "^4.17.21",
     "performance-now": "^2.1.0",
     "google-it": "^1.6.3",
@@ -49,12 +47,18 @@
     "yargs": "^17.3.1",
     "vm2": "^3.9.11",
     "express": "^4.18.1",
+    "pg": "^8.11.3",
+    "lowdb": "^3.0.0",
+    "mongoose": "^6.6.5",
     "axios-cookiejar-support": "^5.0.5",
     "node-fetch": "^2.6.7",
-    "dotenv": "^16.4.5"
+    "dotenv": "^17.2.3"
   },
   "optionalDependencies": {
-    "@discordjs/opus": "^0.5.3"
+    "@discordjs/opus": "^0.5.3",
+    "better-sqlite3": "^12.5.0",
+    "mongodb": "^7.0.0",
+    "mysql2": "^3.16.0"
   },
   "engines": {
     "node": ">=16.0.0"

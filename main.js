@@ -9,8 +9,7 @@ import { watchFile, unwatchFile } from 'fs'
 import {fileURLToPath, pathToFileURL} from 'url'
 import { platform } from 'process'
 import * as ws from 'ws'
-import {Low, JSONFile} from 'lowdb'
-import { mongoDB, mongoDBV2 } from './libs/mongoDB.js'
+import { createDatabase } from "./libs/dbAdapter.js";
 import _ from 'lodash';
 import fs from 'fs';
 import chalk from 'chalk';
@@ -93,50 +92,6 @@ await owner.send(`❌ Rechazo no manejado en el bot:\n${reason}`).catch(e => con
     }
 });
 
-// Base de datos
-global.opts = yargs(process.argv.slice(2)).exitProcess(false).parse();
-
-const dbAdapter = /https?:\/\//.test(global.opts['db'] || '') 
-  ? new cloudDBAdapter(global.opts['db']) 
-  : /mongodb/.test(global.opts['db']) 
-  ? new mongoDB(global.opts['db']) 
-  : new JSONFile(`./database.json`);
-
-global.db = new Low(dbAdapter);
-global.DATABASE = global.db;
-
-global.loadDatabase = async function loadDatabase() {
-  if (global.db.READ) return new Promise((resolve) => 
-    setInterval(function () {
-      (!global.db.READ ? (clearInterval(this), resolve(global.db.data == null ? global.loadDatabase() : global.db.data)) : null)
-    }, 1 * 1000)
-  );
-
-  if (global.db.data !== null) return;
-  global.db.READ = true;
-  await global.db.read();
-  global.db.READ = false;
-  global.db.data = { 
-    users: {}, 
-    chats: {}, 
-    game: {}, 
-    database: {}, 
-    settings: {}, 
-    setting: {}, 
-    others: {}, 
-    sticker: {}, 
-    ...(global.db.data || {}) 
-  };
-  global.db.chain = _.chain(global.db.data);
-};
-
-loadDatabase();
-
-if (global.db) 
-  setInterval(async () => {
-    if (global.db.data) await global.db.write();
-  }, 30000);
-
 // Inicializar el cliente
 const client = new Client({
   intents: [
@@ -160,7 +115,18 @@ const client = new Client({
 });
 
 //----
-client.once('ready', () => {
+client.once('ready', async () => {
+let db;
+try {
+  db = await createDatabase();
+  console.log("✅ DB lista");
+} catch (e) {
+  console.error("❌ ERROR DB:", e);
+}
+
+global.db = db;
+global.DATABASE = db;
+
 console.log(chalk.bold.greenBright(`\n𓃠 ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈✦ 🟢 𝘾𝙊𝙉𝙀𝙓𝙄𝙊𝙉 ✦┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈ 𓃠\n│\n│★ Bot Conectado: ${client.user.tag} con exitos\n│\n𓃠 ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈✦ ✅ ✦┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈ 𓃠`))
 
 //Slash commands 
@@ -604,28 +570,42 @@ if (message.guild) {
 settings = db.data.settings[message.guild.id];
 if (!settings) {
    db.data.settings[message.guild.id] = {
-     welcomeChannelId: null,
-     farewellChannelId: null,
-     memeChannelId: null, 
-     welcome: true, 
-     status: 0,
-     welcomeEmbed: {
-     title: null,
-     description: null,
-     image: null,
+  welcomeChannelId: null,
+  farewellChannelId: null,
+  memeChannelId: null, 
+  welcome: true, 
+  status: 0,
+
+  welcomeEmbed: {
+    title: null,
+    description: null,
+    image: null,
     footerText: null,
     footerIcon: null,
-    },
-    farewellEmbed: {
+  },
+
+  farewellEmbed: {
     title: null,
     description: null,
     footerText: null,
     footerIcon: null,
-    },
-   welcomeMessage: null,    
-   farewellMessage: null, 
-    };
-    await db.write();
+  },
+
+  welcomeMessage: null,    
+  farewellMessage: null,
+  
+  antilink: {
+    enabled: true,
+    domains: [],
+    action: "warn",
+    limit: 3,
+    violations: {},
+    exemptRoles: [],
+    whitelistChannels: []
+  }
+};
+
+await db.write();
     } else {
     if (!('welcomeChannelId' in settings)) settings.welcomeChannelId = null;
     if (!('farewellChannelId' in settings)) settings.farewellChannelId = null;
@@ -633,6 +613,15 @@ if (!settings) {
     if (!('welcomeMessage' in settings)) settings.welcomeMessage = null;   
    if (!('farewellMessage' in settings)) settings.farewellMessage = null;
      if (!('welcome' in settings)) settings.welcome = true;
+       if (!('antilink' in settings)) {
+    settings.antilink = { enabled: true,
+     domains: [],
+    action: "warn",
+    limit: 3,
+    violations: {},
+    exemptRoles: [],
+   whitelistChannels: []
+     }}
     if (!('welcomeEmbed' in settings)) {
     settings.welcomeEmbed = { title: null,
      description: null,
