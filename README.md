@@ -130,16 +130,17 @@ El bot funciona normal mientras no use comandos de voz.”*
 
 [![YouTube](https://img.shields.io/badge/SkyUltraPlus-Host-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/pIzbVYKK3jQ?si=k79xs2ILTYQUWnng)
 
-<a href="https://dash.skyultraplus.com"><img src="https://cdn.skyultraplus.com/uploads/u4/cd6fd70f8cf8a92d.jpg" height="125px"></a>
+<a href="https://skyultraplus.com"><img src="https://cdn.skyultraplus.com/uploads/u4/3ee6fc7f2a0d2478.jpg" height="125px"></a>
 
 ### Información del Host
+- **Pagina Oficial:** [`Aqui`](https://skyultraplus.com)
 - **Dashboard:** [`Aquí`](https://dash.skyultraplus.com)
 - **Panel:** [`Aquí`](https://panel.skyultraplus.com)
-- **Estado de servicios:** [`Aquí`](https://estado.skyultraplus.com)
+- **Estado de servicios:** [`Aquí`](https://skyultraplus.com/status)
 - **Canal de WhatsApp:** [`Aquí`](https://whatsapp.com/channel/0029VakUvreFHWpyWUr4Jr0g)
-- **Comunidad:** [`Aquí`](https://chat.whatsapp.com/JPwcXvPEUwlEOyjI3BpYys)
-- **Contacto(s):** [`Gata Dios`](https://wa.me/message/B3KTM5XN2JMRD1) / [`Russell`](https://api.whatsapp.com/send/?phone=15167096032&text&type=phone_number&app_absent=0) / [`elrebelde21`](https://facebook.com/elrebelde21)
-- **Discord:** [`SkyUltraPlus`](https://discord.gg/Ph4eWsZ8)
+- **Comunidad:** [`Aquí`](https://chat.whatsapp.com/E6iWpvGuJ8zJNPbN3zOr0D)
+- **Contacto(s):** [`Russell`](https://api.whatsapp.com/send/?phone=15167096032&text&type=phone_number&app_absent=0) / [`Gata Dios`](https://wa.me/message/B3KTM5XN2JMRD1) / [`elrebelde21`](https://facebook.com/elrebelde21)
+- **Discord:** [`aqui`](https://discord.gg/socialky)
 
 ----
 
